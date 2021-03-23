@@ -14,7 +14,7 @@ session_start();
 </head>
 <body>
     
-    <?
+    <?php
     include "fonction.php"; 
 
     if($access){
