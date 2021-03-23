@@ -1,4 +1,7 @@
-<?php include "fonction.php"; ?>
+<?php 
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,16 +13,18 @@
     <title>Document</title>
 </head>
 <body>
-    <?
-
-    if(!is_null($mabase)){
-        echo "Connecte Covid";
-    }else{
-        echo "Vous n'avez pas les bases";
-    }
     
-         
+    <?
+    include "fonction.php"; 
 
+    if($access){
+        
+        echo "BIENVENUE sur MON SITE";
+
+    }else{
+        echo "c'est ouf";
+        echo $errorMessage;
+    }
     ?>
 </body>
 </html>
