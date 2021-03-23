@@ -18,19 +18,19 @@ try{
 if(!is_null($mabase)){
     if (isset($_SESSION["Connected"]) && $_SESSION["Connected"]===true){
         $access = true;
-        $access = afficheFormulaireLogout();
+        $access = afficheFormulaireLogout($mabase);
     }else{
         $access = false;
         $errorMessage.= "Vous devez vous connectez";
         // Affichage de formulaire si pas deconnexion
-        $access = afficheFormulaireConnexion();
+        $access = afficheFormulaireConnexion($mabase);
     }
    
 }else{
     $errorMessage.= "Vous n'avez pas les bases";
 }
 
-function afficheFormulaireLogout(){
+function afficheFormulaireLogout($mabase){
     //traitement du formulaire
     $afficheForm = true;
     $access = true;
@@ -39,7 +39,7 @@ function afficheFormulaireLogout(){
         $_SESSION["Connected"]=false;
         session_unset();
         session_destroy();
-        afficheFormulaireConnexion();
+        afficheFormulaireConnexion($mabase);
         $afficheForm = false;
         $access = false;
     }else{
@@ -61,20 +61,28 @@ function afficheFormulaireLogout(){
     return $access;
 }
 
-
-function afficheFormulaireConnexion(){
+function afficheFormulaireConnexion($mabase){
 
     //traitement du formulaire
     $access = false;
     if( isset($_POST["login"]) && isset($_POST["password"])){
         //verif mdp en BDD
 
-        //si mdp = ok
-        $access = true;
-        $_SESSION["Connected"]=true;
-        $afficheForm = false;
-        //si on est co on affiche le formulaire de deco
-        afficheFormulaireLogout();
+        $Result = $mabase->query("SELECT * FROM `User` WHERE `login`='".$_POST['login']."' AND `mdp` = '".$_POST['password']."'");
+        if($tab = $Result->fetch()){ 
+             //si mdp = ok
+            $access = true;
+            $_SESSION["Connected"]=true;
+            $afficheForm = false;
+            //si on est co on affiche le formulaire de deco
+            afficheFormulaireLogout($mabase);
+        }else{
+            $afficheForm = true;
+        }
+
+                        
+        
+       
 
     }else{
         $afficheForm = true;
@@ -85,11 +93,11 @@ function afficheFormulaireConnexion(){
         <form action="" method="post" >
             <div>
                 <label for="login">Enter your login: </label>
-                <input type="text" name="login" id="login" required>
+                <input type="text" name="login" id="login" required value="Rapidecho">
             </div>
             <div >
                 <label for="password">Enter your pass: </label>
-                <input type="password" name="password" id="password" required>
+                <input type="password" name="password" id="password" required value="Julien1234">
             </div>
             <div >
                 <input type="submit" value="Go!" >
