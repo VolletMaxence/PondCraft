@@ -10,7 +10,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="main.js"></script>
-    <title>COmbat</title>
+    <title>Combat</title>
 </head>
 <body>
     
@@ -22,7 +22,7 @@ session_start();
         echo "BIENVENUE sur CE COMBAT";
 
 
-        
+
 
     }else{
         echo "c'est ouf";
