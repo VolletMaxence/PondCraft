@@ -10,7 +10,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="main.js"></script>
-    <title>Document</title>
+    <title>COmbat</title>
 </head>
 <body>
     
@@ -19,8 +19,10 @@ session_start();
 
     if($access){
         
-        echo "BIENVENUE sur MON SITE";
-        echo '<a href="combat.php">vient combatre</a>';
+        echo "BIENVENUE sur CE COMBAT";
+
+
+        
 
     }else{
         echo "c'est ouf";

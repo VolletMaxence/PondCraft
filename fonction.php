@@ -80,9 +80,7 @@ function afficheFormulaireConnexion($mabase){
             $afficheForm = true;
         }
 
-                        
-        
-       
+                    
 
     }else{
         $afficheForm = true;
