@@ -27,7 +27,7 @@ session_start();
             echo "TU COMBAT AVEC ".$Joueur1->getNomPersonnage();
             $map = $Joueur1->getPersonnage()->getMap();
             echo "<p> il vient : ". $map->getNom()."</p>";
-
+ 
             if($_GET["position"]==="Generate"){
                 //la cardinalité permet de lui dire d'ou on vient
                 $map = $map->Create($Joueur1->getPersonnage()->getMap(),$_GET["cardinalite"],$Joueur1->getId());
