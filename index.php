@@ -15,6 +15,7 @@ session_start();
 <body>
     
     <?php
+    //c'est dans fonction que l'on gère les formulaires de Co et les sessions
     include "fonction.php"; 
 
     if($access){
@@ -23,7 +24,6 @@ session_start();
         echo '<a href="combat.php">vient combatre</a>';
 
     }else{
-        echo "c'est ouf";
         echo $errorMessage;
     }
     ?>

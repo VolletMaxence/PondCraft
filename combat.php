@@ -25,7 +25,6 @@ session_start();
 
 
     }else{
-        echo "c'est ouf";
         echo $errorMessage;
     }
     ?>
