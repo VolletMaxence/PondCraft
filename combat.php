@@ -21,7 +21,7 @@ session_start();
         
         echo "BIENVENUE sur CE COMBAT ".$Joueur1->getPrenom();
         echo "TU COMBAT AVEC ".$Joueur1->getNomPersonnage();
-        echo '<a href="index.Php" >retour menu</a>';
+        echo '<a href="index.php" >retour menu</a>';
 
     }else{
         echo $errorMessage;
