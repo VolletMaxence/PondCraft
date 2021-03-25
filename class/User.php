@@ -58,7 +58,7 @@ class User{
         $Result = $this->_bdd->query("SELECT * FROM `User` WHERE `login`='".$_POST['login']."' AND `mdp` = '".$_POST['password']."'");
         if($tab = $Result->fetch()){ 
 
-            $this->setUser($tab["id"],$tab["login"],$tab["mdp"],$tab["prenom"]);
+            $this->setUserById($tab["id"]);
 
              //si mdp = ok
             $access = true;
