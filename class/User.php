@@ -15,7 +15,24 @@ class User{
     }
 
     public function setUser($id,$login,$mdp,$prenom){
-        
+        $this->_id = $id;
+        $this->_login = $login;
+        $this->_mdp = $mdp;
+        $this->_prenom = $prenom;
+    }
+
+    public function setUserById($id){
+        $Result = $this->_bdd->query("SELECT * FROM `User` WHERE `id`='".$id."' ");
+        if($tab = $Result->fetch()){ 
+
+            $this->setUser($tab["id"],$tab["login"],$tab["mdp"],$tab["prenom"]);
+        }
+
+
+    }
+
+    public function getPrenom(){
+        return $this->_prenom;
     }
 
     public function ConnectToi(){
@@ -27,8 +44,12 @@ class User{
 
         $Result = $this->_bdd->query("SELECT * FROM `User` WHERE `login`='".$_POST['login']."' AND `mdp` = '".$_POST['password']."'");
         if($tab = $Result->fetch()){ 
+
+            $this->setUser($tab["id"],$tab["login"],$tab["mdp"],$tab["prenom"]);
+
              //si mdp = ok
             $access = true;
+            $_SESSION["idUser"]= $tab["id"];
             $_SESSION["Connected"]=true;
             $afficheForm = false;
             //si on est co on affiche le formulaire de deco

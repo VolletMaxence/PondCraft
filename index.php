@@ -20,7 +20,7 @@ session_start();
 
     if($access){
         
-        echo "BIENVENUE sur MON SITE";
+        echo "BIENVENUE sur MON SITE ".$Joueur1->getPrenom();
         echo '<a href="combat.php">vient combatre</a>';
 
     }else{
