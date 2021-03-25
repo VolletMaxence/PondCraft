@@ -73,7 +73,6 @@ class map{
         $this->mapNord = $NewMap;
         //update en base
         $req="UPDATE `map` SET `mapNord`='".$NewMap->getId()."'  WHERE `id` = '$this->_id'";
-        echo $req;
         $Result = $this->_bdd->query($req);
         
     }
@@ -81,7 +80,6 @@ class map{
         $this->mapSud = $NewMap;
         //update en base
         $req="UPDATE `map` SET `mapSud`='".$NewMap->getId()."'  WHERE `id` = '$this->_id'";
-        echo $req;
         $Result = $this->_bdd->query($req);
         
     }
@@ -89,7 +87,6 @@ class map{
         $this->mapEst = $NewMap;
         //update en base
         $req="UPDATE `map` SET `mapEst`='".$NewMap->getId()."'  WHERE `id` = '$this->_id'";
-        echo $req;
         $Result = $this->_bdd->query($req);
         
     }
@@ -97,7 +94,6 @@ class map{
         $this->mapOuest = $NewMap;
         //update en base
         $req="UPDATE `map` SET `mapOuest`='".$NewMap->getId()."'  WHERE `id` = '$this->_id'";
-        echo $req;
         $Result = $this->_bdd->query($req);
         
     }
@@ -118,6 +114,16 @@ class map{
         $mapNord= 'NULL';
         $mapOuest = 'NULL';
         $mapEst = 'NULL';
+
+        //IMPORTANT IL Faut vérifier que la zone qu'on découvre n'existe pas déjà par un autre chemin 
+        //on va donc parcourir tous les autres chemin existant pour voir si on arrive au meme endroit.
+        //ca va donc etre un chemin recurcif.
+        // A= -1pts quand on va a l'est +1 quand on va a ouest
+        // B= 1pts quand tu vas au nord -1 point quand tu vas au sud.
+        // si on trouve A = 1 quand on va au nord et B=0 alors on a déjà une map au nord
+        // si on trouve A = -1 quand on va au sud et B=0 alors on a déjà une map au sud
+        // si on trouve B = -1 quand on va  a l'ouest et A=0 alors on a déjà une map au Ouest
+        // si on trouve B = 1 quand on va  a l'est et A=0 alors on a déjà une map a l'est
      
         switch ($cardinalite) {
             case "nord":
@@ -134,6 +140,7 @@ class map{
                     echo " la map existe dejà au sud ".$map->getMapSud()->getPosition();
                     return $map->getMapSud();
                 }
+        
                 break;
             case "ouest":
                 $mapOuest = "'".$map->getId()."'";
@@ -141,6 +148,7 @@ class map{
                     echo "la map existe dejà a est ".$map->getMapOuest()->getPosition();
                     return $map->getMapOuest();
                 }
+
                 break;
             case "est":
                 $mapEst = "'".$map->getId()."'";
@@ -148,6 +156,7 @@ class map{
                     echo "la map existe dejà à l'ouest ".$map->getMapEst()->getPosition();
                     return $map->getMapEst();
                 }
+          
                 break;
              default:
              
@@ -156,16 +165,33 @@ class map{
                 
         }
 
+        $mapExistante = $this->trouveRacourcie(0,0,$cardinalite, array());
+        if(is_object($mapExistante)){
+            echo "<p>Ajout d'un raccourcie grace à toi entre la map N°".$this->getPosition()." et ".$mapExistante->getPosition()."</p>";
+            
+            switch ($cardinalite) {
+                case "nord":
+                    $req="UPDATE `map` SET `mapSud`='".$this->getId()."' WHERE `id` = '".$mapExistante->getId()."'";
+                    $this->setMapNord($mapExistante);
+                    break;
+                case "sud":
+                    $req="UPDATE `map` SET `mapNord`='".$this->getId()."' WHERE `id` = '".$mapExistante->getId()."'";
+                    $this->setMapSud($mapExistante);
+                    break;
+                case "est":
+                    $req="UPDATE `map` SET `mapOuest`='".$this->getId()."' WHERE `id` = '".$mapExistante->getId()."'";
+                    $this->setMapEst($mapExistante);
+                    break;
+                case "ouest":
+                    $req="UPDATE `map` SET `mapEst`='".$this->getId()."' WHERE `id` = '".$mapExistante->getId()."'";
+                    $this->setMapOuest($mapExistante);
+                    break;
+            }
+            $Result = $this->_bdd->query($req);
+            return $mapExistante;
+        }
 
-        //IMPORTANT IL Faut vérifier que la zone qu'on découvre n'existe pas déjà par un autre chemin 
-        //on va donc parcourir tous les autres chemin existant pour voir si on arrive au meme endroit.
-        //ca va donc etre un chemin recurcif.
-        // A= -1pts quand on va a l'est +1 quand on va a ouest
-        // B= 1pts quand tu vas au nord -1 point quand tu vas au sud.
-        // si on trouve A = 1 quand on va au nord et B=0 alors on a déjà une map au nord
-        // si on trouve A = -1 quand on va au sud et B=0 alors on a déjà une map au sud
-        // si on trouve B = -1 quand on va  a l'ouest et A=0 alors on a déjà une map au Ouest
-        // si on trouve B = 1 quand on va  a l'est et A=0 alors on a déjà une map a l'est
+        
         
 
         $position = $this->generatePosition();
@@ -205,13 +231,6 @@ class map{
 
             return $newmap;
         }
-
-
-
-       
-
-        
-
         return null;
     }
 
@@ -404,13 +423,13 @@ class map{
                     $Consone .="car";
                 break;
                 case 5:
-                    $Consone .="dent";
+                    $Consone .="den";
                 break;
                 case 6:
                     $Consone .="feu";
                 break;
                 case 7:
-                    $Consone .="fort";
+                    $Consone .="for";
                 break;
                 case 8:
                     $Consone .="ga";
@@ -457,6 +476,89 @@ class map{
 
 
         return $nom ." ". $Adjectif." ".$Consone;
+    }
+
+
+    //fonction de recherche récursive de map adjacent
+    //retourne true s'il a trouvé un chemin
+    //selon le resultat de ScoreNordSud et ScoreEstOuest
+    //la $TabBloquante permet de ne pas revenir sur ses chemins
+    public function trouveRacourcie($ScoreNordSud,$ScoreEstOuest,$cardinalite,$TabBloquante){
+        
+        switch ($cardinalite) {
+            case "nord":
+                if($ScoreNordSud == 1 && $ScoreEstOuest == 0){
+                    echo "<p>on a trouvé un autre chemin !!!</p>";
+                    //je retourne la map dejà en place
+                    return $this;
+                }
+                break;
+            case "sud":
+                if($ScoreNordSud == -1 && $ScoreEstOuest == 0){
+                    echo "<p>on a trouvé un autre chemin !!!</p>";
+                    //je retourne la map dejà en place
+                    return $this;
+                }
+                break;
+            case "est":
+                if($ScoreNordSud == 0 && $ScoreEstOuest == 1){
+                    echo "<p>on a trouvé un autre chemin !!!</p>";
+                    //je retourne la map dejà en place
+                    return $this;
+                }
+                break;
+            case "ouest":
+                if($ScoreNordSud == 0 && $ScoreEstOuest == -1){
+                    echo "<p>on a trouvé un autre chemin !!!</p>";
+                    //je retourne la map dejà en place
+                    return $this;
+                }
+                break;
+        }
+        //si plus aucun chemin on n'arrete la recherche est on retourne false.
+        //ScoreNordSud +1 au nord -1 au sud
+        //ScoreEstOuest +1 à l'est -1 à l'ouest
+        //$TabBloquante permet de ne pas retourner de la ou l'on vient
+        
+        if(!is_null($this->mapNord) && !in_array($this->getMapNord()->getPosition(), $TabBloquante)){
+            //echo "<p>recherche en nord ".$this->getMapNord()->getNom()." position : ".$this->getMapNord()->getPosition()." score N :".$ScoreNordSud." E:".$ScoreEstOuest."</p>";
+            //cardinalite bloquand je vien de nord donc je bloque aprés le sud
+            array_push($TabBloquante,$this->getMapNord()->getPosition());
+            
+        
+            $TabBloquante= $this->getMapNord()->trouveRacourcie($ScoreNordSud++,$ScoreEstOuest,$cardinalite,$TabBloquante);
+            //si c'est un objet c'est qu'on a trouvé la map
+            if(is_object($TabBloquante)){
+                return $TabBloquante;
+            }
+        }
+        if(!is_null($this->mapSud ) && !in_array($this->getMapSud()->getPosition(), $TabBloquante) ){
+            //echo "<p>recherche en sud ".$this->getMapSud()->getNom()." position : ".$this->getMapSud()->getPosition()."score N :".$ScoreNordSud." E:".$ScoreEstOuest."</p>";
+            array_push($TabBloquante,$this->getMapSud()->getPosition());
+            $TabBloquante= $this->getMapSud()->trouveRacourcie($ScoreNordSud--,$ScoreEstOuest,$cardinalite,$TabBloquante);
+            if(is_object($TabBloquante)){
+                return $TabBloquante;
+            }
+        }
+        if(!is_null($this->mapEst ) && !in_array($this->getMapEst()->getPosition(), $TabBloquante)){
+            //echo "<p>recherche en Est ".$this->getMapEst()->getNom()." position : ".$this->getMapEst()->getPosition()."score N :".$ScoreNordSud." E:".$ScoreEstOuest."</p>";
+            array_push($TabBloquante,$this->getMapEst()->getPosition());
+            $TabBloquante= $this->getMapEst()->trouveRacourcie($ScoreNordSud,$ScoreEstOuest--,$cardinalite,$TabBloquante);
+            if(is_object($TabBloquante)){
+                return $TabBloquante;
+            }
+        }
+        if(!is_null($this->mapOuest) && !in_array($this->getMapOuest()->getPosition(), $TabBloquante)){
+            //echo "<p>recherche en Ouest ".$this->getMapOuest()->getNom()." position : ".$this->getMapOuest()->getPosition()."score N :".$ScoreNordSud." E:".$ScoreEstOuest."</p>";
+            array_push($TabBloquante,$this->getMapOuest()->getPosition());
+            $TabBloquante= $this->getMapOuest()->trouveRacourcie($ScoreNordSud,$ScoreEstOuest++,$cardinalite,$TabBloquante);
+            if(is_object($TabBloquante)){
+                return $TabBloquante;
+            }
+        }
+
+        
+        return $TabBloquante;
     }
 
 }
