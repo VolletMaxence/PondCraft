@@ -30,10 +30,7 @@ class User{
             $personnage = new Personnage($this->_bdd);
             $personnage->setPersonnageById($tab["idPersonnage"]);
             $this->_MonPersonnage = $personnage;
-           
         }
-
-
     }
 
     public function setPersonnage($Perso){
@@ -41,7 +38,6 @@ class User{
         //je mémorise en base l'association du personnage dans user
         $req ="UPDATE `User` SET `idPersonnage`='".$Perso->getID()."' WHERE  `id` = '".$this->_id."'";
         $Result = $this->_bdd->query($req);
-        
     }
 
     public function getPrenom(){

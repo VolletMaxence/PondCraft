@@ -7,7 +7,6 @@ $mabase = null;
 $access = null;
 $errorMessage="";
 
-
 try{
         $user = "lapro_site";
         $pass = "TDataSource1234";
