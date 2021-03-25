@@ -21,7 +21,17 @@ session_start();
     if($access){
         
         echo "BIENVENUE sur MON SITE ".$Joueur1->getPrenom();
-        echo '<a href="combat.php">vient combatre</a>';
+        
+        $Perso = new Personnage($mabase);
+        $Perso->getChoixPersonnage();
+        if(!$Perso->getId()==0){
+            $Joueur1->setPersonnage($Perso);
+        }
+        
+
+        echo '<a href="combat.php">vient combatre avec'.$Perso->getNom().'</a>';
+        
+
 
     }else{
         echo $errorMessage;

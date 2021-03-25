@@ -19,10 +19,9 @@ session_start();
 
     if($access){
         
-        echo "BIENVENUE sur CE COMBAT";
-
-
-
+        echo "BIENVENUE sur CE COMBAT ".$Joueur1->getPrenom();
+        echo "TU COMBAT AVEC ".$Joueur1->getNomPersonnage();
+        echo '<a href="index.Php" >retour menu</a>';
 
     }else{
         echo $errorMessage;

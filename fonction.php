@@ -1,5 +1,6 @@
 <?php 
 include "class/User.php";
+include "class/Personnage.php";
 
 //GESTION DE LA BASE -----------------------
 $mabase = null;
