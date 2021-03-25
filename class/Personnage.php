@@ -7,6 +7,8 @@ class Personnage{
     private $_vie;
     private $_degat;
 
+    private $map;
+
     private $_bdd;
 
     public function __construct($bdd){
@@ -23,8 +25,21 @@ class Personnage{
     public function getNom(){
         return $this->_nom;
     }
+    
     public function getId(){
         return $this->_id;
+    }
+
+    public function getMap(){
+        return $this->map;
+    }
+
+    //permet de changer la position du joueur sur la carte
+    public function changeMap($NewMap){
+        $this->map = $NewMap;
+        //on mémorise çà en base
+        $sql = "UPDATE `Personnage` SET `idMap`='".$NewMap->getId()."' WHERE `id`='".$this->_id."'";
+        $this->_bdd->query($sql);
     }
 
     public function setPersonnageById($id){
@@ -32,6 +47,11 @@ class Personnage{
         if($tab = $Result->fetch()){ 
 
             $this->setPersonnage($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"]);
+            //recherche de sa position
+            $map = new map($this->_bdd);
+            $map->setMapByID($tab["idMap"]);
+            $this->map = $map;
+            
         }
     }
 

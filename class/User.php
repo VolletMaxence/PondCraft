@@ -44,8 +44,16 @@ class User{
         return $this->_prenom;
     }
 
+    public function getId(){
+        return $this->_id;
+    }
+
     public function getNomPersonnage(){
         return $this->_MonPersonnage->getNom();
+    }
+
+    public function getPersonnage(){
+        return $this->_MonPersonnage;
     }
 
     public function ConnectToi(){

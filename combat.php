@@ -19,9 +19,13 @@ session_start();
 
     if($access){
         
-        echo "BIENVENUE sur CE COMBAT ".$Joueur1->getPrenom();
+        echo "BIENVENUE " .$Joueur1->getPrenom();
         echo "TU COMBAT AVEC ".$Joueur1->getNomPersonnage();
-        echo '<a href="index.php" >retour menu</a>';
+        echo "<p>Ton combatant est sur la position : ".$Joueur1->getPersonnage()->getMap()->getNom().'</p>';
+
+        echo '<p><a href="index.php" >retour menu</a></p>';
+
+        $Joueur1->getPersonnage()->getMap()->getMapAdjacenteLienHTML();
 
     }else{
         echo $errorMessage;
