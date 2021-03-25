@@ -71,8 +71,6 @@ class User{
             $afficheForm = true;
         }
 
-                    
-
     }else{
         $afficheForm = true;
     }

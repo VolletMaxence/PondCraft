@@ -28,8 +28,12 @@ session_start();
             $Joueur1->setPersonnage($Perso);
         }
         
-
-        echo '<a href="combat.php">vient combatre avec'.$Perso->getNom().'</a>';
+        if(!empty($Perso->getNom())){
+            echo '<a href="combat.php">vient combatre avec'.$Perso->getNom().'</a>';
+        }else{
+            echo '<a href="combat.php">vient combatre avec'.$Joueur1->getNomPersonnage().'</a>';
+        }
+        
         
 
 
