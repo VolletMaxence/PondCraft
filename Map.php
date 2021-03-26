@@ -20,7 +20,7 @@ session_start();
     if($access){
         
         //gestion accès map:
-            
+             
             echo "<p><h1>BIENVENUE " .$Joueur1->getPrenom()."</h1></p>";
             echo "<p><h3>Tu est en train de te ballader avec ".$Joueur1->getNomPersonnage()."</h3></p>";
             $map = $Joueur1->getPersonnage()->getMap();
@@ -30,7 +30,7 @@ session_start();
             
 
             $map->getMapAdjacenteLienHTML();
-            echo '<p><a href="index.php" >retour menu choix personnage</a></p>';
+            echo '<p><a href="index.php" >retour menu choix personnage </a></p>';
             
 
     }else{
