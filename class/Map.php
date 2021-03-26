@@ -162,6 +162,13 @@ class map{
     }
 
 
+    public function removeItemByID($id){
+        unset($this->listItems[array_search($id, $this->listItems)]);
+        $req="DELETE FROM `MapItems` WHERE idMap='".$this->getId()."' AND idItem='".$id."'";
+        $this->_bdd->query($req);
+    }
+
+
     //il faut lui donner la map adjacente
     //String cardinalite: lui dire si elle est par rapport à elle au sud , nord , est ou ouest ($cardinalite)
     //int id du user qui as decouvert cette map en premier
@@ -317,7 +324,7 @@ class map{
             //chargement d'un Item aléatoire
             if(rand(0,3)>1){
                 $item1 = new Item($this->_bdd);
-                $nbItem = rand(0,2);
+                $nbItem = rand(0,3);
                 
                 for($i=0;$i<$nbItem;$i++){
                     $newmap->addItem($item1->createItemAleatoire()); 

@@ -16,13 +16,14 @@ session_start();
     
     <?php
     include "fonction.php"; 
-
+    $access = $Joueur1->deconnectToi();
     if($access){
         
         //gestion accès map:
              
             echo "<p><h1>BIENVENUE " .$Joueur1->getPrenom()."</h1></p>";
             echo "<p><h3>Tu est en train de te ballader avec ".$Joueur1->getNomPersonnage()."</h3></p>";
+            
             $map = $Joueur1->getPersonnage()->getMap();
             $map = $map->loadMap($_GET["position"],$_GET["cardinalite"],$Joueur1);
 
@@ -40,18 +41,34 @@ session_start();
                 }
             }
 
+            //AFFICHAGE DES ITEMS DE LA MAP
             $listItems = $map->getItems();
             if(count($listItems)>0){
                 echo '<p>Items Présent : <p><ul class="Item">';
                 foreach ( $listItems as  $Item) {
                     ?>
-                    <li><a onclick="alert('Pas touche un dev doit venir coder ici le ramassage')"><?php echo $Item->getNom() ?></li>
+                    <li id="item<?php echo $Item->getId()?>"><a onclick="CallApiAddItemInSac(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
                     <?php 
                 }
                 echo '</ul>';
             }
             
             $map->getMapAdjacenteLienHTML();
+
+
+            //AFFICHAGE DES ITEMS DU SAC
+            echo "<p>Voici le contenu de la bedasse de ".$Joueur1->getNomPersonnage()." </p>";
+            $listItems = $Joueur1->getPersonnage()->getItems();
+            if(count($listItems)>0){
+                echo '<p>Items Présent : <p><ul id="Sac" class="Item">';
+                foreach ( $listItems as  $Item) {
+                    ?>
+                    <li id="itemSac<?php echo $Item->getId()?>"><a onclick="DetruireItem(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
+                    <?php 
+                }
+                echo '</ul>';
+            }
+
             echo '<p><a href="index.php" >retour menu choix personnage </a></p>';
             
 
@@ -60,4 +77,35 @@ session_start();
     }
     ?>
 </body>
+<script>
+function CallApiAddItemInSac(idItem){
+    fetch('api/addItemInSac.php?idItem='+idItem).then((resp) => resp.json()) .then(function(data) {
+    // data est la réponse http de notre API.
+    console.log(data); 
+    if(data==1){
+        var li = document.getElementById("item"+idItem)
+        var liSac = li;
+        if (li!='undefine'){
+            li.remove();
+        }
+        var ul = document.getElementById("Sac")
+        if (ul!='undefine'){
+          
+            ul.appendChild(liSac);
+            
+        }
+
+
+
+    }   
+    
+    }) .catch(function(error) {
+    // This is where you run code if the server returns any errors
+    console.log(error); });
+}
+
+function DetruireItem(idItem){
+    alert("bientot tu pourras le détuire cette item");
+}
+</script>
 </html>

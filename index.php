@@ -18,6 +18,8 @@ session_start();
     //c'est dans fonction que l'on gère les formulaires de Co et les sessions
     include "fonction.php"; 
 
+
+    $access = $Joueur1->deconnectToi();
     if($access){
         
         echo "BIENVENUE sur MON SITE ".$Joueur1->getPrenom();

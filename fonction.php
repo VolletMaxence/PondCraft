@@ -29,7 +29,7 @@ if(!is_null($mabase)){
         if(isset($_SESSION["idUser"])){
             $Joueur1->setUserById($_SESSION["idUser"]);
         }
-        $access = $Joueur1->deconnectToi();
+        
     }else{
         $access = false;
         $errorMessage.= "Vous devez vous connectez";

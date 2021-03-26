@@ -41,6 +41,9 @@ class Item{
         return $this->_id;
     }
 
+
+    
+
     public function __construct($bdd){
         $this->_bdd = $bdd;
     }

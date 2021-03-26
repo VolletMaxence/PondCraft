@@ -11,6 +11,8 @@ class Personnage{
 
     private $_bdd;
 
+    private $sacItems=array();
+
     public function __construct($bdd){
         $this->_bdd = $bdd;
     }
@@ -20,6 +22,13 @@ class Personnage{
         $this->_nom = $nom;
         $this->_vie = $vie;
         $this->_degat = $degat;
+
+         //select les items déjà présent
+         $req  = "SELECT idItem FROM `PersoSacItems` WHERE idPersonnage='".$id."'";
+         $Result = $this->_bdd->query($req);
+         while($tab=$Result->fetch()){
+             array_push($this->sacItems,$tab[0]);
+         }
     }
 
     public function getNom(){
@@ -32,6 +41,16 @@ class Personnage{
 
     public function getMap(){
         return $this->map;
+    }
+
+    public function getItems(){
+        $lists=array();
+        foreach ($this->sacItems  as $ItemId) {
+            $newItem = new Item($this->_bdd);
+            $newItem->setItemByID($ItemId);
+            array_push($lists,$newItem);
+        }
+        return $lists;
     }
 
     //permet de changer la position du joueur sur la carte
@@ -54,6 +73,14 @@ class Personnage{
             $this->map = $map;
             
         }
+    }
+
+    //ajoute un lien entre item et la personnage en bdd 
+    //et accroche l'item dans la collection itemID dans le sac du perso
+    public function addItem($newItem){
+        array_push($this->sacItems,$newItem->getId());
+        $req="INSERT INTO `PersoSacItems`(`idPersonnage`, `idItem`) VALUES ('".$this->getId()."','".$newItem->getId()."')";
+        $this->_bdd->query($req);
     }
 
     //Retourne une liste HTML de tous les personnages
