@@ -2,6 +2,8 @@
 include "class/User.php";
 include "class/Personnage.php";
 include "class/Map.php";
+include "class/Item.php";
+
 
 //GESTION DE LA BASE -----------------------
 $mabase = null;

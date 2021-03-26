@@ -8,6 +8,8 @@ class map{
     private $_x;
     private $_y;
 
+    Private $listItems=array();
+
     //la position initial est 0
     //les autres sont des hash
     private $_position=0;
@@ -56,6 +58,15 @@ class map{
         (is_null($mapEst))?$this->mapEst = null:$this->mapEst = $mapEst;
         (is_null($mapOuest))?$this->mapOuest = null:$this->mapOuest = $mapOuest;
 
+        //select les items déjà présent
+        $req  = "SELECT idItem FROM `MapItems` WHERE idMap='".$id."'";
+        $Result = $this->_bdd->query($req);
+        while($tab=$Result->fetch()){
+            array_push($this->listItems,$tab[0]);
+        }
+
+        
+
     }
 
     //accesseur get set 
@@ -103,6 +114,16 @@ class map{
         $map->setMapByID($this->mapOuest);
         return $map;
     }
+    public function getItems(){
+        $lists=array();
+        foreach ($this->listItems  as $ItemId) {
+            $newItem = new Item($this->_bdd);
+            $newItem->setItemByID($ItemId);
+            array_push($lists,$newItem);
+        }
+        return $lists;
+    }
+
     public function setMapNord($NewMap){
         $this->mapNord = $NewMap->getId();
         //update en base
@@ -131,6 +152,16 @@ class map{
         $Result = $this->_bdd->query($req);
         
     }
+
+    //ajoute un lien entre item et la map en bdd 
+    //et accroche l'item dans la collection itemID dans la map
+    public function addItem($newItem){
+        array_push($this->listItems,$newItem->getId());
+        $req="INSERT INTO `MapItems`(`idMap`, `idItem`) VALUES ('".$this->getId()."','".$newItem->getId()."')";
+        $this->_bdd->query($req);
+    }
+
+
     //il faut lui donner la map adjacente
     //String cardinalite: lui dire si elle est par rapport à elle au sud , nord , est ou ouest ($cardinalite)
     //int id du user qui as decouvert cette map en premier
@@ -282,6 +313,19 @@ class map{
                     $map->setMapOuest($newmap);
                     break;
             }
+
+            //chargement d'un Item aléatoire
+            if(rand(0,3)>1){
+                $item1 = new Item($this->_bdd);
+                $nbItem = rand(0,2);
+                
+                for($i=0;$i<$nbItem;$i++){
+                    $newmap->addItem($item1->createItemAleatoire()); 
+                }
+            }
+            
+                
+
 
             return $newmap;
         }

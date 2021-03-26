@@ -26,9 +26,31 @@ session_start();
             $map = $Joueur1->getPersonnage()->getMap();
             $map = $map->loadMap($_GET["position"],$_GET["cardinalite"],$Joueur1);
 
-            //chargement d'un Item aléatoire
+            //chargement des Items
             
+            
+           
 
+            if(rand(0,3)>1){
+                $itemEnplus = new Item($mabase);
+                $nbItem = rand(0,2);
+                
+                for($i=0;$i<$nbItem;$i++){
+                    $map->addItem($itemEnplus->createItemAleatoire()); 
+                }
+            }
+
+            $listItems = $map->getItems();
+            if(count($listItems)>0){
+                echo '<p>Items Présent : <p><ul class="Item">';
+                foreach ( $listItems as  $Item) {
+                    ?>
+                    <li><a onclick="alert('Pas touche un dev doit venir coder ici le ramassage')"><?php echo $Item->getNom() ?></li>
+                    <?php 
+                }
+                echo '</ul>';
+            }
+            
             $map->getMapAdjacenteLienHTML();
             echo '<p><a href="index.php" >retour menu choix personnage </a></p>';
             
