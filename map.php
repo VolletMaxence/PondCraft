@@ -28,11 +28,8 @@ session_start();
             $map = $map->loadMap($_GET["position"],$_GET["cardinalite"],$Joueur1);
 
             //chargement des Items
-            
-            
-           
 
-            if(rand(0,3)>1){
+            if(rand(0,1)>1){
                 $itemEnplus = new Item($mabase);
                 $nbItem = rand(0,2);
                 
@@ -50,7 +47,7 @@ session_start();
                     <li id="item<?php echo $Item->getId()?>"><a onclick="CallApiAddItemInSac(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
                     <?php 
                 }
-                echo '</ul>';
+                echo '</ul></p>';
             }
             
             $map->getMapAdjacenteLienHTML();
@@ -60,13 +57,13 @@ session_start();
             echo "<p>Voici le contenu de la bedasse de ".$Joueur1->getNomPersonnage()." </p>";
             $listItems = $Joueur1->getPersonnage()->getItems();
             if(count($listItems)>0){
-                echo '<p>Items Présent : <p><ul id="Sac" class="Item">';
+                echo '<p><ul id="Sac" class="Item">';
                 foreach ( $listItems as  $Item) {
                     ?>
                     <li id="itemSac<?php echo $Item->getId()?>"><a onclick="DetruireItem(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
                     <?php 
                 }
-                echo '</ul>';
+                echo '</ul></p>';
             }
 
             echo '<p><a href="index.php" >retour menu choix personnage </a></p>';
@@ -105,7 +102,7 @@ function CallApiAddItemInSac(idItem){
 }
 
 function DetruireItem(idItem){
-    alert("bientot tu pourras le détuire cette item");
+    alert("bientot tu pourras en faire un truc de cet item si les dev se bouge !");
 }
 </script>
 </html>
