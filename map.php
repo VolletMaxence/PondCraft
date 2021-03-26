@@ -27,8 +27,22 @@ session_start();
             $map = $Joueur1->getPersonnage()->getMap();
             $map = $map->loadMap($_GET["position"],$_GET["cardinalite"],$Joueur1);
 
-            //chargement des Items
+            //affichage des autres joueurs sur la carte
 
+            $listPersos = $map->getAllPersonnages();
+            if(count($listPersos)>0){
+                echo "<p>Visiblement tu n'est pas seul ici".'<ul id="Sac" class="Item">';
+                foreach ( $listPersos as  $Perso) {
+                    if($Perso->getId()!=$Joueur1->getPersonnage()->getId()){
+                        ?>
+                        <li id="Perso<?php echo $Perso->getId()?>"><a onclick="AttaquerPerso(<?php echo $Perso->getId()?>,'<?php echo $Perso->getNom() ?>')"><?php echo $Perso->getNom() ?></li>
+                        <?php 
+                    }
+                }
+                echo '</ul></p>';
+            }
+
+            //chargement des Items
             if(rand(0,1)>1){
                 $itemEnplus = new Item($mabase);
                 $nbItem = rand(0,2);
@@ -87,15 +101,12 @@ function CallApiAddItemInSac(idItem){
         }
         var ul = document.getElementById("Sac")
         if (ul!='undefine'){
-          
             ul.appendChild(liSac);
-            
         }
+    } else{
+        alert("vous avez pas réussi à le piquer");
+    }  
 
-
-
-    }   
-    
     }) .catch(function(error) {
     // This is where you run code if the server returns any errors
     console.log(error); });
@@ -103,6 +114,9 @@ function CallApiAddItemInSac(idItem){
 
 function DetruireItem(idItem){
     alert("bientot tu pourras en faire un truc de cet item si les dev se bouge !");
+}
+function AttaquerPerso(idItem,nom){
+    alert("tu peux pas attaquer "+nom+"! pour le moment car un dev doit réagir");
 }
 </script>
 </html>

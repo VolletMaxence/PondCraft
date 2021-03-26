@@ -9,6 +9,7 @@ class map{
     private $_y;
 
     Private $listItems=array();
+    Private $listPersonnages=array();
 
     //la position initial est 0
     //les autres sont des hash
@@ -59,12 +60,22 @@ class map{
         (is_null($mapOuest))?$this->mapOuest = null:$this->mapOuest = $mapOuest;
 
         //select les items déjà présent
+        $this->listItems = array();
         $req  = "SELECT idItem FROM `MapItems` WHERE idMap='".$id."'";
         $Result = $this->_bdd->query($req);
         while($tab=$Result->fetch()){
             array_push($this->listItems,$tab[0]);
         }
 
+        //select les Personnages déjà présent
+        $this->listPersonnages = array();
+        $req  = "SELECT id FROM `Personnage` WHERE idMap='".$id."'";
+        $Result = $this->_bdd->query($req);
+        while($tab=$Result->fetch()){
+            array_push($this->listPersonnages,$tab[0]);
+        }
+
+        
         
 
     }
@@ -123,6 +134,17 @@ class map{
         }
         return $lists;
     }
+
+    public function getAllPersonnages(){
+        $lists=array();
+        foreach ($this->listPersonnages  as $PersoID) {
+            $personnage = new Personnage($this->_bdd);
+            $personnage->setPersonnageById($PersoID);
+            array_push($lists,$personnage);
+        }
+        return $lists;
+    }
+
 
     public function setMapNord($NewMap){
         $this->mapNord = $NewMap->getId();

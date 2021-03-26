@@ -67,6 +67,7 @@ class Personnage{
         if($tab = $Result->fetch()){ 
 
             $this->setPersonnage($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"]);
+            
             //recherche de sa position
             $map = new map($this->_bdd);
             $map->setMapByID($tab["idMap"]);
@@ -74,6 +75,19 @@ class Personnage{
             
         }
     }
+
+    public function setPersonnageByIdWithoutMap($id){
+        $Result = $this->_bdd->query("SELECT * FROM `Personnage` WHERE `id`='".$id."' ");
+        if($tab = $Result->fetch()){ 
+
+            $this->setPersonnage($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"]);
+            
+           
+            
+        }
+    }
+
+
 
     //ajoute un lien entre item et la personnage en bdd 
     //et accroche l'item dans la collection itemID dans le sac du perso
