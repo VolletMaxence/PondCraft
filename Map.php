@@ -20,48 +20,18 @@ session_start();
     if($access){
         
         //gestion accès map:
-        if(isset($_GET["position"]) && isset($_GET["cardinalite"]) ){
-           
-
-            echo "BIENVENUE " .$Joueur1->getPrenom();
-            echo "TU COMBAT AVEC ".$Joueur1->getNomPersonnage();
+            
+            echo "<p><h1>BIENVENUE " .$Joueur1->getPrenom()."</h1></p>";
+            echo "<p><h3>Tu est en train de te ballader avec ".$Joueur1->getNomPersonnage()."</h3></p>";
             $map = $Joueur1->getPersonnage()->getMap();
-            echo "<p> il vient : ". $map->getNom()."</p>";
- 
-            if($_GET["position"]==="Generate"){
-                //la cardinalité permet de lui dire d'ou on vient
-                $map = $map->Create($Joueur1->getPersonnage()->getMap(),$_GET["cardinalite"],$Joueur1->getId());
-                if(!is_null($map)){
-                    
-                    echo "<p>tu viens de découvrir une nouvelle  position : ". $map->getNom()." </p>";
-                   
+            $map = $map->loadMap($_GET["position"],$_GET["cardinalite"],$Joueur1);
 
-                    //puis on déplace le joueur
-                    $Joueur1->getPersonnage()->ChangeMap($map);
+            //chargement d'un Item aléatoire
+            
 
-                }else{
-                    echo "<p>tu t'es perdu mon petit pot da découverte tombe à l'eau";
-                }
-                
-
-            }else if ($_GET["position"]>=0) {
-                //récupération de la map est atttribution au combatant
-                
-                $map->setMapByPosition($_GET["position"]);
-                echo "<p>tu es sur la position : ". $map->getNom()." </p>";
-                $Joueur1->getPersonnage()->ChangeMap($map);
-                
-            }else{
-                echo "Tu es en terre  Incconu revient vite là ou tu étais";
-            }
-
-        }else{
-            echo "Tu es en terre  Incconu revient vite là ou tu étais";
-        }
-
-        echo '<p><a href="index.php" >retour menu choix personnage</a></p>';
-      
-        $Joueur1->getPersonnage()->getMap()->getMapAdjacenteLienHTML();
+            $map->getMapAdjacenteLienHTML();
+            echo '<p><a href="index.php" >retour menu choix personnage</a></p>';
+            
 
     }else{
         echo $errorMessage;

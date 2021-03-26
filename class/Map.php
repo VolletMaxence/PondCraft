@@ -4,6 +4,10 @@ class map{
     private $_id;
     private $_nom;
 
+    //coordonne de la map
+    private $_x;
+    private $_y;
+
     //la position initial est 0
     //les autres sont des hash
     private $_position=0;
@@ -14,21 +18,44 @@ class map{
     private $mapEst=null;
     private $mapOuest=null;
 
+    public function setMapByID($id){
+        
+        $req="SELECT * FROM map WHERE id='".$id."' ";
+
+        
+        $Result = $this->_bdd->query($req);
+        if($tab = $Result->fetch()){ 
+
+            $this->setMap($tab["id"],
+                          $tab["nom"],
+                          $tab["position"],
+                          $tab["mapNord"],
+                          $tab["mapSud"],
+                          $tab["mapEst"],
+                          $tab["mapOuest"],
+                          $tab["x"],
+                          $tab["y"]);
+        }
+        
+    }
+
     public function __construct($bdd){
         $this->_bdd = $bdd;
     }
 
-    public function setMap($id,$nom,$position,$mapNord,$mapSud,$mapEst,$mapOuest){
+    public function setMap($id,$nom,$position,$mapNord,$mapSud,$mapEst,$mapOuest,$x,$y){
         $this->_id = $id;
         $this->_nom = $nom;
         $this->_position = $position;
+        $this->_x = $x;
+        $this->_y = $y;
         
         //je place les id pour ne pas que l'objet racupère en récurciv toute les maps inclu dans elle meme
         (is_null($mapNord))?$this->mapNord = null:$this->mapNord = $mapNord;
         (is_null($mapSud))?$this->mapSud = null:$this->mapSud = $mapSud;
         (is_null($mapEst))?$this->mapEst = null:$this->mapEst = $mapEst;
         (is_null($mapOuest))?$this->mapOuest = null:$this->mapOuest = $mapOuest;
-      
+
     }
 
     //accesseur get set 
@@ -39,6 +66,12 @@ class map{
         return $this->_nom;
     }
 
+    public function getX(){
+        return $this->_x;
+    }
+    public function getY(){
+        return $this->_y;
+    }
 
     //je vais chercher l'objet map au moment ou j'ai besoin
     //sinon les map vont automatiquement chercher leur map adjacente et çà va ramer 
@@ -46,9 +79,10 @@ class map{
         return $this->_position;
     }
     public function getMapNord(){
-        if(is_null($this->mapNord)){return null;}
+        if(is_null($this->mapNord)){return null; }
         $map = new Map($this->_bdd) ;
         $map->setMapByID($this->mapNord);
+        
         return $map;
     }
     public function getMapSud(){
@@ -70,41 +104,41 @@ class map{
         return $map;
     }
     public function setMapNord($NewMap){
-        $this->mapNord = $NewMap;
+        $this->mapNord = $NewMap->getId();
         //update en base
         $req="UPDATE `map` SET `mapNord`='".$NewMap->getId()."'  WHERE `id` = '$this->_id'";
         $Result = $this->_bdd->query($req);
         
     }
     public function setMapSud($NewMap){
-        $this->mapSud = $NewMap;
+        $this->mapSud = $NewMap->getId();
         //update en base
         $req="UPDATE `map` SET `mapSud`='".$NewMap->getId()."'  WHERE `id` = '$this->_id'";
         $Result = $this->_bdd->query($req);
         
     }
     public function setMapEst($NewMap){
-        $this->mapEst = $NewMap;
+        $this->mapEst = $NewMap->getId();
         //update en base
         $req="UPDATE `map` SET `mapEst`='".$NewMap->getId()."'  WHERE `id` = '$this->_id'";
         $Result = $this->_bdd->query($req);
         
     }
     public function setMapOuest($NewMap){
-        $this->mapOuest = $NewMap;
+        $this->mapOuest = $NewMap->getId();
         //update en base
         $req="UPDATE `map` SET `mapOuest`='".$NewMap->getId()."'  WHERE `id` = '$this->_id'";
         $Result = $this->_bdd->query($req);
         
     }
     //il faut lui donner la map adjacente
-    //String : lui dire si elle est par rapport à elle au sud , nord , est ou ouest ($cardinalite)
+    //String cardinalite: lui dire si elle est par rapport à elle au sud , nord , est ou ouest ($cardinalite)
     //int id du user qui as decouvert cette map en premier
     public function Create($map,$cardinalite,$idUserDecouverte){
 
        
         if(intval($map->getId())>=0){
-            
+            $map->setMapByID($map->getId());
         }else{
             //la map n'existe pas
             return null;
@@ -124,70 +158,90 @@ class map{
         // si on trouve A = -1 quand on va au sud et B=0 alors on a déjà une map au sud
         // si on trouve B = -1 quand on va  a l'ouest et A=0 alors on a déjà une map au Ouest
         // si on trouve B = 1 quand on va  a l'est et A=0 alors on a déjà une map a l'est
-     
+        $newx = $map->_x;
+        $newy = $map->_y;
+
+       
+
         switch ($cardinalite) {
-            case "nord":
+            case "sud":
                 $mapSud = "'".$map->getId()."'";
                 //on vérifie si la map n'existe pas déjà a cette cardinalité
+                
                 if(!is_null($map->getMapNord())){
-                    echo " la map existe dejà au nord ".$map->getMapNord()->getPosition();
                     return $map->getMapNord();
                 }
+                $newy++;
                 break;
-            case "sud":
+            case "nord":
                 $mapNord = "'".$map->getId()."'";
                 if(!is_null($map->getMapSud())){
-                    echo " la map existe dejà au sud ".$map->getMapSud()->getPosition();
                     return $map->getMapSud();
                 }
-        
-                break;
-            case "ouest":
-                $mapOuest = "'".$map->getId()."'";
-                if(!is_null($map->getMapOuest())){
-                    echo "la map existe dejà a est ".$map->getMapOuest()->getPosition();
-                    return $map->getMapOuest();
-                }
-
+                
+                $newy--;
                 break;
             case "est":
                 $mapEst = "'".$map->getId()."'";
+                if(!is_null($map->getMapOuest())){
+                    return $map->getMapOuest();
+                }
+                $newx--;
+                break;
+            case "ouest":
+                $mapOuest = "'".$map->getId()."'";
+                
                 if(!is_null($map->getMapEst())){
-                    echo "la map existe dejà à l'ouest ".$map->getMapEst()->getPosition();
                     return $map->getMapEst();
                 }
-          
+                $newx++;
                 break;
              default:
              
                 return null;
-              
-                
+
         }
 
-        $mapExistante = $this->trouveRacourcie(0,0,$cardinalite, array());
+        $mapExistante = $map->trouveMapAdjacente($map,$cardinalite);
         if(is_object($mapExistante)){
-            echo "<p>Ajout d'un raccourcie grace à toi entre la map N°".$this->getPosition()." et ".$mapExistante->getPosition()."</p>";
+            echo "<p>Ajout d'un raccourcie grace à toi entre la map N°".$map->getPosition()." et ".$mapExistante->getPosition()."</p>";
             
+            //TODO A REVOIR
             switch ($cardinalite) {
                 case "nord":
-                    $req="UPDATE `map` SET `mapSud`='".$this->getId()."' WHERE `id` = '".$mapExistante->getId()."'";
-                    $this->setMapNord($mapExistante);
+                    $req="UPDATE `map` SET `mapSud`='".$mapExistante->getId()."' WHERE `id` = '".$map->getId()."'";
+                    $map->setMapSud($mapExistante);
+
+                    $req="UPDATE `map` SET `mapNord`='".$map->getId()."' WHERE `id` = '".$mapExistante->getId()."'";
+                    $mapExistante->setMapNord($map);
+                    
                     break;
                 case "sud":
-                    $req="UPDATE `map` SET `mapNord`='".$this->getId()."' WHERE `id` = '".$mapExistante->getId()."'";
-                    $this->setMapSud($mapExistante);
+                    $req="UPDATE `map` SET `mapNord`='".$mapExistante->getId()."' WHERE `id` = '".$map->getId()."'";
+                    $map->setMapNord($mapExistante);
+
+                    $req="UPDATE `map` SET `mapSud`='".$map->getId()."' WHERE `id` = '".$mapExistante->getId()."'";
+                    $mapExistante->setMapSud($map);
                     break;
                 case "est":
-                    $req="UPDATE `map` SET `mapOuest`='".$this->getId()."' WHERE `id` = '".$mapExistante->getId()."'";
-                    $this->setMapEst($mapExistante);
+                    $req="UPDATE `map` SET `mapOuest`='".$mapExistante->getId()."' WHERE `id` = '".$map->getId()."'";
+                    $map->setMapOuest($mapExistante);
+
+                    $req="UPDATE `map` SET `mapEst`='".$map->getId()."' WHERE `id` = '".$mapExistante->getId()."'";
+                    $mapExistante->setMapEst($map);
+
                     break;
                 case "ouest":
-                    $req="UPDATE `map` SET `mapEst`='".$this->getId()."' WHERE `id` = '".$mapExistante->getId()."'";
-                    $this->setMapOuest($mapExistante);
+                    $req="UPDATE `map` SET `mapEst`='".$mapExistante->getId()."' WHERE `id` = '".$map->getId()."'";
+                    $map->setMapEst($mapExistante);
+
+                    $req="UPDATE `map` SET `mapOuest`='".$map->getId()."' WHERE `id` = '".$mapExistante->getId()."'";
+                    $mapExistante->setMapOuest($map);
+
+
                     break;
             }
-            $Result = $this->_bdd->query($req);
+            $Result = $map->_bdd->query($req);
             return $mapExistante;
         }
 
@@ -196,14 +250,14 @@ class map{
 
         $position = $this->generatePosition();
         $nom = $this->generateNom();
-
+  
 
         //insertion en base
         //la position doit etre unique
         
-        $req="INSERT INTO `map`( `nom`, `position`, `mapNord`, `mapSud`, `mapEst`, `mapOuest`) 
+        $req="INSERT INTO `map`( `nom`, `position`, `mapNord`, `mapSud`, `mapEst`, `mapOuest`, `x`, `y`) 
                 VALUES 
-              ('".$nom."','".$position."',".$mapNord.",".$mapSud.",".$mapEst.",".$mapOuest.")";
+              ('".$nom."','".$position."',".$mapNord.",".$mapSud.",".$mapEst.",".$mapOuest.",".$newx.",".$newy.")";
         
         $Result = $this->_bdd->query($req);
 
@@ -215,16 +269,16 @@ class map{
 
             //on met à jour l'ancienne map avec les coordonnée de la nouvelle
             switch ($cardinalite) {
-                case "nord":
+                case "sud":
                     $map->setMapNord($newmap);
                     break;
-                case "sud":
+                case "nord":
                     $map->setMapSud($newmap);
                     break;
-                case "est":
+                case "ouest":
                     $map->setMapEst($newmap);
                     break;
-                case "ouest":
+                case "est":
                     $map->setMapOuest($newmap);
                     break;
             }
@@ -233,6 +287,44 @@ class map{
         }
         return null;
     }
+
+    //cardinalite = la d'ou l'on vient
+    public function loadMap($position,$Cardinalite,$Joueur1){
+        if(isset($position) && isset($Cardinalite) ){
+            if($position==="Generate"){
+                //la cardinalité permet de lui dire d'ou on vient
+                $map= new map($this->_bdd);
+                $map = $map->Create($Joueur1->getPersonnage()->getMap(),$_GET["cardinalite"],$Joueur1->getId());
+                if(!is_null($map)){
+                    echo "<p>tu viens de découvrir une nouvelle  position : ". $map->getNom()." </p>";
+                    //puis on déplace le joueur
+                    $Joueur1->getPersonnage()->ChangeMap($map);
+                    
+                }
+                return $map;
+
+            }else if ($position>=0) {
+                //récupération de la map est atttribution au combatant
+                $this->setMapByPosition($position);
+                echo "<p>tu es ici : ". $this->getNom()." </p>";
+                $Joueur1->getPersonnage()->ChangeMap($this);
+                
+
+                
+            }else{
+                echo "Tu es en terre  Incconu revient vite là ou tu été";
+            }
+
+        }else{
+            echo "Tu es en terre  Incconu revient vite là ou tu étais";
+        }
+        return $this;
+       
+      
+        
+    }
+    
+    
 
     //retourn un string 
     //hash aléatoire pour une nouvelle position
@@ -248,66 +340,54 @@ class map{
         }
     }
 
-    public function setMapByID($id){
-        $Result = $this->_bdd->query("SELECT * FROM `map` WHERE `id`='".$id."' ");
-        if($tab = $Result->fetch()){ 
-
-            $this->setMap($tab["id"],
-                          $tab["nom"],
-                          $tab["position"],
-                          $tab["mapNord"],
-                          $tab["mapSud"],
-                          $tab["mapEst"],
-                          $tab["mapOuest"]);
-        }
-    }
+    
 
     //retourne les liens HTML des 4 map adjacente
     public function getMapAdjacenteLienHTML(){
         ?>
         <div class="MapAdjacente">
         <?php 
-
+    
             $Mnord = $this->getMapNord();
             $Msud = $this->getMapSud();
             $Mest = $this->getMapEst();
             $Mouest = $this->getMapOuest();
-
+            
 
             if(!is_null($Mnord)){
                 ?>
-                Nord : <div class="MapAdjacenteNord"><a href="map.php?position=<?php echo $Mnord->getPosition()?>&cardinalite=nord"><?php echo $Mnord->getNom()?></a></div>
+                Nord : <div class="MapAdjacenteNord"><a href="map.php?position=<?php echo $Mnord->getPosition();?>&cardinalite=sud"><?php echo $Mnord->getNom()?></a></div>
                 <?php
             }else{
                 ?>
-                Nord : <div class="MapAdjacenteNord"><a href="map.php?position=Generate&cardinalite=nord">Region Inconu</a></div>
+                Nord : <div class="MapAdjacenteNord"><a href="map.php?position=Generate&cardinalite=sud">Decouvre cette Région Inconnue</a></div>
                 <?php
             }
             if(!is_null($Msud)){
                 ?>
-                Sud : <div class="MapAdjacenteSud"><a href="map.php?position=<?php echo $Msud->getPosition()?>&cardinalite=sud"><?php echo $Msud->getNom()?></a></div>
+                Sud : <div class="MapAdjacenteSud"><a href="map.php?position=<?php echo $Msud->getPosition();?>&cardinalite=nord"><?php echo $Msud->getNom()?></a></div>
                 <?php
             }else{
                 ?>
-                Sud : <div class="MapAdjacenteSud"><a href="map.php?position=Generate&cardinalite=sud">Region Inconu</a></div>
+                Sud : <div class="MapAdjacenteSud"><a href="map.php?position=Generate&cardinalite=nord">Decouvre cette Région Inconnue</a></div>
                 <?php
             }
             if(!is_null($Mest)){
                 ?>
-                Est : <div class="MapAdjacenteEst"><a href="map.php?position=<?php echo $Mest->getPosition()?>&cardinalite=est"><?php echo $Mest->getNom()?></a></div>
+                Est : <div class="MapAdjacenteEst"><a href="map.php?position=<?php echo $Mest->getPosition()?>&cardinalite=ouest"><?php echo $Mest->getNom()?></a></div>
                 <?php
             }else{
                 ?>
-                Est : <div class="MapAdjacenteEst"><a href="map.php?position=Generate&cardinalite=est">Region Inconu</a></div>
+                Est : <div class="MapAdjacenteEst"><a href="map.php?position=Generate&cardinalite=ouest">Decouvre cette Région Inconnue</a></div>
                 <?php
             }
             if(!is_null($Mouest)){
                 ?>
-                Ouest : <div class="MapAdjacenteOuest"><a href="map.php?position=<?php echo $Mouest->getPosition()?>&cardinalite=ouest"><?php echo $Mouest->getNom()?></a></div>
+                Ouest : <div class="MapAdjacenteOuest"><a href="map.php?position=<?php echo $Mouest->getPosition()?>&cardinalite=est"><?php echo $Mouest->getNom()?></a></div>
                 <?php
             }else{
                 ?>
-                Ouest : <div class="MapAdjacenteOuest"><a href="map.php?position=Generate&cardinalite=ouest">Region Inconu</a></div>
+                Ouest : <div class="MapAdjacenteOuest"><a href="map.php?position=Generate&cardinalite=est">Decouvre cette Région Inconnue</a></div>
                 <?php
             }
         
@@ -405,7 +485,7 @@ class map{
         }
 
         $Consone ="";
-        for($i=0;$i<rand(1,4);$i++){
+        for($i=0;$i<=rand(1,3);$i++){
             switch (rand(0,19)){
                 case 0:
                     $Consone .="bien";
@@ -472,93 +552,45 @@ class map{
             }
         }
         
-        
-
-
         return $nom ." ". $Adjectif." ".$Consone;
     }
 
 
     //fonction de recherche récursive de map adjacent
-    //retourne true s'il a trouvé un chemin
-    //selon le resultat de ScoreNordSud et ScoreEstOuest
-    //la $TabBloquante permet de ne pas revenir sur ses chemins
-    public function trouveRacourcie($ScoreNordSud,$ScoreEstOuest,$cardinalite,$TabBloquante){
-        
+    //retourne une map si elle se trouve 
+    //
+    public function trouveMapAdjacente($map,$cardinalite){
+
+        $x=$map->getX();
+        $y=$map->getY();
+
         switch ($cardinalite) {
             case "nord":
-                if($ScoreNordSud == 1 && $ScoreEstOuest == 0){
-                    echo "<p>on a trouvé un autre chemin !!!</p>";
-                    //je retourne la map dejà en place
-                    return $this;
-                }
+                $y--;
                 break;
             case "sud":
-                if($ScoreNordSud == -1 && $ScoreEstOuest == 0){
-                    echo "<p>on a trouvé un autre chemin !!!</p>";
-                    //je retourne la map dejà en place
-                    return $this;
-                }
+                $y++;
                 break;
             case "est":
-                if($ScoreNordSud == 0 && $ScoreEstOuest == 1){
-                    echo "<p>on a trouvé un autre chemin !!!</p>";
-                    //je retourne la map dejà en place
-                    return $this;
-                }
+                $x--;
                 break;
             case "ouest":
-                if($ScoreNordSud == 0 && $ScoreEstOuest == -1){
-                    echo "<p>on a trouvé un autre chemin !!!</p>";
-                    //je retourne la map dejà en place
-                    return $this;
-                }
+                $x++;
                 break;
         }
-        //si plus aucun chemin on n'arrete la recherche est on retourne false.
-        //ScoreNordSud +1 au nord -1 au sud
-        //ScoreEstOuest +1 à l'est -1 à l'ouest
-        //$TabBloquante permet de ne pas retourner de la ou l'on vient
-        
-        if(!is_null($this->mapNord) && !in_array($this->getMapNord()->getPosition(), $TabBloquante)){
-            //echo "<p>recherche en nord ".$this->getMapNord()->getNom()." position : ".$this->getMapNord()->getPosition()." score N :".$ScoreNordSud." E:".$ScoreEstOuest."</p>";
-            //cardinalite bloquand je vien de nord donc je bloque aprés le sud
-            array_push($TabBloquante,$this->getMapNord()->getPosition());
-            
-        
-            $TabBloquante= $this->getMapNord()->trouveRacourcie($ScoreNordSud++,$ScoreEstOuest,$cardinalite,$TabBloquante);
-            //si c'est un objet c'est qu'on a trouvé la map
-            if(is_object($TabBloquante)){
-                return $TabBloquante;
-            }
+
+        $req="select id from map where x='".$x."' AND y='".$y."'";
+        $Result = $this->_bdd->query($req);
+        if($tab = $Result->fetch()){ 
+            $newmap = new Map($this->_bdd);
+            $newmap->setMapByID($tab['id']);
+            echo "Tu as trouvé un raccourcie pour venir ici";
+            return $newmap;
         }
-        if(!is_null($this->mapSud ) && !in_array($this->getMapSud()->getPosition(), $TabBloquante) ){
-            //echo "<p>recherche en sud ".$this->getMapSud()->getNom()." position : ".$this->getMapSud()->getPosition()."score N :".$ScoreNordSud." E:".$ScoreEstOuest."</p>";
-            array_push($TabBloquante,$this->getMapSud()->getPosition());
-            $TabBloquante= $this->getMapSud()->trouveRacourcie($ScoreNordSud--,$ScoreEstOuest,$cardinalite,$TabBloquante);
-            if(is_object($TabBloquante)){
-                return $TabBloquante;
-            }
-        }
-        if(!is_null($this->mapEst ) && !in_array($this->getMapEst()->getPosition(), $TabBloquante)){
-            //echo "<p>recherche en Est ".$this->getMapEst()->getNom()." position : ".$this->getMapEst()->getPosition()."score N :".$ScoreNordSud." E:".$ScoreEstOuest."</p>";
-            array_push($TabBloquante,$this->getMapEst()->getPosition());
-            $TabBloquante= $this->getMapEst()->trouveRacourcie($ScoreNordSud,$ScoreEstOuest--,$cardinalite,$TabBloquante);
-            if(is_object($TabBloquante)){
-                return $TabBloquante;
-            }
-        }
-        if(!is_null($this->mapOuest) && !in_array($this->getMapOuest()->getPosition(), $TabBloquante)){
-            //echo "<p>recherche en Ouest ".$this->getMapOuest()->getNom()." position : ".$this->getMapOuest()->getPosition()."score N :".$ScoreNordSud." E:".$ScoreEstOuest."</p>";
-            array_push($TabBloquante,$this->getMapOuest()->getPosition());
-            $TabBloquante= $this->getMapOuest()->trouveRacourcie($ScoreNordSud,$ScoreEstOuest++,$cardinalite,$TabBloquante);
-            if(is_object($TabBloquante)){
-                return $TabBloquante;
-            }
-        }
+       
 
         
-        return $TabBloquante;
+        return null;
     }
 
 }

@@ -40,6 +40,7 @@ class Personnage{
         //on mémorise çà en base
         $sql = "UPDATE `Personnage` SET `idMap`='".$NewMap->getId()."' WHERE `id`='".$this->_id."'";
         $this->_bdd->query($sql);
+        
     }
 
     public function setPersonnageById($id){
