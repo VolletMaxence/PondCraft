@@ -8,6 +8,7 @@ class map{
     //coordonne de la map
     private $_x;
     private $_y;
+    private $_type;
 
     private $idUserDecouverte;
     Private $listItems=array();
@@ -44,7 +45,8 @@ class map{
                           $tab["x"],
                           $tab["y"],
                           $tab["idUserDecouverte"],
-                          $tab["lienImage"]
+                          $tab["lienImage"],
+                          $tab["type"]
 
                         );
         }
@@ -69,7 +71,7 @@ class map{
         <?php
     }
 
-    public function setMap($id,$nom,$position,$mapNord,$mapSud,$mapEst,$mapOuest,$x,$y,$idUserDecouverte,$image){
+    public function setMap($id,$nom,$position,$mapNord,$mapSud,$mapEst,$mapOuest,$x,$y,$idUserDecouverte,$image,$type){
         $this->_id = $id;
         $this->_nom = $nom;
         $this->_position = $position;
@@ -126,6 +128,10 @@ class map{
     }
     public function getY(){
         return $this->_y;
+    }
+
+    public function getType(){
+        return $this->_type;
     }
 
     //je vais chercher l'objet map au moment ou j'ai besoin
@@ -350,12 +356,14 @@ class map{
 
         
         $position = $this->generatePosition();
-        $nom = $this->generateNom();
-  
+        $Generate = $this->generateMap();
+        $nom = $Generate[2];
+        $typeId=$Generate[0];
+        $type=$Generate[1];
 
         //insertion en base
         //la position doit etre unique
-        $imgLink = $this->getAleatoireImage($nom);
+        $imgLink = $this->getAleatoireImage($type);
         
         $req="INSERT INTO `map`( `nom`, `position`, `mapNord`, `mapSud`, `mapEst`, `mapOuest`, `x`, `y`,`idUserDecouverte`,`lienImage`) 
                 VALUES 
@@ -471,7 +479,7 @@ class map{
     //retourn un string 
     //hash aléatoire pour une nouvelle position
     public function generatePosition(){
-        return hash('ripemd160', $this->generateNom().rand(0,100000000).rand(0,100000000));
+        return hash('ripemd160', $this->_nom.rand(0,100000000).rand(0,100000000));
     }
 
     
@@ -552,44 +560,20 @@ class map{
 
 
     //Permet de générer un nom de map
-    public function generateNom(){
+    public function generateMap(){
         $nom ="";
-        switch (rand(0,10)){
-            case 0:
-                $nom ="La Foret";
-            break;
-            case 1:
-                $nom ="L'Ocean";
-            break;
-            case 2:
-                $nom ="La Montagne";
-            break;
-            case 3:
-                $nom ="Le Marai";
-            break;
-            case 4:
-                $nom ="La Ville";
-            break;
-            case 5:
-                $nom ="Le Village";
-            break;
-            case 6:
-                $nom ="La Cambrousse";
-            break;
-            case 7:
-                $nom ="La Plaine";
-            break;
-            case 8:
-                $nom ="Le Dongeon";
-            break;
-            case 9:
-                $nom ="La Campagne";
-            break;
-            default:
-                $nom ="Le Chemin";
-
-
+        $req="Select * from TypeMap";
+        $Result = $this->_bdd->query($req);
+        $typemap=array();
+        while($tab=$Result->fetch()){
+            array_push($typemap,$tab);
         }
+
+        $choixAleatoire= array_rand($typemap, 1);
+        
+        $type =  $typemap[$choixAleatoire];
+        $nom = $type['nomFr'];
+        
         $Adjectif ="";
         switch (rand(0,10)){
             case 0:
@@ -693,8 +677,12 @@ class map{
                 $Consone .=" ";
             }
         }
-        
-        return $nom ." ". $Adjectif." ".$Consone;
+
+        //la premiere case et le type en anglais pour une recherche d'image
+        $tab[0]=$type['id'];
+        $tab[1]=$type['nom'];
+        $tab[2]=$nom ." ". $Adjectif." ".$Consone;
+        return $tab;
     }
 
 
