@@ -51,6 +51,23 @@ session_start();
                 echo '</ul></p>';
             }
 
+            //affiche les mob;
+            $listMob = $map->getAllMobs();
+            if(count($listMob)>0){
+                echo "<p>Attentions il y a :".'<ul id="Persos" class="Item">';
+                foreach ( $listMob as  $Mob) {
+                    
+                        ?>
+                        <li id="Mob<?php echo $Mob->getId()?>">
+                        <a onclick="AttaquerPerso(<?php echo $Mob->getId()?>,'<?php echo $Mob->getNom() ?>')">
+                            <?php echo $Mob->getNom() ?>
+                            ( x<?php echo $Mob->getCoefXp() ?> xp)
+                        </li>
+                        <?php 
+                    
+                }
+                echo '</ul></p>';
+            }
            
 
             //AFFICHAGE DES ITEMS DE LA MAP

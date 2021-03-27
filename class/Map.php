@@ -11,6 +11,7 @@ class map{
     private $idUserDecouverte;
     Private $listItems=array();
     Private $listPersonnages=array();
+    Private $listMobs=array();
     
     Private $_bdd;
 
@@ -79,6 +80,15 @@ class map{
         while($tab=$Result->fetch()){
             array_push($this->listPersonnages,$tab[0]);
         }
+
+         //select les Mob déjà présent
+         $this->listMobs = array();
+         $req  = "SELECT id FROM `Mob` WHERE idMap='".$id."'";
+         $Result = $this->_bdd->query($req);
+         while($tab=$Result->fetch()){
+             array_push($this->listMobs,$tab[0]);
+         }
+
 
         
         
@@ -149,6 +159,20 @@ class map{
         }
         return $lists;
     }
+
+    public function getAllMobs(){
+        $lists=array();
+        foreach ($this->listMobs  as $MobID) {
+            $mob = new Mob($this->_bdd);
+            $mob->setMobByIdWithMap($MobID);
+            array_push($lists,$mob);
+        }
+        return $lists;
+    }
+
+
+
+    
 
     public function getPersonnageDecouvreur(){
         $perso = new User($this->_bdd);
@@ -351,6 +375,20 @@ class map{
                     $newmap->addItem($item1->createItemAleatoire()); 
                 }
             }
+
+            //chargement d'un Mob aléatoire à la création
+            if(rand(0,3)>1){
+                $Mob1 = new Mob($this->_bdd);
+                $nbMob = rand(0,2);
+                for($i=0;$i<$nbMob;$i++){
+                    //il faut passer la map($this) au créateur de mob
+                    $Mob1 = $Mob1->CreateMobAleatoire($newmap);
+                    if(!is_null($Mob1)){
+                        array_push($newmap->listMobs,$Mob1->getId());
+                    }
+                    
+                }
+            }
             
                 
 
@@ -371,9 +409,12 @@ class map{
                     echo "<p>tu viens de découvrir une nouvelle  position : ". $map->getNom()." </p>";
                     //puis on déplace le joueur
                     $Joueur1->getPersonnage()->ChangeMap($map);
+                    return $map;
                     
+                }else{
+                    return $this;
                 }
-                return $map;
+                
 
             }else if ($position>=0) {
                 //récupération de la map est atttribution au combatant

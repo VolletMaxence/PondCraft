@@ -3,6 +3,7 @@ include "class/User.php";
 include "class/Personnage.php";
 include "class/Map.php";
 include "class/Item.php";
+include "class/Mob.php";
 
 
 //GESTION DE LA BASE -----------------------
