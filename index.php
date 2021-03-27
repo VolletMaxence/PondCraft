@@ -24,14 +24,22 @@ session_start();
         
         echo "BIENVENUE sur MON SITE ".$Joueur1->getPrenom();
         
-        $Perso = new Personnage($mabase);
-        $Perso->getChoixPersonnage();
-        if(!$Perso->getId()==0){
-            $Joueur1->setPersonnage($Perso);
+        $PersoChoisie = new Personnage($mabase);
+        $PersoCree = new Personnage($mabase);
+        $PersoCree = $PersoCree->CreatNewPersonnage();
+        $PersoChoisie->getChoixPersonnage();
+
+        if(!is_null($PersoCree)){
+            $PersoChoisie = $PersoCree;
+        }
+
+
+        if(!$PersoChoisie->getId()==0){
+            $Joueur1->setPersonnage($PersoChoisie);
         }
         
-        if(!empty($Perso->getNom())){
-            echo '<a href="combat.php">vient combatre avec'.$Perso->getNom().'</a>';
+        if(!empty($PersoChoisie->getNom())){
+            echo '<a href="combat.php">vient combatre avec'.$PersoChoisie->getNom().'</a>';
         }else{
             echo '<a href="combat.php">vient combatre avec'.$Joueur1->getNomPersonnage().'</a>';
         }

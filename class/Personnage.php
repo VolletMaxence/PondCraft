@@ -97,7 +97,40 @@ class Personnage{
         $this->_bdd->query($req);
     }
 
-    //Retourne une liste HTML de tous les personnages
+    //Retourne un formulaire HTML pourcreer un personnage
+    //et permet d'attribuer automatiquement à user
+    // retour un objet personnage
+    public function CreatNewPersonnage(){
+        
+        ?>
+        <form action="" method="post">
+            <div>Creer un Perso ou choisie en un</div>
+           <input type="text" name="NomPersonnage" required>
+           <input type="submit" value="Creer" name="createPerso">
+        </form>
+        <?php
+        if (isset($_POST["createPerso"])){
+            $newperso = new Personnage($this->_bdd);
+            $this->_nom=htmlentities($_POST['NomPersonnage'], ENT_QUOTES);
+            $req="INSERT INTO `Personnage`(`nom`, `vie`, `degat`, `idMap`) VALUES ('".$this->_nom."',10,10,0)";
+            $this->_bdd->beginTransaction();
+            $Result = $this->_bdd->query($req);
+            $lastID = $this->_bdd->lastInsertId();
+            if($lastID){ 
+                $newperso->setPersonnageById($lastID);
+                $this->_bdd->commit();
+                return $newperso;
+            }else{
+                $this->_bdd->rollback();
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+
+     //Retourne une liste HTML de tous les personnages
     //et permet d'attribuer un perso à un user
     // retour un objet personnage
     public function getChoixPersonnage(){

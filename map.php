@@ -31,7 +31,7 @@ session_start();
 
             $listPersos = $map->getAllPersonnages();
             if(count($listPersos)>0){
-                echo "<p>Visiblement tu n'est pas seul ici".'<ul id="Sac" class="Item">';
+                echo "<p>Visiblement tu n'est pas seul ici il y a aussi :".'<ul id="Sac" class="Item">';
                 foreach ( $listPersos as  $Perso) {
                     if($Perso->getId()!=$Joueur1->getPersonnage()->getId()){
                         ?>
