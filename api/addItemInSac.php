@@ -1,7 +1,8 @@
 <?php
 session_start();
 include "../fonction.php"; 
-
+$reponse[0]=0;
+$reponse[1]=0;
 if($access){
 
     if(isset($_GET["idItem"])){
@@ -9,8 +10,13 @@ if($access){
         //on doit toujours vérifier en bdd la posibilité de l'appel de API
         //iici on va pour un personnage prendre un item de la map et la mettre dans son sac.
        
-        $reponse=0;
+        $reponse[0]=0;
+        $reponse[1]=0;
         $Perso = $Joueur1->getPersonnage();
+        if($Perso->getVie()==0){
+            $Perso->resurection();
+            $reponse[1]="ton perso est mort";
+        }
         $map=$Perso->getMap();
         //une fois que j'ai mes objet je vérifie que le perso est bien sur la map
         
@@ -25,22 +31,14 @@ if($access){
                 $item = new Item($mabase);
                 $item->setItemByID($_GET["idItem"]);
                 $Perso->addItem($item);
-                $reponse=1;
+                $reponse[1]=1;
+                $reponse[0]=1;
                 
             }
         }  
         
-    
-    
-        echo json_encode($reponse);
-    }else{
-        echo json_encode(0);
     }
-
-}else{
-    echo json_encode(0); 
 }
-
-
+echo json_encode($reponse);
 
 ?>

@@ -17,9 +17,7 @@ session_start();
     <?php
     //c'est dans fonction que l'on gère les formulaires de Co et les sessions
     include "fonction.php"; 
-
-
-    
+    $access = $Joueur1->deconnectToi();
     if($access){
         
         echo "BIENVENUE sur MON SITE ".$Joueur1->getPrenom();
@@ -44,9 +42,6 @@ session_start();
             echo '<a href="combat.php">vient combatre avec'.$Joueur1->getNomPersonnage().'</a>';
         }
         
-        
-
-
     }else{
         echo $errorMessage;
     }

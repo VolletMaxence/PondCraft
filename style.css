@@ -1,0 +1,27 @@
+.barreDeVie{
+    width:100px;
+    height: 20px;
+    display:block;
+    float:left;
+    background-color: darkgray;
+}
+
+.vie{
+    float:left;
+    background-color:rgb(34, 190, 34);
+}
+.attaque{
+    float:left;
+    background-color:rgb(55, 0, 255);
+    color:rgb(250, 212, 0);
+}
+
+li{
+    float:left;
+    list-style-type: none;
+    padding-left: 10px;
+}
+ul{ 
+    float:left ;    
+    width:100%;
+}

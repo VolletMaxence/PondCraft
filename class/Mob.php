@@ -5,6 +5,7 @@ class Mob{
     private $_nom;
     private $_degat;
     private $_vie;
+    private $_vieMax;
 
     //permet de donner plus ou moins xp
     private $_coefXP;
@@ -20,21 +21,38 @@ class Mob{
         return $this->_nom ;
     }
 
-    public function getForce(){
+    public function getVie(){
+        return $this->_vie ;
+    }
+    public function getVieMax(){
+        return $this->_vieMax ;
+    }
+
+    public function getAttaque(){
         return $this->_degat;
     }
     public function getCoefXp(){
         return $this->_coefXP;
     }
-    public function setMob($id,$type,$nom,$degat,$vie,$coefXP){
+    public function setMob($id,$type,$nom,$degat,$vie,$coefXP,$vieMax){
         $this->_id = $id;
         $this->_type = $type;
         $this->_nom = $nom;
         $this->_degat = $degat;
         $this->_vie = $vie;
         $this->_coefXP = $coefXP;
+        $this->_vieMax = $vieMax;
 
          
+    }
+    public function SubitDegat($valeur){
+        $this->_vie = $this->_vie - $valeur;
+        if($this->_vie<0){
+            $this->_vie =0;
+        }
+        $req  = "UPDATE `Mob` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
+        $Result = $this->_bdd->query($req);
+        return $this->_vie;
     }
 
 
@@ -42,9 +60,7 @@ class Mob{
     public function setMobById($id){
         $Result = $this->_bdd->query("SELECT * FROM `Mob` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
-
-            $this->setMob($tab["id"],$tab["type"],$tab["nom"],$tab["degat"],$tab["vie"],$tab["coefXp"]);
-            
+            $this->setMob($tab["id"],$tab["type"],$tab["nom"],$tab["degat"],$tab["vie"],$tab["coefXp"],$tab["vieMax"]);   
         }
     }
 
@@ -53,7 +69,7 @@ class Mob{
         $Result = $this->_bdd->query("SELECT * FROM `Mob` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
 
-            $this->setMob($tab["id"],$tab["type"],$tab["nom"],$tab["degat"],$tab["vie"],$tab["coefXp"]);
+            $this->setMob($tab["id"],$tab["type"],$tab["nom"],$tab["degat"],$tab["vie"],$tab["coefXp"],$tab["vieMax"]);
             
             //recherche de sa position
             $map = new map($this->_bdd);
@@ -63,16 +79,38 @@ class Mob{
         }
     }
 
+    //retourne toute la mécanique d'affichage d'un mob
+    public function renderHTML(){
+        $pourcentage = round(100*$this->_vie/$this->_vieMax);
+        ?>
+        <div class="mob">
+            <div>
+            <?php echo $this->_nom ?>
+            ( x<?php echo $this->getCoefXp() ?> xp)
+            </div>
+            <div class="attaque" id="attaqueMobValeur<?php echo $this->_id ;?>"><?php echo $this->_degat ;?></div>
+            <div class="barreDeVie" id="vieMob<?php echo $this->_id ;?>">
+               
+                <div class="vie" id="vieMobValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;"><?php echo $this->_vie ;?></div>
+            </div>
+        </div>
+
+        <?php
+    }
+
     public function CreateMobAleatoire($map){
             $newMob = new Mob($this->_bdd);
             $type = $this->getTypeAleatoire();
-            $req="INSERT INTO `Mob`(`nom`,`type`, `vie`, `degat`, `idMap` , `coefXp`) 
+            $vie = rand(10,100)*$type[2];
+            $req="INSERT INTO `Mob`(`nom`,`type`, `vie`, `degat`, `idMap` , `coefXp` ,  `vieMax`) 
             VALUES ('".$this->generateNom($type[0])."',
                     ".$type[1]."
-                    ,".rand(10,100)*$type[2]."
+                    ,".$vie."
                     ,".rand(10,100)*$type[2]."
                     ,".$map->getId()."
-                    ,".$type[2].")";
+                    ,".$type[2]."
+                    ,".$vie."
+                    )";
             $this->_bdd->beginTransaction();
             $Result = $this->_bdd->query($req);
             $lastID = $this->_bdd->lastInsertId();
