@@ -62,7 +62,7 @@ class map{
 
             background-size: cover;
             background-repeat: no-repeat;
-            background-image: linear-gradient(rgba(122, 122, 122, 0.5), rgba(255, 255, 255, 1)), url(<?php echo $this->_imageLien?>);
+            background-image: linear-gradient(rgba(122, 122, 122, 0.1), rgba(255, 255, 255, 1)), url(<?php echo $this->_imageLien?>);
             
         }
         </style>
