@@ -19,7 +19,7 @@ session_start();
     include "fonction.php"; 
 
 
-    $access = $Joueur1->deconnectToi();
+    
     if($access){
         
         echo "BIENVENUE sur MON SITE ".$Joueur1->getPrenom();
