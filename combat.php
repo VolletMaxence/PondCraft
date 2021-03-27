@@ -20,13 +20,19 @@ session_start();
     $access = $Joueur1->deconnectToi();
     if($access){
         
+
+        $personnage = $Joueur1->getPersonnage();
+        $map = $personnage->getMap();
+
         echo "BIENVENUE " .$Joueur1->getPrenom();
-        echo "TU COMBAT AVEC ".$Joueur1->getNomPersonnage();
-        echo "<p>Ton combatant est sur la position : ".$Joueur1->getPersonnage()->getMap()->getNom().'</p>';
+        echo "TU AS CHOISIE COMBATRE AVEC ".$Joueur1->getNomPersonnage(). " il a une fortune de ".$personnage->getValeur()." (NFT)";
+        echo "<p>Ton combatant est sur la position : ".$map->getNom().'</p>';
+        echo "<p><h4>Tu peux maintenant ramasser des conneries par terre</h4></p>";
+        echo "<p><h4>Si tu en trouve des parfaitements identiques elle prennent de la valeur :D</h4></p>";
 
-        echo '<p><a href="index.php" >retour menu</a></p>';
+        echo '<p><a href="index.php" >Changer de personnage</a></p>';
 
-        $Joueur1->getPersonnage()->getMap()->getMapAdjacenteLienHTML();
+        $map->getMapAdjacenteLienHTML();
 
     }else{
         echo $errorMessage;

@@ -8,8 +8,11 @@ class map{
     private $_x;
     private $_y;
 
+    private $idUserDecouverte;
     Private $listItems=array();
     Private $listPersonnages=array();
+    
+    Private $_bdd;
 
     //la position initial est 0
     //les autres sont des hash
@@ -37,7 +40,9 @@ class map{
                           $tab["mapEst"],
                           $tab["mapOuest"],
                           $tab["x"],
-                          $tab["y"]);
+                          $tab["y"],
+                          $tab["idUserDecouverte"]
+                        );
         }
         
     }
@@ -46,13 +51,13 @@ class map{
         $this->_bdd = $bdd;
     }
 
-    public function setMap($id,$nom,$position,$mapNord,$mapSud,$mapEst,$mapOuest,$x,$y){
+    public function setMap($id,$nom,$position,$mapNord,$mapSud,$mapEst,$mapOuest,$x,$y,$idUserDecouverte){
         $this->_id = $id;
         $this->_nom = $nom;
         $this->_position = $position;
         $this->_x = $x;
         $this->_y = $y;
-        
+        $this->idUserDecouverte = $idUserDecouverte;
         //je place les id pour ne pas que l'objet racupère en récurciv toute les maps inclu dans elle meme
         (is_null($mapNord))?$this->mapNord = null:$this->mapNord = $mapNord;
         (is_null($mapSud))?$this->mapSud = null:$this->mapSud = $mapSud;
@@ -145,6 +150,11 @@ class map{
         return $lists;
     }
 
+    public function getPersonnageDecouvreur(){
+        $perso = new User($this->_bdd);
+        $perso->setUserById($this->idUserDecouverte);
+        return $perso;
+    }
 
     public function setMapNord($NewMap){
         $this->mapNord = $NewMap->getId();
@@ -210,14 +220,7 @@ class map{
         $mapEst = 'NULL';
 
         //IMPORTANT IL Faut vérifier que la zone qu'on découvre n'existe pas déjà par un autre chemin 
-        //on va donc parcourir tous les autres chemin existant pour voir si on arrive au meme endroit.
-        //ca va donc etre un chemin recurcif.
-        // A= -1pts quand on va a l'est +1 quand on va a ouest
-        // B= 1pts quand tu vas au nord -1 point quand tu vas au sud.
-        // si on trouve A = 1 quand on va au nord et B=0 alors on a déjà une map au nord
-        // si on trouve A = -1 quand on va au sud et B=0 alors on a déjà une map au sud
-        // si on trouve B = -1 quand on va  a l'ouest et A=0 alors on a déjà une map au Ouest
-        // si on trouve B = 1 quand on va  a l'est et A=0 alors on a déjà une map a l'est
+  
         $newx = $map->_x;
         $newy = $map->_y;
 
@@ -264,9 +267,7 @@ class map{
 
         $mapExistante = $map->trouveMapAdjacente($map,$cardinalite);
         if(is_object($mapExistante)){
-            echo "<p>Ajout d'un raccourcie grace à toi entre la map N°".$map->getPosition()." et ".$mapExistante->getPosition()."</p>";
-            
-            //TODO A REVOIR
+        
             switch ($cardinalite) {
                 case "nord":
                     $req="UPDATE `map` SET `mapSud`='".$mapExistante->getId()."' WHERE `id` = '".$map->getId()."'";
@@ -306,8 +307,6 @@ class map{
         }
 
         
-        
-
         $position = $this->generatePosition();
         $nom = $this->generateNom();
   
@@ -315,9 +314,9 @@ class map{
         //insertion en base
         //la position doit etre unique
         
-        $req="INSERT INTO `map`( `nom`, `position`, `mapNord`, `mapSud`, `mapEst`, `mapOuest`, `x`, `y`) 
+        $req="INSERT INTO `map`( `nom`, `position`, `mapNord`, `mapSud`, `mapEst`, `mapOuest`, `x`, `y`,`idUserDecouverte`) 
                 VALUES 
-              ('".$nom."','".$position."',".$mapNord.",".$mapSud.",".$mapEst.",".$mapOuest.",".$newx.",".$newy.")";
+              ('".$nom."','".$position."',".$mapNord.",".$mapSud.",".$mapEst.",".$mapOuest.",".$newx.",".$newy.",".$idUserDecouverte.")";
         
         $Result = $this->_bdd->query($req);
 
@@ -379,9 +378,19 @@ class map{
             }else if ($position>=0) {
                 //récupération de la map est atttribution au combatant
                 $this->setMapByPosition($position);
-                echo "<p>tu es ici : ". $this->getNom()." </p>";
+                echo "<p>tu es ici => ". $this->getNom()." </p>";
+                echo "<p>un endroit charmant découvert par ".$this->getPersonnageDecouvreur()->getPrenom()." et ses Personnages</p>";
                 $Joueur1->getPersonnage()->ChangeMap($this);
                 
+                 //chargement des Items
+                if(rand(0,2)>1){
+                    $itemEnplus = new Item($this->_bdd);
+                    $nbItem = rand(0,2);
+                    
+                    for($i=0;$i<$nbItem;$i++){
+                        $this->addItem($itemEnplus->createItemAleatoire()); 
+                    }
+                }
 
                 
             }else{
@@ -657,7 +666,6 @@ class map{
         if($tab = $Result->fetch()){ 
             $newmap = new Map($this->_bdd);
             $newmap->setMapByID($tab['id']);
-            echo "Tu as trouvé un raccourcie pour venir ici";
             return $newmap;
         }
        

@@ -25,32 +25,33 @@ session_start();
             echo "<p><h3>Tu est en train de te ballader avec ".$Joueur1->getNomPersonnage()."</h3></p>";
             
             $map = $Joueur1->getPersonnage()->getMap();
-            $map = $map->loadMap($_GET["position"],$_GET["cardinalite"],$Joueur1);
 
+            if(isset($_GET["position"])){
+                $map = $map->loadMap($_GET["position"],$_GET["cardinalite"],$Joueur1);
+            }else{
+                $map = $map->loadMap($map->getPosition(),'nord',$Joueur1);
+            }
+           
             //affichage des autres joueurs sur la carte
 
             $listPersos = $map->getAllPersonnages();
             if(count($listPersos)>0){
-                echo "<p>Visiblement tu n'est pas seul ici il y a aussi :".'<ul id="Sac" class="Item">';
+                echo "<p>Visiblement tu n'est pas seul ici il y a aussi :".'<ul id="Persos" class="Item">';
                 foreach ( $listPersos as  $Perso) {
                     if($Perso->getId()!=$Joueur1->getPersonnage()->getId()){
                         ?>
-                        <li id="Perso<?php echo $Perso->getId()?>"><a onclick="AttaquerPerso(<?php echo $Perso->getId()?>,'<?php echo $Perso->getNom() ?>')"><?php echo $Perso->getNom() ?></li>
+                        <li id="Perso<?php echo $Perso->getId()?>">
+                        <a onclick="AttaquerPerso(<?php echo $Perso->getId()?>,'<?php echo $Perso->getNom() ?>')">
+                            <?php echo $Perso->getNom() ?>
+                            ( <?php echo $Perso->getValeur() ?> NFT)
+                        </li>
                         <?php 
                     }
                 }
                 echo '</ul></p>';
             }
 
-            //chargement des Items
-            if(rand(0,1)>1){
-                $itemEnplus = new Item($mabase);
-                $nbItem = rand(0,2);
-                
-                for($i=0;$i<$nbItem;$i++){
-                    $map->addItem($itemEnplus->createItemAleatoire()); 
-                }
-            }
+           
 
             //AFFICHAGE DES ITEMS DE LA MAP
             $listItems = $map->getItems();
@@ -70,16 +71,15 @@ session_start();
             //AFFICHAGE DES ITEMS DU SAC
             echo "<p>Voici le contenu de la bedasse de ".$Joueur1->getNomPersonnage()." </p>";
             $listItems = $Joueur1->getPersonnage()->getItems();
+            echo '<p><ul id="Sac" class="Item">';
             if(count($listItems)>0){
-                echo '<p><ul id="Sac" class="Item">';
                 foreach ( $listItems as  $Item) {
                     ?>
                     <li id="itemSac<?php echo $Item->getId()?>"><a onclick="DetruireItem(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
                     <?php 
                 }
-                echo '</ul></p>';
             }
-
+            echo '</ul></p>';
             echo '<p><a href="index.php" >retour menu choix personnage </a></p>';
             
 

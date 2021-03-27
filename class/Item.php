@@ -40,6 +40,9 @@ class Item{
     public function getId(){
         return $this->_id;
     }
+    public function getValeur(){
+        return $this->_valeur;
+    }
 
 
     

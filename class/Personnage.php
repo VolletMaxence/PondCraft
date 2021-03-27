@@ -34,6 +34,15 @@ class Personnage{
     public function getNom(){
         return $this->_nom;
     }
+
+    //retourne un entier de toutes ses valeurs
+    public function getValeur(){
+        $valeur = 0;
+        foreach ($this->getItems() as $value) {
+            $valeur+=$value->getValeur();
+        }
+        return  $valeur;
+    }
     
     public function getId(){
         return $this->_id;
