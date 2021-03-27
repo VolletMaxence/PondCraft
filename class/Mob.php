@@ -81,6 +81,9 @@ class Mob{
 
     //retourne toute la mécanique d'affichage d'un mob
     public function renderHTML(){
+        if ($this->_vieMax<0 || $this->_vieMax=="0" ){
+            $this->_vieMax=10;
+        }
         $pourcentage = round(100*$this->_vie/$this->_vieMax);
         ?>
         <div class="mob">

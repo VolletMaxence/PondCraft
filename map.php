@@ -88,6 +88,7 @@ session_start();
             }
             
             $map->getMapAdjacenteLienHTML();
+            $map->getImageCssBack();
 
 
             //AFFICHAGE DES ITEMS DU SAC

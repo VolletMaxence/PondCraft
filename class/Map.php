@@ -3,6 +3,7 @@ class map{
 
     private $_id;
     private $_nom;
+    private $_imageLien;
 
     //coordonne de la map
     private $_x;
@@ -42,7 +43,9 @@ class map{
                           $tab["mapOuest"],
                           $tab["x"],
                           $tab["y"],
-                          $tab["idUserDecouverte"]
+                          $tab["idUserDecouverte"],
+                          $tab["lienImage"]
+
                         );
         }
         
@@ -52,12 +55,27 @@ class map{
         $this->_bdd = $bdd;
     }
 
-    public function setMap($id,$nom,$position,$mapNord,$mapSud,$mapEst,$mapOuest,$x,$y,$idUserDecouverte){
+    public function getImageCssBack(){
+        ?>
+        <style type="text/css">
+        body{
+
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-image: linear-gradient(rgba(122, 122, 122, 0.5), rgba(255, 255, 255, 1)), url(<?php echo $this->_imageLien?>);
+            
+        }
+        </style>
+        <?php
+    }
+
+    public function setMap($id,$nom,$position,$mapNord,$mapSud,$mapEst,$mapOuest,$x,$y,$idUserDecouverte,$image){
         $this->_id = $id;
         $this->_nom = $nom;
         $this->_position = $position;
         $this->_x = $x;
         $this->_y = $y;
+        $this->_imageLien = $image;
         $this->idUserDecouverte = $idUserDecouverte;
         //je place les id pour ne pas que l'objet racupère en récurciv toute les maps inclu dans elle meme
         (is_null($mapNord))?$this->mapNord = null:$this->mapNord = $mapNord;
@@ -337,10 +355,11 @@ class map{
 
         //insertion en base
         //la position doit etre unique
+        $imgLink = $this->getAleatoireImage($nom);
         
-        $req="INSERT INTO `map`( `nom`, `position`, `mapNord`, `mapSud`, `mapEst`, `mapOuest`, `x`, `y`,`idUserDecouverte`) 
+        $req="INSERT INTO `map`( `nom`, `position`, `mapNord`, `mapSud`, `mapEst`, `mapOuest`, `x`, `y`,`idUserDecouverte`,`lienImage`) 
                 VALUES 
-              ('".$nom."','".$position."',".$mapNord.",".$mapSud.",".$mapEst.",".$mapOuest.",".$newx.",".$newy.",".$idUserDecouverte.")";
+              ('".$nom."','".$position."',".$mapNord.",".$mapSud.",".$mapEst.",".$mapOuest.",".$newx.",".$newy.",".$idUserDecouverte.",'".$imgLink."')";
         
         $Result = $this->_bdd->query($req);
 
@@ -713,6 +732,19 @@ class map{
 
         
         return null;
+    }
+
+    public function getAleatoireImage($typeName){
+        $typeName2 = str_replace(' ',',',$typeName);
+        $url = "https://source.unsplash.com/random/?".$typeName2;
+        $ch = curl_init();  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+        curl_setopt($ch, CURLOPT_URL, $url); 
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $result = curl_exec($ch); 
+        $result = stristr($result, 'https://',false);
+        $result = stristr($result, '"',true);
+        return  $result;  
     }
 
 }
