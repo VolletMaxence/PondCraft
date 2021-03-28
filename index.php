@@ -35,12 +35,17 @@ session_start();
         if(!$PersoChoisie->getId()==0){
             $Joueur1->setPersonnage($PersoChoisie);
         }
-        
+        ?>
+        <div class="Action">
+        <?php
         if(!empty($PersoChoisie->getNom())){
-            echo '<a href="combat.php">vient combatre avec'.$PersoChoisie->getNom().'</a>';
+            echo '<a href="combat.php">vient combatre avec '.$PersoChoisie->getNom().'</a>';
         }else{
-            echo '<a href="combat.php">vient combatre avec'.$Joueur1->getNomPersonnage().'</a>';
+            echo '<a href="combat.php">vient combatre avec '.$Joueur1->getNomPersonnage().'</a>';
         }
+        ?>
+        </div>
+        <?php
         
     }else{
         echo $errorMessage;

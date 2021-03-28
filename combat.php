@@ -32,7 +32,7 @@ session_start();
 
         echo '<p><a href="index.php" >Changer de personnage</a></p>';
 
-        $map->getMapAdjacenteLienHTML();
+        $map->getMapAdjacenteLienHTML('nord');
 
     }else{
         echo $errorMessage;

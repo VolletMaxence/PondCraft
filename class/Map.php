@@ -486,7 +486,6 @@ class map{
     }
     
     
-
     //retourn un string 
     //hash aléatoire pour une nouvelle position
     public function generatePosition(){
@@ -504,7 +503,7 @@ class map{
     
 
     //retourne les liens HTML des 4 map adjacente
-    public function getMapAdjacenteLienHTML(){
+    public function getMapAdjacenteLienHTML($cardinalite){
         ?>
         <div class="MapAdjacente">
         <?php 
@@ -513,51 +512,101 @@ class map{
             $Msud = $this->getMapSud();
             $Mest = $this->getMapEst();
             $Mouest = $this->getMapOuest();
+
+            $affichNord = false;
+            $affichSud = false;
+            $affichEst= false;
+            $affichOuest = false;
+
+
+
+            switch ($cardinalite) {
+                case 'nord':
+                    $affichNord = true;
+                    break;
+                case 'sud':
+                    $affichSud = true;
+                    break;
+                case 'ouest':
+                    $affichOuest= true;
+                    break;
+                case 'est':
+                    $affichEst= true;
+                    break;
+                default:
+                    echo '<div class="teleportation">Tu est teleporte, tu ne peux pas te déplacer</div>';
+                    break;
+            }
+
+            if (count($this->listMobs)==0){
+                $affichNord = true;
+                $affichSud = true;
+                $affichEst= true;
+                $affichOuest = true;
+            }
+
             echo '<div class="cardinalite">';
-            echo '<div class="nord">';
-            if(!is_null($Mnord)){
-                ?>
-                Nord : <div class="MapAdjacenteNord"><a href="map.php?position=<?php echo $Mnord->getPosition();?>&cardinalite=sud"><?php echo $Mnord->getNom()?></a></div>
-                <?php
-            }else{
-                ?>
-                Nord : <div class="MapAdjacenteNord"><a href="map.php?position=Generate&cardinalite=sud">Decouvre cette Région Inconnue</a></div>
-                <?php
+            if($affichSud){
+
+                echo '<div class="sud">';
+                if(!is_null($Msud)){
+                    ?>
+                    Sud : <div class="MapAdjacenteSud"><a href="map.php?position=<?php echo $Msud->getPosition();?>&cardinalite=nord"><?php echo $Msud->getNom()?></a></div>
+                    <?php
+                }else{
+                    ?>
+                    Sud : <div class="MapAdjacenteSud"><a href="map.php?position=Generate&cardinalite=nord">Decouvre cette Région Inconnue</a></div>
+                    <?php
+                }
+                echo '</div>';
+            } 
+            //si il y a un mob la region est bloqué
+
+            if($affichNord){
+                echo '<div class="nord">';
+                if(!is_null($Mnord)){
+                    ?>
+                    Nord : <div class="MapAdjacenteNord"><a href="map.php?position=<?php echo $Mnord->getPosition();?>&cardinalite=sud"><?php echo $Mnord->getNom()?></a></div>
+                    <?php
+                }else{
+                    ?>
+                    Nord : <div class="MapAdjacenteNord"><a href="map.php?position=Generate&cardinalite=sud">Decouvre cette Région Inconnue</a></div>
+                    <?php
+                }
+                echo '</div>';
             }
+            
+            
+            if($affichEst){
+                echo '<div class="est">';
+                if(!is_null($Mest)){
+                    ?>
+                    Est : <div class="MapAdjacenteEst"><a href="map.php?position=<?php echo $Mest->getPosition()?>&cardinalite=ouest"><?php echo $Mest->getNom()?></a></div>
+                    <?php
+                }else{
+                    ?>
+                    Est : <div class="MapAdjacenteEst"><a href="map.php?position=Generate&cardinalite=ouest">Decouvre cette Région Inconnue</a></div>
+                    <?php
+                }
+                echo '</div>';
+            }
+           
+            if($affichOuest){
+                echo '<div class="ouest">';
+                if(!is_null($Mouest)){
+                    ?>
+                    Ouest : <div class="MapAdjacenteOuest"><a href="map.php?position=<?php echo $Mouest->getPosition()?>&cardinalite=est"><?php echo $Mouest->getNom()?></a></div>
+                    <?php
+                }else{
+                    ?>
+                    Ouest : <div class="MapAdjacenteOuest"><a href="map.php?position=Generate&cardinalite=est">Decouvre cette Région Inconnue</a></div>
+                    <?php
+                }
+                echo '</div>';
+            }
+            
             echo '</div>';
-            echo '<div class="est">';
-            if(!is_null($Mest)){
-                ?>
-                Est : <div class="MapAdjacenteEst"><a href="map.php?position=<?php echo $Mest->getPosition()?>&cardinalite=ouest"><?php echo $Mest->getNom()?></a></div>
-                <?php
-            }else{
-                ?>
-                Est : <div class="MapAdjacenteEst"><a href="map.php?position=Generate&cardinalite=ouest">Decouvre cette Région Inconnue</a></div>
-                <?php
-            }
-            echo '</div>';
-            echo '<div class="ouest">';
-            if(!is_null($Mouest)){
-                ?>
-                Ouest : <div class="MapAdjacenteOuest"><a href="map.php?position=<?php echo $Mouest->getPosition()?>&cardinalite=est"><?php echo $Mouest->getNom()?></a></div>
-                <?php
-            }else{
-                ?>
-                Ouest : <div class="MapAdjacenteOuest"><a href="map.php?position=Generate&cardinalite=est">Decouvre cette Région Inconnue</a></div>
-                <?php
-            }
-            echo '</div>';
-            echo '<div class="sud">';
-            if(!is_null($Msud)){
-                ?>
-                Sud : <div class="MapAdjacenteSud"><a href="map.php?position=<?php echo $Msud->getPosition();?>&cardinalite=nord"><?php echo $Msud->getNom()?></a></div>
-                <?php
-            }else{
-                ?>
-                Sud : <div class="MapAdjacenteSud"><a href="map.php?position=Generate&cardinalite=nord">Decouvre cette Région Inconnue</a></div>
-                <?php
-            }
-            echo '</div></div>';
+           
         
         ?>
        

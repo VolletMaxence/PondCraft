@@ -22,20 +22,33 @@ session_start();
         //gestion accès map:
              
             $Personnage = $Joueur1->getPersonnage();
-           
 
-            echo "<p><div>Tu est en train de te ballader avec ";
-            $Personnage->getChoixPersonnage();
-            $Joueur1->setPersonnage($Personnage);
-            echo "</p></div>";
-            $Personnage->getBardeVie();
-            echo "<div><p><h4>il vaut : ".$Personnage->getValeur()." NFT</h4></p></div>";
+            echo "<p><div>";
+            if(isset($_GET["position"])&& $_GET["position"]==='Generate'){
+                echo "Tu pars à l'aventure avec ";
+                echo $Personnage->getNom();
+            }else{
+                echo "Tu est avec ";
+                $Personnage->getChoixPersonnage();
+                echo "tu peux appeler un autre Personnage ";
+                $Joueur1->setPersonnage($Personnage);
+            }
             
-      
+            
+            echo "</p></div>";
+
+            $Personnage->renderHTML();
+            
+
             $map = $Personnage->getMap();
             
+            $cardinalite = '';
+            if(isset($_GET["cardinalite"])){
+                $cardinalite = $_GET["cardinalite"];
+            }
+
             if(isset($_GET["position"]) && $Personnage->getVie()>0){
-                $map = $map->loadMap($_GET["position"],$_GET["cardinalite"],$Joueur1);
+                $map = $map->loadMap($_GET["position"],$cardinalite,$Joueur1);
             }else{
                 if($Personnage->getVie()==0){
                     $Personnage->resurection();
@@ -45,13 +58,15 @@ session_start();
             }
            
            
+           
             //affichage des autres joueurs sur la carte
 
             $listPersos = $map->getAllPersonnages();
             if(count($listPersos)>1){
                 echo "<p>Visiblement tu n'est pas seul ici il y a aussi :".'<ul id="ulPersos" class="Persos">';
+                $PersoJoeuur = $Joueur1->getPersonnage();
                 foreach ( $listPersos as  $Perso) {
-                    if($Perso->getId()!=$Joueur1->getPersonnage()->getId()){
+                    if($Perso->getId()!=$PersoJoeuur->getId()){
                         ?>
                         <li id="Perso<?php echo $Perso->getId()?>">
                         <a onclick="AttaquerPerso(<?php echo $Perso->getId()?>,0)">
@@ -66,7 +81,7 @@ session_start();
             //affiche les mob;
             $listMob = $map->getAllMobs();
             if(count($listMob)>0){
-                echo "<p>Attentions il y a :".'<ul id="ulMob" class="Persos">';
+                echo "<p>Tu es bloqué car il y a des mobs".'<ul id="ulMob" class="Mob">';
                 foreach ( $listMob as  $Mob) {
                     
                         ?>
@@ -98,7 +113,7 @@ session_start();
                 echo '</ul></p>';
             }
             
-            $map->getMapAdjacenteLienHTML();
+            $map->getMapAdjacenteLienHTML($cardinalite);
             $map->getImageCssBack();
 
 
@@ -116,7 +131,7 @@ session_start();
 
             </ul></p>
             <div class="basdepage">
-            <p><a  href="index.php" >retour menu choix personnage </a></p>
+            <p><a  href="index.php" >retour à l'origine de tout </a></p>
         </div>
             <?php
     }else{

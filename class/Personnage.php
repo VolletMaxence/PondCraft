@@ -7,6 +7,7 @@ class Personnage{
     private $_vie;
     private $_vieMax;
     private $_degat;
+    private $_imageLien;
 
     private $map;
 
@@ -57,12 +58,13 @@ class Personnage{
         return $this->_vie;
     }
 
-    public function setPersonnage($id,$nom,$vie,$degat,$vieMax){
+    public function setPersonnage($id,$nom,$vie,$degat,$vieMax,$image){
         $this->_id = $id;
         $this->_nom = $nom;
         $this->_vie = $vie;
         $this->_vieMax = $vieMax;
         $this->_degat = $degat;
+        $this->_imageLien = $image;
 
          //select les items déjà présent
          $req  = "SELECT idItem FROM `PersoSacItems` WHERE idPersonnage='".$id."'";
@@ -108,6 +110,7 @@ class Personnage{
             <div>
             <?php echo $this->_nom ?>( <?php echo $this->getValeur() ?> NFT)
             </div>
+            <div><img class="Personnage" src="<?php echo $this->_imageLien;?>"></div>
             <div class="attaque" id="attaquePersoValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
             <div class="barreDeVie" id="viePerso<?php echo $this->_id ;?>">
                 
@@ -174,7 +177,7 @@ class Personnage{
         $Result = $this->_bdd->query("SELECT * FROM `Personnage` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
 
-            $this->setPersonnage($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"]);
+            $this->setPersonnage($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"]);
             
             //recherche de sa position
             $map = new map($this->_bdd);
@@ -188,9 +191,7 @@ class Personnage{
         $Result = $this->_bdd->query("SELECT * FROM `Personnage` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
 
-            $this->setPersonnage($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"]);
-            
-           
+            $this->setPersonnage($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"]);
             
         }
     }
@@ -209,16 +210,26 @@ class Personnage{
     public function CreatNewPersonnage(){
         
         ?>
+        <div class = "formCreatio">
+        <?php $imageUrl = $this->generateImage(); ?>
+            
+        <form action="" method="post" onclick="this.submit()">
+            <img src="<?php echo $imageUrl;?>" width="200px" >
+        </form>
+           
         <form action="" method="post">
             <div>Creer un Perso ou choisie en un</div>
            <input type="text" name="NomPersonnage" required>
            <input type="submit" value="Creer" name="createPerso">
+           <input type="hidden" name="image" value="<?php echo $imageUrl;?>">
         </form>
+        </div>
         <?php
         if (isset($_POST["createPerso"])){
             $newperso = new Personnage($this->_bdd);
             $this->_nom=htmlentities($_POST['NomPersonnage'], ENT_QUOTES);
-            $req="INSERT INTO `Personnage`(`nom`, `vie`, `degat`, `idMap`,`vieMax`) VALUES ('".$this->_nom."',10,10,0,10)";
+            $this->_imageLien=$_POST['image'];
+            $req="INSERT INTO `Personnage`(`nom`, `vie`, `degat`, `idMap`,`vieMax`,`lienImage`) VALUES ('".$this->_nom."',10,10,0,10,'".$this->_imageLien."')";
             $this->_bdd->beginTransaction();
             $Result = $this->_bdd->query($req);
             $lastID = $this->_bdd->lastInsertId();
@@ -267,6 +278,48 @@ class Personnage{
         return $this;
     }
 
+    public function generateImage(){
+
+        switch (rand(0,3)) {
+            case 0:
+                $topic='league+of+legend+fan+art';
+                break;
+            case 1:
+                $topic='manga+fan+art';
+                break;
+            case 2:
+                $topic='marvel+fan+art';
+                break;
+            case 3:
+                $topic='comics+fan+art';
+                break;
+            default:
+                $topic='fantasy+fan+art';
+                break;
+        }
+
+        $ofs=mt_rand(0, 100);
+        $geturl='http://www.google.ca/images?q=' . $topic . '&start=' . $ofs . '&gbv=1';
+        $data=file_get_contents($geturl);
+        
+
+        //partialString1 is bigger link.. in it will be a scr for the beginning of the url
+        $f1='<div class="lIMUZd"><div><table class="TxbwNb"><tr><td><a href="/url?q=';
+        $pos1=strpos($data, $f1)+strlen($f1);
+        $partialString1 = substr($data, $pos1);
+        
+        //partialString 2 starts with the URL
+        $f2='src="';
+        $pos2=strpos($partialString1, $f2)+strlen($f2);
+        $partialString2 = substr($partialString1, $pos2, 400);
+        
+        //PartialString3 ends the url when it sees the "&amp;"
+        $f3='&amp;';
+        $urlLength=strpos($partialString2, $f3);
+        $partialString3 = substr($partialString2, 0,  $urlLength);
+        
+        return $partialString3;
+    }
 }
 
 ?>
