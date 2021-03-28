@@ -105,15 +105,15 @@ class Mob{
             $newMob = new Mob($this->_bdd);
             $type = $this->getTypeAleatoire();
             $lvl = $map->getlvl();
-            $vie = rand(10,100)*$type[2];
+            $vie = rand(50,100)*$type[2]*$lvl*3;
             $req="INSERT INTO `Mob`(`nom`,`type`, `vie`, `degat`, `idMap` , `coefXp` ,  `vieMax`) 
             VALUES ('".$this->generateNom($type[0])."',
                     ".$type[1]."
-                    ,".$vie*$lvl."
+                    ,".$vie."
                     ,".rand(10,100)*$type[2]*$lvl."
                     ,".$map->getId()."
                     ,".$type[2]."
-                    ,".$vie*$lvl."
+                    ,".$vie."
                     )";
             $this->_bdd->beginTransaction();
             $Result = $this->_bdd->query($req);
