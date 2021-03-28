@@ -25,16 +25,16 @@ class Personnage{
     public function getBardeVie(){
         $pourcentage = round(100*$this->_vie/$this->_vieMax);
         ?>
-        <div>
+        <div class="PersoPrincipalBarreVie">
             
             <div class="attaque" id="attaquePersoValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
             <div class="barreDeVie" id="viePerso<?php echo $this->_id ;?>">
                 
                 <div class="vie" id="viePersoValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">
-                    <?php echo $this->_vie ;?>/<?php echo $this->_vieMax ;?>
+                ♥️<?php echo $this->_vie ;?>
                 </div>
             </div>
-        <div>
+        </div>
         <?php
     }
 
@@ -79,11 +79,13 @@ class Personnage{
     //met a jour la vie de depart et replace le joueur
     public function resurection(){
         $vieMax = intdiv ($this->_vieMax,2);
+        $attaque = intdiv ($this->_vieMax,2);
         if($vieMax<10){$vieMax=10;}
-        $req  = "UPDATE `Personnage` SET `vieMax`='".$vieMax."',`vie`='".$vieMax."' WHERE `id` = '".$this->_id ."'";
+        $req  = "UPDATE `Personnage` SET `degat`='".$attaque."',`vieMax`='".$vieMax."',`vie`='".$vieMax."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
         $this->_vie=$vieMax;
         $this->_vieMax=$vieMax;
+        $this->_degat=$attaque;
         $maporigine = new Map($this->_bdd);
         $maporigine->setMapByID(0);
         $this->changeMap($maporigine);
@@ -109,7 +111,7 @@ class Personnage{
             <div class="attaque" id="attaquePersoValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
             <div class="barreDeVie" id="viePerso<?php echo $this->_id ;?>">
                 
-                 <div class="vie" id="viePersoValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;"><?php echo $this->_vie ;?></div>
+                 <div class="vie" id="viePersoValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
             </div>
         </div>
 
@@ -134,6 +136,25 @@ class Personnage{
         return $lists;
     }
 
+    public function lvlupAttaque($attaque){
+        $this->_degat += $attaque;
+        $sql = "UPDATE `Personnage` SET `degat`='".$this->_degat."' WHERE `id`='".$this->_id."'";
+        $this->_bdd->query($sql);
+    }
+    public function lvlupVie($viemore){
+        $this->_vie += $viemore;
+        $sql = "UPDATE `Personnage` SET `vie`='".$this->_vie."' WHERE `id`='".$this->_id."'";
+        $this->_bdd->query($sql);
+
+    }
+    public function lvlupVieMax($viemore){
+        $this->_vieMax += $viemore;
+        $sql = "UPDATE `Personnage` SET `vieMax`='".$this->_vieMax."' WHERE `id`='".$this->_id."'";
+        $this->_bdd->query($sql);
+
+    }
+
+
     //permet de changer la position du joueur sur la carte
     public function changeMap($NewMap){
         $this->map = $NewMap;
@@ -141,6 +162,12 @@ class Personnage{
         $sql = "UPDATE `Personnage` SET `idMap`='".$NewMap->getId()."' WHERE `id`='".$this->_id."'";
         $this->_bdd->query($sql);
         
+    }
+
+    public function removeItemByID($id){
+        unset($this->sacItems[array_search($id, $this->sacItems)]);
+        $req="DELETE FROM `PersoSacItems` WHERE idPersonnage='".$this->getId()."' AND idItem='".$id."'";
+        $this->_bdd->query($req);
     }
 
     public function setPersonnageById($id){

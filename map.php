@@ -13,7 +13,7 @@ session_start();
     <title>Combat</title>
 </head>
 <body>
-    
+    <div class="centragePrincipal">
     <?php
     include "fonction.php"; 
     $access = $Joueur1->deconnectToi();
@@ -22,9 +22,12 @@ session_start();
         //gestion accès map:
              
             $Personnage = $Joueur1->getPersonnage();
-            echo "<p><h1>BIENVENUE " .$Joueur1->getPrenom()."</h1></p>";
-            echo "<p><h3>Tu est en train de te ballader avec ". $Personnage->getNom()."</h3></p>";
-            echo "<p><h3>Ton perso à une Force de ". $Personnage->getAttaque()." et il vaut : ".$Personnage->getValeur()." NFT</h3></p>";
+            echo "<div><h1>BIENVENUE " .$Joueur1->getPrenom()."</h1>";
+           
+
+            echo "<p><h3>Tu est en train de te ballader avec ". $Personnage->getNom()."</h3></p></div>";
+            $Personnage->getBardeVie();
+            echo "<div><p><h4>il vaut : ".$Personnage->getValeur()." NFT</h4></p></div>";
             
             $map = $Personnage->getMap();
             
@@ -38,12 +41,12 @@ session_start();
                 $map = $map->loadMap($map->getPosition(),'nord',$Joueur1);
             }
            
-            $Personnage->getBardeVie();
+           
             //affichage des autres joueurs sur la carte
 
             $listPersos = $map->getAllPersonnages();
-            if(count($listPersos)>0){
-                echo "<p>Visiblement tu n'est pas seul ici il y a aussi :".'<ul id="Persos" class="Item">';
+            if(count($listPersos)>1){
+                echo "<p>Visiblement tu n'est pas seul ici il y a aussi :".'<ul id="ulPersos" class="Persos">';
                 foreach ( $listPersos as  $Perso) {
                     if($Perso->getId()!=$Joueur1->getPersonnage()->getId()){
                         ?>
@@ -60,13 +63,18 @@ session_start();
             //affiche les mob;
             $listMob = $map->getAllMobs();
             if(count($listMob)>0){
-                echo "<p>Attentions il y a :".'<ul id="Persos" class="Item">';
+                echo "<p>Attentions il y a :".'<ul id="ulMob" class="Persos">';
                 foreach ( $listMob as  $Mob) {
                     
                         ?>
                         <li id="Mob<?php echo $Mob->getId()?>">
                         <a onclick="AttaquerPerso(<?php echo $Mob->getId()?>,1)">
-                            <?php  $Mob->renderHTML();?></a>
+                            <?php  
+                            echo $Mob->generateImage();
+                            $Mob->renderHTML();
+                            ?>
+                            
+                        </a>
                         </li>
                         <?php 
                     
@@ -94,22 +102,25 @@ session_start();
             //AFFICHAGE DES ITEMS DU SAC
             echo "<p>Voici le contenu de la bedasse de ".$Joueur1->getNomPersonnage()." </p>";
             $listItems = $Joueur1->getPersonnage()->getItems();
-            echo '<p><ul id="Sac" class="Item">';
+            echo '<p><ul id="Sac" class="Sac">';
             if(count($listItems)>0){
                 foreach ( $listItems as  $Item) {
                     ?>
-                    <li id="itemSac<?php echo $Item->getId()?>"><a onclick="DetruireItem(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
+                    <li id="itemSac<?php echo $Item->getId()?>"><a onclick="useItem(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
                     <?php 
                 }
-            }
-            echo '</ul></p>';
-            echo '<p><a href="index.php" >retour menu choix personnage </a></p>';
-            
+            }?>
 
+            </ul></p>
+            <div class="basdepage">
+            <p><a  href="index.php" >retour menu choix personnage </a></p>
+        </div>
+            <?php
     }else{
         echo $errorMessage;
     }
     ?>
+    </div><!--fin centragePrincipal"-->
 </body>
 <script>
 function CallApiAddItemInSac(idItem){

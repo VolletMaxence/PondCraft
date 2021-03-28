@@ -94,7 +94,7 @@ class Mob{
             <div class="attaque" id="attaqueMobValeur<?php echo $this->_id ;?>"><?php echo $this->_degat ;?></div>
             <div class="barreDeVie" id="vieMob<?php echo $this->_id ;?>">
                
-                <div class="vie" id="vieMobValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;"><?php echo $this->_vie ;?></div>
+                <div class="vie" id="vieMobValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
             </div>
         </div>
 
@@ -104,15 +104,16 @@ class Mob{
     public function CreateMobAleatoire($map){
             $newMob = new Mob($this->_bdd);
             $type = $this->getTypeAleatoire();
+            $lvl = $map->getlvl();
             $vie = rand(10,100)*$type[2];
             $req="INSERT INTO `Mob`(`nom`,`type`, `vie`, `degat`, `idMap` , `coefXp` ,  `vieMax`) 
             VALUES ('".$this->generateNom($type[0])."',
                     ".$type[1]."
-                    ,".$vie."
-                    ,".rand(10,100)*$type[2]."
+                    ,".$vie*$lvl."
+                    ,".rand(10,100)*$type[2]*$lvl."
                     ,".$map->getId()."
                     ,".$type[2]."
-                    ,".$vie."
+                    ,".$vie*$lvl."
                     )";
             $this->_bdd->beginTransaction();
             $Result = $this->_bdd->query($req);
@@ -263,6 +264,33 @@ class Mob{
         
         return $nom ." ". $Adjectif." ".$Consone;
     }
+
+
+    public function generateImage(){
+        $topic='creature';
+        $ofs=mt_rand(0, 100);
+        $geturl='http://www.google.ca/images?q=' . $topic . '&start=' . $ofs . '&gbv=1';
+        $data=file_get_contents($geturl);
+        
+
+        //partialString1 is bigger link.. in it will be a scr for the beginning of the url
+        $f1='<div class="lIMUZd"><div><table class="TxbwNb"><tr><td><a href="/url?q=';
+        $pos1=strpos($data, $f1)+strlen($f1);
+        $partialString1 = substr($data, $pos1);
+        
+        //partialString 2 starts with the URL
+        $f2='src="';
+        $pos2=strpos($partialString1, $f2)+strlen($f2);
+        $partialString2 = substr($partialString1, $pos2, 400);
+        
+        //PartialString3 ends the url when it sees the "&amp;"
+        $f3='&amp;';
+        $urlLength=strpos($partialString2, $f3);
+        $partialString3 = substr($partialString2, 0,  $urlLength);
+        
+        echo '<img src="'.$partialString3.'" widht="200px">';
+    }
+
 }
 
 ?>

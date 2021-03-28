@@ -27,6 +27,17 @@ class map{
     private $mapEst=null;
     private $mapOuest=null;
 
+
+    //calcule pitagorien pour avoir une distance au point d'origine
+    //la distance determine le niveau
+    public function getlvl(){
+      $adjacent = $this->_x * $this->_x;
+      $opose = $this->_y * $this->_y;
+      $hypotenuse = sqrt ( $adjacent+$opose);
+    
+      return round($hypotenuse);
+    }
+
     public function setMapByID($id){
         
         $req="SELECT * FROM map WHERE id='".$id."' ";
@@ -59,12 +70,13 @@ class map{
 
     public function getImageCssBack(){
         ?>
+        <!-- Map.php -- getImageCssBack-->
         <style type="text/css">
         body{
 
             background-size: cover;
             background-repeat: no-repeat;
-            background-image: linear-gradient(rgba(122, 122, 122, 0.1), rgba(255, 255, 255, 1)), url(<?php echo $this->_imageLien?>);
+            background-image: linear-gradient(rgba(255, 255, 255, 1), rgba(255,255,255, 0.01)), url(<?php echo $this->_imageLien?>);
             
         }
         </style>
@@ -446,8 +458,7 @@ class map{
             }else if ($position>=0) {
                 //récupération de la map est atttribution au combatant
                 $this->setMapByPosition($position);
-                echo "<p>tu es ici => ". $this->getNom()." </p>";
-                echo "<p>un endroit charmant découvert par ".$this->getPersonnageDecouvreur()->getPrenom()." et ses Personnages</p>";
+                echo "<p>tu es ici => <b>". $this->getNom()."</b> découvert par ".$this->getPersonnageDecouvreur()->getPrenom()." et ses Personnages</p>";
                 $Joueur1->getPersonnage()->ChangeMap($this);
                 
                  //chargement des Items
@@ -502,8 +513,8 @@ class map{
             $Msud = $this->getMapSud();
             $Mest = $this->getMapEst();
             $Mouest = $this->getMapOuest();
-            
-
+            echo '<div class="cardinalite">';
+            echo '<div class="nord">';
             if(!is_null($Mnord)){
                 ?>
                 Nord : <div class="MapAdjacenteNord"><a href="map.php?position=<?php echo $Mnord->getPosition();?>&cardinalite=sud"><?php echo $Mnord->getNom()?></a></div>
@@ -513,15 +524,8 @@ class map{
                 Nord : <div class="MapAdjacenteNord"><a href="map.php?position=Generate&cardinalite=sud">Decouvre cette Région Inconnue</a></div>
                 <?php
             }
-            if(!is_null($Msud)){
-                ?>
-                Sud : <div class="MapAdjacenteSud"><a href="map.php?position=<?php echo $Msud->getPosition();?>&cardinalite=nord"><?php echo $Msud->getNom()?></a></div>
-                <?php
-            }else{
-                ?>
-                Sud : <div class="MapAdjacenteSud"><a href="map.php?position=Generate&cardinalite=nord">Decouvre cette Région Inconnue</a></div>
-                <?php
-            }
+            echo '</div>';
+            echo '<div class="est">';
             if(!is_null($Mest)){
                 ?>
                 Est : <div class="MapAdjacenteEst"><a href="map.php?position=<?php echo $Mest->getPosition()?>&cardinalite=ouest"><?php echo $Mest->getNom()?></a></div>
@@ -531,6 +535,8 @@ class map{
                 Est : <div class="MapAdjacenteEst"><a href="map.php?position=Generate&cardinalite=ouest">Decouvre cette Région Inconnue</a></div>
                 <?php
             }
+            echo '</div>';
+            echo '<div class="ouest">';
             if(!is_null($Mouest)){
                 ?>
                 Ouest : <div class="MapAdjacenteOuest"><a href="map.php?position=<?php echo $Mouest->getPosition()?>&cardinalite=est"><?php echo $Mouest->getNom()?></a></div>
@@ -540,6 +546,18 @@ class map{
                 Ouest : <div class="MapAdjacenteOuest"><a href="map.php?position=Generate&cardinalite=est">Decouvre cette Région Inconnue</a></div>
                 <?php
             }
+            echo '</div>';
+            echo '<div class="sud">';
+            if(!is_null($Msud)){
+                ?>
+                Sud : <div class="MapAdjacenteSud"><a href="map.php?position=<?php echo $Msud->getPosition();?>&cardinalite=nord"><?php echo $Msud->getNom()?></a></div>
+                <?php
+            }else{
+                ?>
+                Sud : <div class="MapAdjacenteSud"><a href="map.php?position=Generate&cardinalite=nord">Decouvre cette Région Inconnue</a></div>
+                <?php
+            }
+            echo '</div></div>';
         
         ?>
        
@@ -724,7 +742,7 @@ class map{
 
     public function getAleatoireImage($typeName){
         $typeName2 = str_replace(' ',',',$typeName);
-        $url = "https://source.unsplash.com/random/?".$typeName2;
+        $url = "https://source.unsplash.com/random/1280×720?".$typeName2;
         $ch = curl_init();  
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
         curl_setopt($ch, CURLOPT_URL, $url); 

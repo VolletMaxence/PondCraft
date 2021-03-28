@@ -1,20 +1,89 @@
+.centragePrincipal
+{
+    width:800px;
+    margin:auto;
+}
+.basdepage{
+    
+    height:200px;
+}
+
 .barreDeVie{
     width:100px;
-    height: 20px;
+    height: 26px;
     display:block;
     float:left;
     background-color: darkgray;
-     
+    
 }
+
+ul.Item li{
+    background-color:rgb(207, 207, 207);
+    padding: 5px;
+    border-radius: 10px;
+    margin: 3px;
+    border:1px solid gray;
+    box-shadow:2px 2px 2px gray; 
+    -moz-box-shadow:2px 2px 2px gray;
+    -webkit-box-shadow:2px 2px 2px gray;
+
+}
+
+ul.Sac li{
+    background-color:rgb(116, 68, 14);
+    padding: 5px;
+    border-radius: 10px;
+    margin: 3px;
+    border:1px solid rgb(219, 184, 25);
+    box-shadow:2px 2px 2px rgb(238, 197, 15); 
+    -moz-box-shadow:2px 2px 2px rgb(122, 82, 21);
+    -webkit-box-shadow:2px 2px 2px rgb(59, 43, 12);
+
+}
+ul.Sac li:hover{
+    cursor:  url('baguette.cur'), pointer;
+    background-color:rgb(231, 231, 231);
+}
+
+ul.Item li:hover{
+    cursor:  url('hand-grab.cur'), pointer;
+    background-color:rgb(231, 231, 231);
+}
+
+ul.Persos li{
+    background-color:rgb(129, 129, 129);
+    padding: 5px;
+    border-radius: 10px;
+    margin: 3px;
+    border:1px solid gray;
+    box-shadow:2px 2px 2px gray; 
+    -moz-box-shadow:2px 2px 2px gray;
+    -webkit-box-shadow:2px 2px 2px gray;
+    
+}
+
+ul.Persos li:hover{
+    cursor:  url('epee.cur'), pointer;
+    background-color:rgb(163, 163, 163);
+  }
+
+
 
 .vie{
     float:left;
-    background-color:rgb(34, 190, 34);
+    white-space:nowrap;
+    background:rgb(34, 190, 34);
+    
 }
 .attaque{
     float:left;
     background-color:rgb(55, 0, 255);
     color:rgb(250, 212, 0);
+    background-image:  url('https://findicons.com/files/icons/286/legendora/256/sword.png');
+    background-size: 22px;
+    background-repeat: no-repeat;
+    padding-left:20px;
+    height:26px;
 }
 
 li{
@@ -25,4 +94,59 @@ li{
 ul{ 
     float:left ;    
     width:100%;
+}
+
+html, body {
+	height: 100%;
+	margin: 0; padding: 0;
+}
+body {
+	display : table;
+	width: 100%;
+}
+.sud {
+    position: absolute;
+    bottom:0px;
+    left: 50%;
+
+}
+.nord {
+    position: absolute;
+    top:0px;
+    left: 50%;
+}
+.est{
+    position: absolute;
+    right:0px;
+}
+
+.ouest{
+    position: absolute;
+    left:0px
+}
+
+.cardinalite div{
+    background-color: cadetblue;
+    border-color: rgb(53, 77, 78);
+    border:1px solid rgb(119, 150, 236);
+    box-shadow:2px 2px 2px rgb(83, 95, 235); 
+    -moz-box-shadow:2px 2px 2px rgb(91, 113, 236);
+    -webkit-box-shadow:2px 2px 2px rgb(66, 53, 185);
+}
+
+.classEpee{
+    background-image: url('https://static.wikia.nocookie.net/minecraft_fr_gamepedia/images/b/b1/Épée_en_or.png/revision/latest/scale-to-width-down/150?cb=20180527151432');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bouclier{
+    background-image: url('https://static.wikia.nocookie.net/minecraft_fr_gamepedia/images/b/b1/Épée_en_or.png/revision/latest/scale-to-width-down/150?cb=20180527151432');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+html{
+font:
+    /*62.5%/1.4 -apple-system,BlinkMacSystemFont;*/
 }

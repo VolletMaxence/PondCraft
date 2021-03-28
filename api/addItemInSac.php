@@ -20,7 +20,7 @@ if($access){
         $map=$Perso->getMap();
         //une fois que j'ai mes objet je vérifie que le perso est bien sur la map
         
-        $idmap = $Perso->getMap()->getId();
+        $idmap = $map->getId();
        
            //que l'item est bien dans la map
         foreach ($map->getItems()  as $item) {
