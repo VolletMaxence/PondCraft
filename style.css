@@ -45,9 +45,21 @@ ul.Sac li:hover{
     background-color:rgb(231, 231, 231);
 }
 
-.perso{
+ul .perso{
     float:left;
-    width:140px;
+    width:150px;
+    background-color:rgb(151, 161, 137);
+    padding: 5px;
+   
+    margin: 3px;
+    border:1px solid rgb(219, 184, 25);
+    box-shadow:2px 2px 2px rgb(133, 228, 145); 
+    -moz-box-shadow:2px 2px 2px rgb(33, 122, 21);
+    -webkit-box-shadow:2px 2px 2px rgb(37, 124, 41);
+}
+div.avatar .perso{
+    float:left;
+    width:150px;
     background-color:rgb(110, 184, 13);
     padding: 5px;
    
@@ -88,7 +100,7 @@ ul.Item li:hover{
     background-color:rgb(231, 231, 231);
 }
 
-ul.Persos li{
+ul.AutrePersos li{
     background-color:rgb(129, 129, 129);
     padding: 5px;
     border-radius: 10px;
