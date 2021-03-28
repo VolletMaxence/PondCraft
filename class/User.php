@@ -60,8 +60,13 @@ class User{
 
     //si c'est une inscription on valide l'inscription et on le connect
     if( isset($_POST["sub"])){
-        $req ="INSERT INTO `User`( `login`, `prenom`, `mdp`) VALUES ('".$_POST['login']."','".$_POST['login']."','".$_POST['password']."')";
-        $Result = $this->_bdd->query($req);
+        if(!empty($_POST['prenom'])){
+            $req ="INSERT INTO `User`( `login`, `prenom`, `mdp`) VALUES ('".$_POST['login']."','".$_POST['prenom']."','".$_POST['password']."')";
+            $Result = $this->_bdd->query($req);
+        }else{
+            echo "il faut un prenom à l'inscription";
+        }
+        
     }
 
     
@@ -103,6 +108,12 @@ class User{
                 <label for="password">Enter your pass: </label>
                 <input type="password" name="password" id="password" required>
             </div>
+
+            <div >
+                <label for="password">Prenom si tu t'inscrit: </label>
+                <input type="text" name="text" id="prenom" >
+            </div>
+
             <div >
                 <input type="submit" value="Go!" name="log"><input type="submit" value="inscrit toi!" name="sub">
             </div>
