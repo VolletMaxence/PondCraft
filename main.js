@@ -7,10 +7,10 @@ function attaquer(idPerso,type){
         // code for handling the data you get from the API
         console.log(data);
         if(type==0){
-            UpdateVie("viePersoValeur"+data[0],data[1],data[2],data[3],data[4],"viePersoValeur"+data[5]);
+            UpdateVie("viePersoValeur"+data[0],data[1],data[2],data[3],data[4],"viePersoValeur"+data[5],data[6]);
         }
         if(type==1){
-            UpdateVie("vieMobValeur"+data[0],data[1],data[2],data[3],data[4],"viePersoValeur"+data[5]);
+            UpdateVie("vieMobValeur"+data[0],data[1],data[2],data[3],data[4],"viePersoValeur"+data[5],data[6]);
         }
         
 
@@ -66,7 +66,7 @@ function lvlUp(id,attaque,vie,vieMax,idItem){
    
 }
 
-function UpdateVie(id,vie,vieMax,viPerso,viMaxPerso,id2){
+function UpdateVie(id,vie,vieMax,viPerso,viMaxPerso,id2,message){
     var e1 = document.getElementById(id);
     if(e1!="undefine"){
         let pourcentage = vie/vieMax*100;
@@ -81,8 +81,8 @@ function UpdateVie(id,vie,vieMax,viPerso,viMaxPerso,id2){
         e2.innerHTML = '♥️'+viPerso+'/'+viMaxPerso;
         
     }
-    if(viPerso==0){
-        alert("Ton perso vient de mourrir betement en s'attaquant un bonhomme, un developpeur va le resussite mais avec quel stat ?? haha !  tu peux déjà le retrouver à l'origine de tout" );
+    if(viPerso==0 || message!=''){
+        alert(message);
     }
 
 
