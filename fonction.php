@@ -33,13 +33,12 @@ if(!is_null($mabase)){
         
     }else{
         $access = false;
-        $errorMessage.= "Vous devez vous connectez";
         // Affichage de formulaire si pas deconnexion
         $access = $Joueur1->ConnectToi();
     }
    
 }else{
-    $errorMessage.= "Vous n'avez pas les bases";
+    $errorMessage.= "les site n'a pas accès aux BDD";
 }
 
 

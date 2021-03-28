@@ -12,30 +12,49 @@ session_start();
     <script src="main.js"></script>
     <title>Combat</title>
 </head>
-<body>
+<body class="bodyAccueil">
     
     <?php
     include "fonction.php"; 
 
-   
+    if($access){
+        $access = $Joueur1->deconnectToi();
+    }
     if($access){
         
 
         $personnage = $Joueur1->getPersonnage();
-        if(is_null($personnage)){
-            echo '<p>il faut creer un personnage avant</p>';
-            echo '<p><a  href="index.php" >retour à l\'origine de tout </a></p>';
+        if(is_null($personnage->getId())){
+            echo '<div class="reglement"><p>il faut creer un personnage avant</p>';
+            echo '<p><a  href="index.php" >retour à l\'origine de tout </a></p></div>';
         }else{
+            echo '<div class="reglement"><h1>Bienvenu '.$Joueur1->getPrenom()."</h1>";
+            $personnage->getChoixPersonnage($Joueur1->getId());
             $map = $personnage->getMap();
 
-            echo "<div><h1>BIENVENUE " .$Joueur1->getPrenom()."</h1>";
-            echo "TU AS CHOISIE COMBATRE AVEC ".$Joueur1->getNomPersonnage(). " il a une fortune de ".$personnage->getValeur()." (NFT)";
+           
+            echo "Tu as choisie de combatre avec ".$Joueur1->getNomPersonnage(). " il a une fortune de ".$personnage->getValeur()." (NFT)";
+            echo '<div class="avatar">';
+                $personnage->renderHTML();
+
+                //AFFICHAGE DES ITEMS DU SAC
+                $listItems = $Joueur1->getPersonnage()->getItems();
+                echo '<div class="divSac">Sacoche<ul id="Sac" class="Sac">';
+                if(count($listItems)>0){
+                    foreach ( $listItems as  $Item) {
+                        ?>
+                        <li id="itemSac<?php echo $Item->getId()?>"><a onclick="useItem(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
+                        <?php 
+                    }
+                }
+                echo '</ul></div>';
+                
             echo "<p>Ton combatant est sur la position : ".$map->getNom().'</p>';
             echo "<p><h4>Tu peux maintenant ramasser des conneries par terre</h4></p>";
             echo "<p><h4>Si tu en trouve des parfaitements identiques elle prennent de la valeur :D</h4></p>";
-
-            echo '<p><a href="index.php" >Changer de personnage</a></p>';
-
+            
+            echo '<p><a href="index.php" >Creer un autre personnage</a></p></div>';
+            echo '</div>';
             $map->getMapAdjacenteLienHTML('nord');
         }
 

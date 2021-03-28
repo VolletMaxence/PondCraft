@@ -93,6 +93,7 @@ class User{
     
     if($afficheForm){
     ?>
+    <div class="formlogin">
         <form action="" method="post" >
             <div>
                 <label for="login">Enter your login: </label>
@@ -106,7 +107,7 @@ class User{
                 <input type="submit" value="Go!" name="log"><input type="submit" value="inscrit toi!" name="sub">
             </div>
         </form>
-
+    </div>
     <?php
     }
 

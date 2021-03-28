@@ -12,7 +12,7 @@ session_start();
     <script src="main.js"></script>
     <title>Document</title>
 </head>
-<body>
+<body class="bodyAccueil">
     
     <?php
     //c'est dans fonction que l'on gère les formulaires de Co et les sessions
@@ -22,7 +22,8 @@ session_start();
     }
     if($access){
         
-        echo "BIENVENUE sur MON SITE ".$Joueur1->getPrenom();
+        echo '<div class="reglement">';
+        echo "BIENVENUE ".$Joueur1->getPrenom();
         
         $PersoChoisie = new Personnage($mabase);
         $PersoCree = new Personnage($mabase);
@@ -47,6 +48,7 @@ session_start();
         }
         ?>
         </div>
+        </div><!-- div reglement-->
         <?php
         
     }else{

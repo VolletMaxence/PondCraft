@@ -220,3 +220,38 @@ img.Personnage {
     height:120px;
     width:135px;
 }
+
+.bodyAccueil{
+    background-image:  url('https://raw.githubusercontent.com/EnseignantLapro/ProjetFullStack/master/IHM/wallpaper_mmo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.reglement{
+    margin-top:100px;
+    padding: 20px;
+    width:600px;
+    background-color: rgba(199, 82, 154, 0.829);
+    border-color: rgb(53, 77, 78);
+    border:1px solid rgb(119, 150, 236);
+    box-shadow:2px 2px 2px rgb(83, 95, 235); 
+    -moz-box-shadow:2px 2px 2px rgb(91, 113, 236);
+    -webkit-box-shadow:2px 2px 2px rgb(66, 53, 185);
+    margin-right:auto;
+    margin-left:auto;
+}
+
+.formlogin{
+    margin-top:100px;
+    padding: 20px;
+    width:600px;
+    background-color: rgba(199, 82, 154, 0.829);
+    border-color: rgb(53, 77, 78);
+    border:1px solid rgb(119, 150, 236);
+    box-shadow:2px 2px 2px rgb(83, 95, 235); 
+    -moz-box-shadow:2px 2px 2px rgb(91, 113, 236);
+    -webkit-box-shadow:2px 2px 2px rgb(66, 53, 185);
+    margin-right:auto;
+    margin-left:auto;
+}
+
