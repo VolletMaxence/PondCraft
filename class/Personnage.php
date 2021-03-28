@@ -240,19 +240,6 @@ class Personnage{
     //et permet d'attribuer un perso à un user
     // retour un objet personnage
     public function getChoixPersonnage(){
-        $Result = $this->_bdd->query("SELECT * FROM `Personnage` ");
-        ?>
-        <form action="" method="post" onchange="this.submit()">
-            <select name="idPersonnage" id="idPersonnage">
-            <option value=""> Choisi un perso</option>;
-                <?php while($tab=$Result->fetch()){
-                    echo '<option value="'.$tab["id"].'"> '.$tab["nom"].'</option>';
-
-                }
-                ?>
-            </select>
-        </form>
-        <?php
         if (isset($_POST["idPersonnage"])){
             $this->setPersonnageById($_POST["idPersonnage"]);
             if($this->_vie==0){
@@ -261,6 +248,22 @@ class Personnage{
             //si le personnage est mort on le place ne origine 0,0
         }
 
+        $Result = $this->_bdd->query("SELECT * FROM `Personnage` ");
+        ?>
+        <form action="" method="post" onchange="this.submit()">
+            <select name="idPersonnage" id="idPersonnage">
+            <option value=""> Choisi un perso</option>
+                <?php while($tab=$Result->fetch()){
+                    
+                    ($tab['id']==$this->_id)?$selected='selected':$selected='';
+                    echo '<option value="'.$tab["id"].'" '.$selected.'> '.$tab["nom"].'</option>';
+
+                }
+                ?>
+            </select>
+        </form>
+        <?php
+       
         return $this;
     }
 

@@ -24,7 +24,7 @@ session_start();
         $personnage = $Joueur1->getPersonnage();
         $map = $personnage->getMap();
 
-        echo "BIENVENUE " .$Joueur1->getPrenom();
+        echo "<div><h1>BIENVENUE " .$Joueur1->getPrenom()."</h1>";
         echo "TU AS CHOISIE COMBATRE AVEC ".$Joueur1->getNomPersonnage(). " il a une fortune de ".$personnage->getValeur()." (NFT)";
         echo "<p>Ton combatant est sur la position : ".$map->getNom().'</p>';
         echo "<p><h4>Tu peux maintenant ramasser des conneries par terre</h4></p>";

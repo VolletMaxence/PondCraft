@@ -22,13 +22,16 @@ session_start();
         //gestion accès map:
              
             $Personnage = $Joueur1->getPersonnage();
-            echo "<div><h1>BIENVENUE " .$Joueur1->getPrenom()."</h1>";
            
 
-            echo "<p><h3>Tu est en train de te ballader avec ". $Personnage->getNom()."</h3></p></div>";
+            echo "<p><div>Tu est en train de te ballader avec ";
+            $Personnage->getChoixPersonnage();
+            $Joueur1->setPersonnage($Personnage);
+            echo "</p></div>";
             $Personnage->getBardeVie();
             echo "<div><p><h4>il vaut : ".$Personnage->getValeur()." NFT</h4></p></div>";
             
+      
             $map = $Personnage->getMap();
             
             if(isset($_GET["position"]) && $Personnage->getVie()>0){
