@@ -52,7 +52,7 @@ session_start();
             echo "<p>Ton combatant est sur la position : ".$map->getNom().'</p>';
             echo "<p><h4>Tu peux maintenant ramasser des conneries par terre</h4></p>";
             echo "<p><h4>Si tu en trouve des parfaitements identiques elle prennent de la valeur :D</h4></p>";
-            
+            echo "<p><h3>Trouve est tue le ''Super Sayan Legendaire''</h3></p>";
             echo '<p><a href="index.php" >Creer un autre personnage</a></p></div>';
             echo '</div>';
             $map->getMapAdjacenteLienHTML('nord');

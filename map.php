@@ -171,8 +171,9 @@ function CallApiAddItemInSac(idItem){
             ul.appendChild(liSac);
         }
     } else{
+
         
-        alert("vous avez pas réussi à le piquer "+data[1]);
+        alert("vous avez pas réussi à le piquer "+data[2]);
     }  
 
     }) .catch(function(error) {

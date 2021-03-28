@@ -22,17 +22,25 @@ if($access){
         
         $idmap = $map->getId();
        
-           //que l'item est bien dans la map
+           //que l'item est bien dans la map si ya un mob on peut pas le prendre
         foreach ($map->getItems()  as $item) {
             if($_GET["idItem"]==$item->getId()){
 
-                //on retire l'item de la map et on la rajoute dans le sac
-                $map->removeItemById($_GET["idItem"]);
-                $item = new Item($mabase);
-                $item->setItemByID($_GET["idItem"]);
-                $Perso->addItem($item);
-                $reponse[1]=1;
-                $reponse[0]=1;
+                //vérifier si ya des mob
+                if(count($map->getAllMobs())==0){
+                    //on retire l'item de la map et on la rajoute dans le sac
+                    $map->removeItemById($_GET["idItem"]);
+                    $item = new Item($mabase);
+                    $item->setItemByID($_GET["idItem"]);
+                    $Perso->addItem($item);
+                    $reponse[1]=1;
+                    $reponse[0]=1;
+                }else{
+                    $reponse[2]="On ne peut pas piquer des items si il y a des mobs vivant";
+                    $reponse[1]=0;
+                    $reponse[0]=1;
+                }
+                
                 
             }
         }  
