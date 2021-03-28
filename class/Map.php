@@ -832,6 +832,9 @@ class map{
         $result = curl_exec($ch); 
         $result = stristr($result, 'https://',false);
         $result = stristr($result, '"',true);
+        if($reult=='https://status.unsplash.com/'){
+            $result='https://i0.wp.com/supertrampontheroad.com/wp-content/uploads/2017/02/DSC_3793-1-2.jpg?resize=1024%2C678&ssl=1';
+        }
         return  $result;  
     }
 
