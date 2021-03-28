@@ -122,8 +122,8 @@ class User{
                 </div>
 
                 <div >
-                    <label for="password">Prenom si tu t'inscrit: </label>
-                    <input type="text" name="text" id="prenom" >
+                    <label for="prenom">Prenom si tu t'inscrit: </label>
+                    <input type="text" name="prenom" id="prenom" >
                 </div>
 
                 <div >
