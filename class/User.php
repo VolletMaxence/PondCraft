@@ -56,73 +56,85 @@ class User{
         return $this->_MonPersonnage;
     }
 
-    public function ConnectToi(){
-
-    //si c'est une inscription on valide l'inscription et on le connect
-    if( isset($_POST["sub"])){
-        if(!empty($_POST['prenom'])){
-            $req ="INSERT INTO `User`( `login`, `prenom`, `mdp`) VALUES ('".$_POST['login']."','".$_POST['prenom']."','".$_POST['password']."')";
-            $Result = $this->_bdd->query($req);
-        }else{
-            echo "il faut un prenom à l'inscription";
+    public function getAllMyMobIds(){
+        $listMob=array();
+        $req="SELECT `id` FROM `Mob` WHERE `idPersoProprio`  in (SELECT `id` FROM `Personnage` WHERE `idUser` = '".$this->_id."')";
+        $Result = $this->_bdd->query($req);
+        while($tab=$Result->fetch()){
+            array_push($listMob,$tab[0]);
         }
-        
+        return $listMob;
     }
 
-    
+    public function ConnectToi(){
 
-        //traitement du formulaire
-    $access = false;
-    if( isset($_POST["login"]) && isset($_POST["password"])){
-        //verif mdp en BDD
+        //si c'est une inscription on valide l'inscription et on le connect
+        if( isset($_POST["sub"])){
+            if(!empty($_POST['prenom'])){
+                $req ="INSERT INTO `User`( `login`, `prenom`, `mdp`) VALUES ('".$_POST['login']."','".$_POST['prenom']."','".$_POST['password']."')";
+                $Result = $this->_bdd->query($req);
+            }else{
+                echo "il faut un prenom à l'inscription";
+            }
+            
+        }
 
-        $Result = $this->_bdd->query("SELECT * FROM `User` WHERE `login`='".$_POST['login']."' AND `mdp` = '".$_POST['password']."'");
-        if($tab = $Result->fetch()){ 
+        
+        
+        
 
-            $this->setUserById($tab["id"]);
+            //traitement du formulaire
+        $access = false;
+        if( isset($_POST["login"]) && isset($_POST["password"])){
+            //verif mdp en BDD
 
-             //si mdp = ok
-            $access = true;
-            $_SESSION["idUser"]= $tab["id"];
-            $_SESSION["Connected"]=true;
-            $afficheForm = false;
-            //si on est co on affiche le formulaire de deco
-            $this->DeconnectToi();
+            $Result = $this->_bdd->query("SELECT * FROM `User` WHERE `login`='".$_POST['login']."' AND `mdp` = '".$_POST['password']."'");
+            if($tab = $Result->fetch()){ 
+
+                $this->setUserById($tab["id"]);
+
+                //si mdp = ok
+                $access = true;
+                $_SESSION["idUser"]= $tab["id"];
+                $_SESSION["Connected"]=true;
+                $afficheForm = false;
+                //si on est co on affiche le formulaire de deco
+                $this->DeconnectToi();
+            }else{
+                $afficheForm = true;
+            }
+
         }else{
             $afficheForm = true;
         }
+        
+        if($afficheForm){
+        ?>
+        <div class="formlogin">
+            <form action="" method="post" >
+                <div>
+                    <label for="login">Enter your login: </label>
+                    <input type="email" name="login" id="login" required >
+                </div>
+                <div >
+                    <label for="password">Enter your pass: </label>
+                    <input type="password" name="password" id="password" required>
+                </div>
 
-    }else{
-        $afficheForm = true;
-    }
-    
-    if($afficheForm){
-    ?>
-    <div class="formlogin">
-        <form action="" method="post" >
-            <div>
-                <label for="login">Enter your login: </label>
-                <input type="email" name="login" id="login" required >
-            </div>
-            <div >
-                <label for="password">Enter your pass: </label>
-                <input type="password" name="password" id="password" required>
-            </div>
+                <div >
+                    <label for="password">Prenom si tu t'inscrit: </label>
+                    <input type="text" name="text" id="prenom" >
+                </div>
 
-            <div >
-                <label for="password">Prenom si tu t'inscrit: </label>
-                <input type="text" name="text" id="prenom" >
-            </div>
+                <div >
+                    <input type="submit" value="Go!" name="log"><input type="submit" value="inscrit toi!" name="sub">
+                </div>
+            </form>
+        </div>
+        <?php
+        }
 
-            <div >
-                <input type="submit" value="Go!" name="log"><input type="submit" value="inscrit toi!" name="sub">
-            </div>
-        </form>
-    </div>
-    <?php
-    }
-
-    return $access;
+        return $access;
     }
 
     public function DeconnectToi(){

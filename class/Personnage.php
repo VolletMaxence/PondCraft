@@ -1,4 +1,6 @@
 <?php
+// TODO MOB ET PERSONNAGE ON TROP DE SIMILITUDE 
+//IL FAUT REFACTORISER AVEC DE LhERITAGE
 
 class Personnage{
     
@@ -47,14 +49,70 @@ class Personnage{
         return $this->_degat;
     }
 
-    public function SubitDegat($valeur){
-        $this->_vie = $this->_vie - $valeur;
+    public function SubitDegatByPersonnage($Personnage){
+        $this->_vie = $this->_vie - $Personnage->getAttaque();
         if($this->_vie<0){
             $this->_vie =0;
             //retour en zone 0,0
         }
         $req  = "UPDATE `Personnage` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
+        return $this->_vie;
+    }
+
+    public function getAllMyMobIdByMap($map){
+        $listMob=array();
+        $req="SELECT `id` FROM `Mob` WHERE `idPersoProprio` = '".$this->_id."' AND `idMap` = '".$map->getId()."' )";
+        $Result = $this->_bdd->query($req);
+        while($tab=$Result->fetch()){
+            array_push($listMob,$tab);
+        }
+        return $listMob;
+    }
+
+    public function SubitDegatByMob($Mob){
+
+        $MobDegatAttaqueEnvoyer=$Mob->getAttaque();
+        $vieAvantAttaque = $this->_vie;
+
+        //on va rechercher l'historique
+        $req  = "SELECT * FROM `AttaquePersoMob` where idMob = '".$Mob->getId()."' and idPersonnage = '".$this->_id."'" ;
+        $Result = $this->_bdd->query($req);
+        $tabAttaque['nbCoup']=0;
+        $tabAttaque['DegatsDonnes']=$MobDegatAttaqueEnvoyer;
+        if($tab=$Result->fetch()){
+            $tabAttaque = $tab;
+            $tabAttaque['DegatsDonnes']+=$MobDegatAttaqueEnvoyer;
+            $tabAttaque['nbCoup']++;
+
+        }else{
+            //insertion d'une nouvelle attaque
+            $req="INSERT INTO `AttaquePersoMob`(`idMob`, `idPersonnage`, `nbCoup`, `coupFatal`, `DegatsDonnes`, `DegatsReçus`) 
+            VALUES (
+                '".$Mob->getId()."','".$this->_id."',0,0,".$tabAttaque['DegatsReçus'].",0
+            )";
+            $Result = $this->_bdd->query($req);
+        }
+
+
+        $this->_vie = $this->_vie - $MobDegatAttaqueEnvoyer;
+        if($this->_vie<0){
+            $this->_vie =0;
+
+            //on ne peut pas donner plus de degat que la vie d'un perso
+            $tabAttaque['DegatsDonnes'] = $vieAvantAttaque;
+            //retour en zone 0,0
+        }
+        $req  = "UPDATE `Personnage` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
+        $Result = $this->_bdd->query($req);
+
+
+        //update AttaquePersoMob pour mettre a jour combien le perso a pris de degat 
+        $req="UPDATE `AttaquePersoMob` SET 
+        `DegatsDonnes`=".$tabAttaque['DegatsDonnes']."
+         WHERE idMob = '".$Mob->getId()."' AND idPersonnage ='".$this->_id."' ";
+        $Result = $this->_bdd->query($req);
+
         return $this->_vie;
     }
 

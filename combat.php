@@ -52,10 +52,23 @@ session_start();
             echo "<p>Ton combatant est sur la position : ".$map->getNom().'</p>';
             echo "<p><h4>Tu peux maintenant ramasser des conneries par terre</h4></p>";
             echo "<p><h4>Si tu en trouve des parfaitements identiques elle prennent de la valeur :D</h4></p>";
-            echo "<p><h3>Trouve est tue le ''Super Sayan Legendaire''</h3></p>";
-            echo '<p><a href="index.php" >Creer un autre personnage</a></p></div>';
-            echo '</div>';
-            $map->getMapAdjacenteLienHTML('nord');
+            echo "<p><h3>But du jeu : capture Le ''Super jedi Legendaire''</h3></p>";
+            
+            echo '<div class="tableaChass"> <div class="titreMonster">Voici tes monstres capturé :</div>';
+            $MysMob = new Mob($mabase);
+            foreach ($Joueur1->getAllMyMobIds() as $mob) {
+                echo '<div class="monster">';
+                $MysMob->setMobById($mob);
+                echo $MysMob->generateImage();
+                $MysMob->renderHTML();
+                echo "</div>";
+            }?>
+
+                <div class="titreMonster">Seul une certain pouvoir peuvent protéger tes mobs d'une capture..</div>
+            </div><p><a href="index.php" >Creer un autre personnage</a></p></div>
+            </div>
+            <?php
+            $map->getMapAdjacenteLienHTML('nord',$Joueur1);
         }
 
     }else{

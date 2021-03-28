@@ -33,7 +33,7 @@ session_start();
                 echo '<p><a  href="index.php" >retour à l\'origine de tout </a></p>';
                 echo "<div>";
                 if(isset($_GET["position"])&& $_GET["position"]==='Generate'){
-
+                    //TODO lol la fleme de faire la negation de ce if
                 }else{
                 echo "tu peux appeler un autre Personnage ";
                 $Personnage->getChoixPersonnage($Joueur1->getId());
@@ -104,24 +104,50 @@ session_start();
                 //affiche les mob;
                 $listMob = $map->getAllMobs();
                 if(count($listMob)>0){
-                    echo '<div class="left">Tu es bloqué car il y a des mobs'.'<ul id="ulMob" class="Mob">';
-                    foreach ( $listMob as  $Mob) {
-                        
+                    echo '<div class="left">'.'<ul id="ulMob" class="Mob">';
+                    $Mob = new Mob($mabase);
+                    $mobContre = $map->getAllMobContre($Joueur1);
+                    if(count($mobContre)>0){
+                        echo "<div>Tu es bloqué car il y a des mobs<div>";
+                    }
+                    foreach (  $mobContre as  $MobID) {
+                        $Mob->setMobById($MobID);
+                        ?>
+                        <li id="Mob<?php echo $Mob->getId()?>" class="adverse">
+                        <a onclick="AttaquerPerso(<?php echo $Mob->getId()?>,1)">
+                            <?php  
+                            echo $Mob->generateImage();
+                            $Mob->renderHTML();
                             ?>
-                            <li id="Mob<?php echo $Mob->getId()?>">
-                            <a onclick="AttaquerPerso(<?php echo $Mob->getId()?>,1)">
-                                <?php  
-                                echo $Mob->generateImage();
-                                $Mob->renderHTML();
-                                ?>
-                                
-                            </a>
-                            </li>
-                            <?php 
+                            
+                        </a>
+                        </li>
+                        <?php 
                         
                     }
+                    foreach ( $map->getAllMobCapture($Joueur1) as  $MobID) {
+                        $Mob->setMobById($MobID);
+                        ?>
+                        <li id="Mob<?php echo $Mob->getId()?>" class="Captured">
+                        <a onclick="SoinMob(<?php echo $Mob->getId()?>,1)">
+                            <?php  
+                            echo $Mob->generateImage();
+                            $Mob->renderHTML();
+                            ?>
+                            
+                        </a>
+                        </li>
+                        <?php 
+                    
+                }
+
+                    
+
+                    
                     echo '</ul></div>';
                 }
+                //affichage des mob déjà attrapé
+
             
 
                 //AFFICHAGE DES ITEMS DE LA MAP
@@ -140,7 +166,7 @@ session_start();
                 echo '</div>'; //DIV DE LA MAP
 
 
-                $map->getMapAdjacenteLienHTML($cardinalite);
+                $map->getMapAdjacenteLienHTML($cardinalite,$Joueur1);
                 $map->getImageCssBack();
 
             ?>

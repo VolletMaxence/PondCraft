@@ -15,6 +15,7 @@ class map{
     Private $listPersonnages=array();
     Private $listMobs=array();
     
+    
     Private $_bdd;
 
     //la position initial est 0
@@ -82,7 +83,7 @@ class map{
             background-size: cover;
             background-repeat: no-repeat;
             background-image: linear-gradient(rgba(255, 255, 255, 1), rgba(255,255,255, 0.01)), url(<?php echo $this->_imageLien?>);
-            
+            background-attachment: fixed;
         }
         </style>
         <?php
@@ -211,6 +212,31 @@ class map{
         return $lists;
     }
 
+    //retourne tous les mob adverse (sans ses capture)
+    public function getAllMobContre($User){
+        $tab1 = $User->getAllMyMobIds();
+        $tab2 = $this->listMobs;
+
+        //attention l'ordre des param est important 
+        $tab3 = array_diff($tab2,$tab1);
+        //compare les 2tableau et retourne ce qui est commun
+        return  $tab3;
+         
+        
+    }
+
+
+    public function getAllMobCapture($User){
+         //compare les 2tableau et retourne ce qui est pas commun
+         $tab1 = $User->getAllMyMobIds();
+         $tab2 = $this->listMobs;
+         $tab3 = array_intersect($tab1,$tab2);
+         //compare les 2tableau et retourne ce qui est commun
+         return  $tab3;
+          
+         
+        
+    }
 
 
     
@@ -509,7 +535,7 @@ class map{
     
 
     //retourne les liens HTML des 4 map adjacente
-    public function getMapAdjacenteLienHTML($cardinalite){
+    public function getMapAdjacenteLienHTML($cardinalite,$User){
         ?>
         <div class="MapAdjacente">
         <?php 
@@ -544,7 +570,8 @@ class map{
                     break;
             }
 
-            if (count($this->listMobs)==0){
+            
+            if (count($this->getAllMobContre($User))==0){
                 $affichNord = true;
                 $affichSud = true;
                 $affichEst= true;

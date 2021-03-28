@@ -27,7 +27,8 @@ if($access){
             if($_GET["idItem"]==$item->getId()){
 
                 //vérifier si ya des mob
-                if(count($map->getAllMobs())==0){
+                
+                if(count($map->getAllMobContre($Joueur1))==0){
                     //on retire l'item de la map et on la rajoute dans le sac
                     $map->removeItemById($_GET["idItem"]);
                     $item = new Item($mabase);

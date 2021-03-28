@@ -9,8 +9,14 @@ function attaquer(idPerso,type){
         if(type==0){
             UpdateVie("viePersoValeur"+data[0],data[1],data[2],data[3],data[4],"viePersoValeur"+data[5],data[6]);
         }
+        //type 1 = mob
         if(type==1){
             UpdateVie("vieMobValeur"+data[0],data[1],data[2],data[3],data[4],"viePersoValeur"+data[5],data[6]);
+            //si mob mort on doit recharger le server
+            if(data[1]<=0){
+                location.reload();
+            }
+            
         }
         
 

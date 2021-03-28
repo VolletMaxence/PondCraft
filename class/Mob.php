@@ -1,4 +1,9 @@
 <?php
+
+// TODO MOB ET PERSONNAGE ON TROP DE SIMILITUDE 
+//IL FAUT REFACTORISER AVEC DE LhERITAGE
+
+
 class Mob{
     private $_id;
     private $_type;
@@ -6,6 +11,9 @@ class Mob{
     private $_degat;
     private $_vie;
     private $_vieMax;
+    private $_idProprio;
+
+    private $HostoriqueAttaque=array();
 
     //permet de donner plus ou moins xp
     private $_coefXP;
@@ -34,7 +42,7 @@ class Mob{
     public function getCoefXp(){
         return $this->_coefXP;
     }
-    public function setMob($id,$type,$nom,$degat,$vie,$coefXP,$vieMax){
+    public function setMob($id,$type,$nom,$degat,$vie,$coefXP,$vieMax,$idProprio){
         $this->_id = $id;
         $this->_type = $type;
         $this->_nom = $nom;
@@ -42,25 +50,81 @@ class Mob{
         $this->_vie = $vie;
         $this->_coefXP = $coefXP;
         $this->_vieMax = $vieMax;
+        $this->_idProprio = $idProprio;
 
          
     }
-    public function SubitDegat($valeur){
-        $this->_vie = $this->_vie - $valeur;
+
+    //methode appelé quand un personnage attaque un mob 
+    //le perso est passé en param
+    public function SubitDegat($Personnage){
+        $this->_vie = $this->_vie - $Personnage->getAttaque();
+
+        $coupFatal = 0;
         if($this->_vie<0){
-            $this->_vie =0;
+            $this->_vie=0;
+            $coupFatal=1;
+
+            //on va attribuer le mob au perssonage sa vie revient a fond pour le propriétaire
+            $req  = "UPDATE `Mob` SET `vie`='".$this->_vieMax."',`idPersoProprio`='".$Personnage->getId()."' WHERE `id` = '".$this->_id ."'";
+            $Result = $this->_bdd->query($req);
+
+        }else{
+            $req  = "UPDATE `Mob` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
+            $Result = $this->_bdd->query($req);
         }
-        $req  = "UPDATE `Mob` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
+
+       
+
+        //on va rechercher l'historique
+        $req  = "SELECT * FROM `AttaquePersoMob` where idMob = '".$this->_id."' and idPersonnage = '".$Personnage->getId()."'" ;
         $Result = $this->_bdd->query($req);
+        $tabAttaque['nbCoup']=0;
+        $tabAttaque['DegatsDonnes']=0;
+        $tabAttaque['DegatsReçus']=$Personnage->getAttaque();
+        if($tab=$Result->fetch()){
+            $tabAttaque = $tab;
+            $tabAttaque['DegatsReçus']+=$Personnage->getAttaque();
+            $tabAttaque['nbCoup']++;
+
+        }else{
+            //insertion d'une nouvelle attaque
+            $req="INSERT INTO `AttaquePersoMob`(`idMob`, `idPersonnage`, `nbCoup`, `coupFatal`, `DegatsDonnes`, `DegatsReçus`) 
+            VALUES (
+                '".$this->_id."','".$Personnage->getId()."',1,0,0,".$tabAttaque['DegatsReçus']."
+            )";
+            $Result = $this->_bdd->query($req);
+        }
+
+
+        
+        
+        //update AttaquePersoMob
+        $req="UPDATE `AttaquePersoMob` SET 
+        `nbCoup`=".$tabAttaque['nbCoup'].",
+        `coupFatal`=".$coupFatal.",
+        `DegatsReçus`=".$tabAttaque['DegatsReçus']."
+         WHERE idMob = '".$this->getId()."' AND idPersonnage ='".$Personnage->getId()."' ";
+            $Result = $this->_bdd->query($req);
+
         return $this->_vie;
+        
     }
 
+    public function getHistoriqueAttaque(){
+        $req  = "SELECT * FROM `AttaquePersoMob` where idMob = '".$this->_id."'" ;
+        $Result = $this->_bdd->query($req);
+        while($tab=$Result->fetch()){
+            array_push($this->$HostoriqueAttaque,$tab);
+        }
+        return $this->$HostoriqueAttaque;
+    }
 
     //cette méthode ne charge pas la MAP du mob
     public function setMobById($id){
         $Result = $this->_bdd->query("SELECT * FROM `Mob` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
-            $this->setMob($tab["id"],$tab["type"],$tab["nom"],$tab["degat"],$tab["vie"],$tab["coefXp"],$tab["vieMax"]);   
+            $this->setMob($tab["id"],$tab["type"],$tab["nom"],$tab["degat"],$tab["vie"],$tab["coefXp"],$tab["vieMax"],$tab["idPersoProprio"]);   
         }
     }
 
@@ -69,7 +133,7 @@ class Mob{
         $Result = $this->_bdd->query("SELECT * FROM `Mob` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
 
-            $this->setMob($tab["id"],$tab["type"],$tab["nom"],$tab["degat"],$tab["vie"],$tab["coefXp"],$tab["vieMax"]);
+            $this->setMob($tab["id"],$tab["type"],$tab["nom"],$tab["degat"],$tab["vie"],$tab["coefXp"],$tab["vieMax"],$tab["idPersoProprio"]);
             
             //recherche de sa position
             $map = new map($this->_bdd);

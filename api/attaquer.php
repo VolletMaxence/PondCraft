@@ -9,7 +9,7 @@ if($access){
 
         //on récupere la force du perso en cours
         $Attaquant = $Joueur1->getPersonnage();
-        $force = $Attaquant->getAttaque();
+        
         
         $message="";
         $vieMax=0;
@@ -28,12 +28,12 @@ if($access){
                 //on verrifie que le perso n'est pas mort
                 if($Deffensseur->getVie()>0){
                     if($vieAttaquant!=0){
-                        $vie=$Deffensseur->SubitDegat($force);
+                        $vie=$Deffensseur->SubitDegatByPersonnage($Attaquant);
                         $vieMax = $Deffensseur->getVieMax();
 
                         //on va retirer le coup d'attaque de base du deffensseur
                         //car une attaque n'est pas gratuite
-                        $vieAttaquant=$Attaquant->SubitDegat($Deffensseur->getAttaque());
+                        $vieAttaquant=$Attaquant->SubitDegatByPersonnage($Deffensseur);
                         if($vieAttaquant==0){
                             $message .= "ton perso est mort ";
                         }
@@ -51,26 +51,33 @@ if($access){
 
             //attaque sur mob
             if($_GET["type"]==1){
-                $Deffensseur = new Mob($mabase);
-                $Deffensseur->setMobByIdWithMap($_GET["id"]);
-                $vieMax=$Deffensseur->getVieMax();
-                $vie=$Deffensseur->getVie();
+                $DeffensseurMob = new Mob($mabase);
+                $DeffensseurMob->setMobByIdWithMap($_GET["id"]);
+                $vieMax=$DeffensseurMob->getVieMax();
+                $vie=$DeffensseurMob->getVie();
                 
-                if($Deffensseur->getVie()>0){
+                if($DeffensseurMob->getVie()>0){
                     if($vieAttaquant!=0){
-                        $vie=$Deffensseur->SubitDegat($force);
-                        $vieMax = $Deffensseur->getVieMax();
+                        $vie=$DeffensseurMob->SubitDegat($Attaquant);
+                        $vieMax = $DeffensseurMob->getVieMax();
                         //retour de batton le deffenseur auusi attaque
-                        $vieAttaquant=$Attaquant->SubitDegat($Deffensseur->getAttaque());
+                        $vieAttaquant=$Attaquant->SubitDegatByMob($DeffensseurMob);
                         if($vieAttaquant==0){
                             $message .= "ton perso est mort ";
                         }
+
+                        //si le perso tu le mob il faut envoyer un message
+                        if($vie<=0)
+                        {
+                            $message .= "tu as participé à la capture de ce mot  ";
+                        }
+
                     }else{
                         $message .= "Tu es déjà mort tu ne peux plus attaquer ";
     
                     }
                 }else{
-                    $message .= "Ce mob est déjà mort ";
+                    $message .= "Ce mob est déjà capturé ";
                 }
 
                 
