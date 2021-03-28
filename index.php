@@ -17,7 +17,9 @@ session_start();
     <?php
     //c'est dans fonction que l'on gère les formulaires de Co et les sessions
     include "fonction.php"; 
-    $access = $Joueur1->deconnectToi();
+    if($access){
+        $access = $Joueur1->deconnectToi();
+    }
     if($access){
         
         echo "BIENVENUE sur MON SITE ".$Joueur1->getPrenom();
@@ -25,7 +27,7 @@ session_start();
         $PersoChoisie = new Personnage($mabase);
         $PersoCree = new Personnage($mabase);
         $PersoCree = $PersoCree->CreatNewPersonnage();
-        $PersoChoisie->getChoixPersonnage();
+        $PersoChoisie->getChoixPersonnage($Joueur1->getId());
 
         if(!is_null($PersoCree)){
             $PersoChoisie = $PersoCree;

@@ -82,7 +82,7 @@ function UpdateVie(id,vie,vieMax,viPerso,viMaxPerso,id2){
         
     }
     if(viPerso==0){
-        alert("Ce perso vient de mourrir betement en s'attaquant un bonhomme, un developpeur va le resussite mais avec quel stat ?? haha !  tu peux déjà le retrouver à l'origine de tout" );
+        alert("Ton perso vient de mourrir betement en s'attaquant un bonhomme, un developpeur va le resussite mais avec quel stat ?? haha !  tu peux déjà le retrouver à l'origine de tout" );
     }
 
 

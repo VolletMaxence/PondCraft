@@ -251,7 +251,7 @@ class Personnage{
      //Retourne une liste HTML de tous les personnages
     //et permet d'attribuer un perso à un user
     // retour un objet personnage
-    public function getChoixPersonnage(){
+    public function getChoixPersonnage($idUser){
         if (isset($_POST["idPersonnage"])){
             $this->setPersonnageById($_POST["idPersonnage"]);
             if($this->_vie==0){
@@ -260,7 +260,7 @@ class Personnage{
             //si le personnage est mort on le place ne origine 0,0
         }
 
-        $Result = $this->_bdd->query("SELECT * FROM `Personnage` ");
+        $Result = $this->_bdd->query("SELECT * FROM `Personnage` where idUser='".$idUser."' ");
         ?>
         <form action="" method="post" onchange="this.submit()">
             <select name="idPersonnage" id="idPersonnage">

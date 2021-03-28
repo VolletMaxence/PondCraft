@@ -58,7 +58,15 @@ class User{
 
     public function ConnectToi(){
 
-       //traitement du formulaire
+    //si c'est une inscription on valide l'inscription et on le connect
+    if( isset($_POST["sub"])){
+        $req ="INSERT INTO `User`( `login`, `prenom`, `mdp`) VALUES ('".$_POST['login']."','".$_POST['login']."','".$_POST['password']."')";
+        $Result = $this->_bdd->query($req);
+    }
+
+    
+
+        //traitement du formulaire
     $access = false;
     if( isset($_POST["login"]) && isset($_POST["password"])){
         //verif mdp en BDD
@@ -88,14 +96,14 @@ class User{
         <form action="" method="post" >
             <div>
                 <label for="login">Enter your login: </label>
-                <input type="text" name="login" id="login" required value="Rapidecho">
+                <input type="email" name="login" id="login" required >
             </div>
             <div >
                 <label for="password">Enter your pass: </label>
-                <input type="password" name="password" id="password" required value="Julien1234">
+                <input type="password" name="password" id="password" required>
             </div>
             <div >
-                <input type="submit" value="Go!" >
+                <input type="submit" value="Go!" name="log"><input type="submit" value="inscrit toi!" name="sub">
             </div>
         </form>
 
@@ -108,33 +116,33 @@ class User{
     public function DeconnectToi(){
 
          //traitement du formulaire
-    $afficheForm = true;
-    $access = true;
-    if( isset($_POST["logout"]) && isset($_POST["logout"])){
-        //si on se deco on raffiche le formulaire de co
-        $_SESSION["Connected"]=false;
-        session_unset();
-        session_destroy();
-        $this->ConnectToi();
-        $afficheForm = false;
-        $access = false;
-    }else{
         $afficheForm = true;
-    }
+        $access = true;
+        if( isset($_POST["logout"]) && isset($_POST["logout"])){
+            //si on se deco on raffiche le formulaire de co
+            $_SESSION["Connected"]=false;
+            session_unset();
+            session_destroy();
+            $this->ConnectToi();
+            $afficheForm = false;
+            $access = false;
+        }else{
+            $afficheForm = true;
+        }
 
-    if($afficheForm){
-    ?>
-        <form action="" method="post" >
-            <div >
-                <input type="submit" value="Deco!" name="logout">
-            </div>
-        </form>
+        if($afficheForm){
+        ?>
+            <form action="" method="post" >
+                <div >
+                    <input type="submit" value="Deco!" name="logout">
+                </div>
+            </form>
 
-    <?php
-    
-    }
+        <?php
+        
+        }
 
-    return $access;
+        return $access;
     }
 
 }

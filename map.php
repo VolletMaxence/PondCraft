@@ -16,19 +16,27 @@ session_start();
     <div class="centragePrincipal">
     <?php
     include "fonction.php"; 
-    $access = $Joueur1->deconnectToi();
+    
+    if($access){
+        $access = $Joueur1->deconnectToi();
+    }
+
     if($access){
         
         //gestion accès map:
              
             $Personnage = $Joueur1->getPersonnage();
-            echo '<p><a  href="index.php" >retour à l\'origine de tout </a></p>';
+            if(is_null($Personnage)){
+                echo '<p>il faut creer un personnage avant</p>';
+                echo '<p><a  href="index.php" >retour à l\'origine de tout </a></p>';
+            }else{
+                echo '<p><a  href="index.php" >retour à l\'origine de tout </a></p>';
             echo "<div>";
             if(isset($_GET["position"])&& $_GET["position"]==='Generate'){
 
             }else{
                 echo "tu peux appeler un autre Personnage ";
-                $Personnage->getChoixPersonnage();
+                $Personnage->getChoixPersonnage($Joueur1->getId());
                 
                 $Joueur1->setPersonnage($Personnage);
             }
@@ -139,6 +147,8 @@ session_start();
             <div class="basdepage">
              </div>
             <?php
+            }
+            
     }else{
         echo $errorMessage;
     }
