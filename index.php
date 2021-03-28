@@ -27,7 +27,7 @@ session_start();
         
         $PersoChoisie = new Personnage($mabase);
         $PersoCree = new Personnage($mabase);
-        $PersoCree = $PersoCree->CreatNewPersonnage();
+        $PersoCree = $PersoCree->CreatNewPersonnage($Joueur1->getId());
         $PersoChoisie->getChoixPersonnage($Joueur1->getId());
 
         if(!is_null($PersoCree)){

@@ -208,7 +208,7 @@ class Personnage{
     //Retourne un formulaire HTML pourcreer un personnage
     //et permet d'attribuer automatiquement à user
     // retour un objet personnage
-    public function CreatNewPersonnage(){
+    public function CreatNewPersonnage($idUser){
         
         ?>
         <div class = "formCreatio">
@@ -230,7 +230,7 @@ class Personnage{
             $newperso = new Personnage($this->_bdd);
             $this->_nom=htmlentities($_POST['NomPersonnage'], ENT_QUOTES);
             $this->_imageLien=$_POST['image'];
-            $req="INSERT INTO `Personnage`(`nom`, `vie`, `degat`, `idMap`,`vieMax`,`lienImage`) VALUES ('".$this->_nom."',10,10,0,10,'".$this->_imageLien."')";
+            $req="INSERT INTO `Personnage`(`nom`, `vie`, `degat`, `idMap`,`vieMax`,`lienImage`,`idUser`) VALUES ('".$this->_nom."',10,10,0,10,'".$this->_imageLien."','".$idUser."')";
             $this->_bdd->beginTransaction();
             $Result = $this->_bdd->query($req);
             $lastID = $this->_bdd->lastInsertId();
