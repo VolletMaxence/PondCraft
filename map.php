@@ -22,24 +22,39 @@ session_start();
         //gestion accès map:
              
             $Personnage = $Joueur1->getPersonnage();
-
-            echo "<p><div>";
+            echo '<p><a  href="index.php" >retour à l\'origine de tout </a></p>';
+            echo "<div>";
             if(isset($_GET["position"])&& $_GET["position"]==='Generate'){
-                echo "Tu pars à l'aventure avec ";
-                echo $Personnage->getNom();
+
             }else{
-                echo "Tu est avec ";
-                $Personnage->getChoixPersonnage();
                 echo "tu peux appeler un autre Personnage ";
+                $Personnage->getChoixPersonnage();
+                
                 $Joueur1->setPersonnage($Personnage);
             }
             
             
-            echo "</p></div>";
+            echo "</div>";
 
+            echo '<div class="avatar">';
             $Personnage->renderHTML();
-            
 
+            //AFFICHAGE DES ITEMS DU SAC
+            $listItems = $Joueur1->getPersonnage()->getItems();
+            echo '<div class="divSac">Sacoche<ul id="Sac" class="Sac">';
+            if(count($listItems)>0){
+                foreach ( $listItems as  $Item) {
+                    ?>
+                    <li id="itemSac<?php echo $Item->getId()?>"><a onclick="useItem(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
+                    <?php 
+                }
+            }
+            echo '</ul></div>';
+            echo '</div>';
+
+            //AFFICHAGE DE LA MAP
+
+            echo '<div class="lamap">';
             $map = $Personnage->getMap();
             
             $cardinalite = '';
@@ -56,14 +71,14 @@ session_start();
                 }
                 $map = $map->loadMap($map->getPosition(),'nord',$Joueur1);
             }
-           
+            
            
            
             //affichage des autres joueurs sur la carte
 
             $listPersos = $map->getAllPersonnages();
             if(count($listPersos)>1){
-                echo "<p>Visiblement tu n'est pas seul ici il y a aussi :".'<ul id="ulPersos" class="Persos">';
+                echo '<div class="left">Visiblement tu n\'est pas seul ici il y a aussi :'.'<ul id="ulPersos" class="Persos">';
                 $PersoJoeuur = $Joueur1->getPersonnage();
                 foreach ( $listPersos as  $Perso) {
                     if($Perso->getId()!=$PersoJoeuur->getId()){
@@ -75,13 +90,13 @@ session_start();
                         <?php 
                     }
                 }
-                echo '</ul></p>';
+                echo '</ul></div>';
             }
 
             //affiche les mob;
             $listMob = $map->getAllMobs();
             if(count($listMob)>0){
-                echo "<p>Tu es bloqué car il y a des mobs".'<ul id="ulMob" class="Mob">';
+                echo '<div class="left">Tu es bloqué car il y a des mobs'.'<ul id="ulMob" class="Mob">';
                 foreach ( $listMob as  $Mob) {
                     
                         ?>
@@ -97,42 +112,32 @@ session_start();
                         <?php 
                     
                 }
-                echo '</ul></p>';
+                echo '</ul></div>';
             }
            
 
             //AFFICHAGE DES ITEMS DE LA MAP
             $listItems = $map->getItems();
             if(count($listItems)>0){
-                echo '<p>Items Présent : <ul class="Item">';
+                echo '<div class="left">Items Présent : <ul class="Item">';
                 foreach ( $listItems as  $Item) {
                     ?>
                     <li id="item<?php echo $Item->getId()?>"><a onclick="CallApiAddItemInSac(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
                     <?php 
                 }
-                echo '</ul></p>';
+                echo '</ul></div>';
             }
             
+
+            echo '</div>'; //DIV DE LA MAP
+
+
             $map->getMapAdjacenteLienHTML($cardinalite);
             $map->getImageCssBack();
 
-
-            //AFFICHAGE DES ITEMS DU SAC
-            echo "<p>Voici le contenu de la bedasse de ".$Joueur1->getNomPersonnage()." </p>";
-            $listItems = $Joueur1->getPersonnage()->getItems();
-            echo '<p><ul id="Sac" class="Sac">';
-            if(count($listItems)>0){
-                foreach ( $listItems as  $Item) {
-                    ?>
-                    <li id="itemSac<?php echo $Item->getId()?>"><a onclick="useItem(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
-                    <?php 
-                }
-            }?>
-
-            </ul></p>
+           ?>
             <div class="basdepage">
-            <p><a  href="index.php" >retour à l'origine de tout </a></p>
-        </div>
+             </div>
             <?php
     }else{
         echo $errorMessage;
@@ -165,11 +170,9 @@ function CallApiAddItemInSac(idItem){
     console.log(error); });
 }
 
-function DetruireItem(idItem){
-    alert("bientot tu pourras en faire un truc de cet item si les dev se bouge !");
-}
+
 function AttaquerPerso(idPerso,type){
-    getVie(idPerso,type)
+    attaquer(idPerso,type)
 }
 </script>
 </html>

@@ -38,6 +38,11 @@ class map{
       return round($hypotenuse);
     }
 
+    //retourne une chaine de caractere des coordonne x , y
+    public function getCoordonne(){
+        return "(x:".$this->_x." y:".$this->_y.")";
+    }
+
     public function setMapByID($id){
         
         $req="SELECT * FROM map WHERE id='".$id."' ";
@@ -437,7 +442,8 @@ class map{
         return null;
     }
 
-    //cardinalite = la d'ou l'on vient
+    //cardinalite = la d'ou l'on vient 
+    //permet de charger un map ou d'en creer une selon d'ou l'on viens
     public function loadMap($position,$Cardinalite,$Joueur1){
         if(isset($position) && isset($Cardinalite) ){
             if($position==="Generate"){
@@ -458,7 +464,7 @@ class map{
             }else if ($position>=0) {
                 //récupération de la map est atttribution au combatant
                 $this->setMapByPosition($position);
-                echo "<p>tu es ici => <b>". $this->getNom()."</b> découvert par ".$this->getPersonnageDecouvreur()->getPrenom()." et ses Personnages</p>";
+                echo "<p><b>". $this->getNom()."</b>".$this->getCoordonne()." découvert par ".$this->getPersonnageDecouvreur()->getPrenom()." et ses Personnages</p>";
                 $Joueur1->getPersonnage()->ChangeMap($this);
                 
                  //chargement des Items
@@ -551,11 +557,11 @@ class map{
                 echo '<div class="sud">';
                 if(!is_null($Msud)){
                     ?>
-                    Sud : <div class="MapAdjacenteSud"><a href="map.php?position=<?php echo $Msud->getPosition();?>&cardinalite=nord"><?php echo $Msud->getNom()?></a></div>
+                    Sud : y-1<div class="MapAdjacenteSud"><a href="map.php?position=<?php echo $Msud->getPosition();?>&cardinalite=nord"><?php echo $Msud->getNom()?></a></div>
                     <?php
                 }else{
                     ?>
-                    Sud : <div class="MapAdjacenteSud"><a href="map.php?position=Generate&cardinalite=nord">Decouvre cette Région Inconnue</a></div>
+                    Sud : y-1 <div class="MapAdjacenteSud"><a href="map.php?position=Generate&cardinalite=nord">Decouvre cette Région Inconnue</a></div>
                     <?php
                 }
                 echo '</div>';
@@ -566,11 +572,11 @@ class map{
                 echo '<div class="nord">';
                 if(!is_null($Mnord)){
                     ?>
-                    Nord : <div class="MapAdjacenteNord"><a href="map.php?position=<?php echo $Mnord->getPosition();?>&cardinalite=sud"><?php echo $Mnord->getNom()?></a></div>
+                    Nord : y+1<div class="MapAdjacenteNord"><a href="map.php?position=<?php echo $Mnord->getPosition();?>&cardinalite=sud"><?php echo $Mnord->getNom()?></a></div>
                     <?php
                 }else{
                     ?>
-                    Nord : <div class="MapAdjacenteNord"><a href="map.php?position=Generate&cardinalite=sud">Decouvre cette Région Inconnue</a></div>
+                    Nord : y+1<div class="MapAdjacenteNord"><a href="map.php?position=Generate&cardinalite=sud">Decouvre cette Région Inconnue</a></div>
                     <?php
                 }
                 echo '</div>';
@@ -581,11 +587,11 @@ class map{
                 echo '<div class="est">';
                 if(!is_null($Mest)){
                     ?>
-                    Est : <div class="MapAdjacenteEst"><a href="map.php?position=<?php echo $Mest->getPosition()?>&cardinalite=ouest"><?php echo $Mest->getNom()?></a></div>
+                    Est : x+1 <div class="MapAdjacenteEst"><a href="map.php?position=<?php echo $Mest->getPosition()?>&cardinalite=ouest"><?php echo $Mest->getNom()?></a></div>
                     <?php
                 }else{
                     ?>
-                    Est : <div class="MapAdjacenteEst"><a href="map.php?position=Generate&cardinalite=ouest">Decouvre cette Région Inconnue</a></div>
+                    Est : x+1<div class="MapAdjacenteEst"><a href="map.php?position=Generate&cardinalite=ouest">Decouvre cette Région Inconnue</a></div>
                     <?php
                 }
                 echo '</div>';
@@ -595,11 +601,11 @@ class map{
                 echo '<div class="ouest">';
                 if(!is_null($Mouest)){
                     ?>
-                    Ouest : <div class="MapAdjacenteOuest"><a href="map.php?position=<?php echo $Mouest->getPosition()?>&cardinalite=est"><?php echo $Mouest->getNom()?></a></div>
+                    Ouest : x-1<div class="MapAdjacenteOuest"><a href="map.php?position=<?php echo $Mouest->getPosition()?>&cardinalite=est"><?php echo $Mouest->getNom()?></a></div>
                     <?php
                 }else{
                     ?>
-                    Ouest : <div class="MapAdjacenteOuest"><a href="map.php?position=Generate&cardinalite=est">Decouvre cette Région Inconnue</a></div>
+                    Ouest : x-1<div class="MapAdjacenteOuest"><a href="map.php?position=Generate&cardinalite=est">Decouvre cette Région Inconnue</a></div>
                     <?php
                 }
                 echo '</div>';

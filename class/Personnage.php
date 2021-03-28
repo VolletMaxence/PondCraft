@@ -110,7 +110,8 @@ class Personnage{
             <div>
             <?php echo $this->_nom ?>( <?php echo $this->getValeur() ?> NFT)
             </div>
-            <div><img class="Personnage" src="<?php echo $this->_imageLien;?>"></div>
+            <div><img class="Personnage" src="<?php echo $this->_imageLien;?>">
+            </div>
             <div class="attaque" id="attaquePersoValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
             <div class="barreDeVie" id="viePerso<?php echo $this->_id ;?>">
                 

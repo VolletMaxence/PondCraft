@@ -45,6 +45,44 @@ ul.Sac li:hover{
     background-color:rgb(231, 231, 231);
 }
 
+.perso{
+    float:left;
+    width:140px;
+    background-color:rgb(110, 184, 13);
+    padding: 5px;
+   
+    margin: 3px;
+    border:1px solid rgb(219, 184, 25);
+    box-shadow:2px 2px 2px rgb(133, 228, 145); 
+    -moz-box-shadow:2px 2px 2px rgb(33, 122, 21);
+    -webkit-box-shadow:2px 2px 2px rgb(37, 124, 41);
+}
+.divSac{
+    float: left;
+    
+    background-color:rgba(90, 35, 2, 0.596);
+    padding: 5px;
+   
+    margin: 3px;
+    border:1px solid rgb(219, 184, 25);
+    box-shadow:2px 2px 2px rgb(133, 228, 145); 
+    -moz-box-shadow:2px 2px 2px rgb(33, 122, 21);
+    -webkit-box-shadow:2px 2px 2px rgb(37, 124, 41);
+}
+.lamap{
+    float:left;
+    width:100%;
+    background-color:rgba(232, 240, 222, 0.37);
+    padding: 5px;
+    margin: 3px;
+    border:1px solid rgb(53, 52, 48);
+    box-shadow:2px 2px 2px rgb(31, 32, 31); 
+    -moz-box-shadow:2px 2px 2px rgb(51, 53, 50);
+    -webkit-box-shadow:2px 2px 2px rgb(52, 53, 52);
+}
+
+.left{float:left}
+
 ul.Item li:hover{
     cursor:  url('hand-grab.cur'), pointer;
     background-color:rgb(231, 231, 231);
@@ -168,4 +206,5 @@ body {
 
 img.Personnage {
     height:120px;
+    width:135px;
 }

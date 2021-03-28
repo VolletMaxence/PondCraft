@@ -1,8 +1,8 @@
 //le type est 0 = person 1 = mob 
 
-function getVie(idPerso,type){
+function attaquer(idPerso,type){
     //pour appeler une API on utilise la méthode fetch()
-    fetch('api/getVie.php?id='+idPerso+'&type='+type).then((resp) => resp.json())
+    fetch('api/attaquer.php?id='+idPerso+'&type='+type).then((resp) => resp.json())
     .then(function(data) {
         // code for handling the data you get from the API
         console.log(data);
