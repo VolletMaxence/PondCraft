@@ -230,6 +230,8 @@ class Personnage{
         unset($this->sacItems[array_search($id, $this->sacItems)]);
         $req="DELETE FROM `PersoSacItems` WHERE idPersonnage='".$this->getId()."' AND idItem='".$id."'";
         $this->_bdd->query($req);
+        $req="DELETE FROM `Item` WHERE id='".$id."'";
+        $this->_bdd->query($req);
     }
 
     public function setPersonnageById($id){

@@ -35,10 +35,10 @@ session_start();
                 if(isset($_GET["position"])&& $_GET["position"]==='Generate'){
                     //TODO lol la fleme de faire la negation de ce if
                 }else{
-                echo "tu peux appeler un autre Personnage ";
-                $Personnage->getChoixPersonnage($Joueur1->getId());
+                    echo "tu peux appeler un autre Personnage ";
+                    $Personnage->getChoixPersonnage($Joueur1->getId());
 
-                $Joueur1->setPersonnage($Personnage);
+                    $Joueur1->setPersonnage($Personnage);
                 }
 
 
@@ -65,22 +65,30 @@ session_start();
                 echo '<div class="lamap">';
                 $map = $Personnage->getMap();
 
+                //gestion de la téléportation
+                $TelportationPositionDepart = $map->getPosition();
+
                 $cardinalite = '';
                 if(isset($_GET["cardinalite"])){
                     $cardinalite = $_GET["cardinalite"];
                 }
 
-                if(isset($_GET["position"]) && $Personnage->getVie()>0){
-                    $map = $map->loadMap($_GET["position"],$cardinalite,$Joueur1);
-                }else{
-                    if($Personnage->getVie()==0){
-                        $Personnage->resurection();
-                        $map = $Personnage->getMap();
+                if($map->LogVisiteMap($Personnage)){ //control de spam.
+
+                    if(isset($_GET["position"]) && $Personnage->getVie()>0){
+                        $map = $map->loadMap($_GET["position"],$cardinalite,$Joueur1);
+                    }else{
+                        if($Personnage->getVie()==0){
+                            $Personnage->resurection();
+                            $map = $Personnage->getMap();
+                        }
+                        $map = $map->loadMap($map->getPosition(),'nord',$Joueur1);
                     }
-                    $map = $map->loadMap($map->getPosition(),'nord',$Joueur1);
+                    
+                     //puis on déplace le joueur
+                    $Joueur1->getPersonnage()->ChangeMap($map);
                 }
                 
-            
             
                 //affichage des autres joueurs sur la carte
 
@@ -101,11 +109,13 @@ session_start();
                     echo '</ul></div>';
                 }
 
-                //affiche les mob;
+                //affiche les mob enemie et capturé;
                 $listMob = $map->getAllMobs();
                 if(count($listMob)>0){
                     echo '<div class="left">'.'<ul id="ulMob" class="Mob">';
                     $Mob = new Mob($mabase);
+
+                    //affichage des Mob Enemi
                     $mobContre = $map->getAllMobContre($Joueur1);
                     if(count($mobContre)>0){
                         echo "<div>Tu es bloqué car il y a des mobs<div>";
@@ -125,6 +135,8 @@ session_start();
                         <?php 
                         
                     }
+
+                    //affichage des Mob Capturés
                     foreach ( $map->getAllMobCapture($Joueur1) as  $MobID) {
                         $Mob->setMobById($MobID);
                         ?>
@@ -140,10 +152,7 @@ session_start();
                         <?php 
                     
                 }
-
-                    
-
-                    
+  
                     echo '</ul></div>';
                 }
                 //affichage des mob déjà attrapé
@@ -153,10 +162,13 @@ session_start();
                 //AFFICHAGE DES ITEMS DE LA MAP
                 $listItems = $map->getItems();
                 if(count($listItems)>0){
-                    echo '<div class="left">Items Présent : <ul class="Item">';
+                    echo '<div class="left">Items Présent : <div class="divRarete"> Commun - Rare</div><ul class="Item">';
                     foreach ( $listItems as  $Item) {
                         ?>
-                        <li id="item<?php echo $Item->getId()?>"><a onclick="CallApiAddItemInSac(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
+                        <li id="item<?php echo $Item->getId()?>" style="<?php echo $Item->getClassRarete()?>">
+                            <a onclick="CallApiAddItemInSac(<?php echo $Item->getId()?>)">
+                                <?php echo $Item->getNom() ?></a>
+                        </li>
                         <?php 
                     }
                     echo '</ul></div>';
@@ -167,6 +179,7 @@ session_start();
 
 
                 $map->getMapAdjacenteLienHTML($cardinalite,$Joueur1);
+
                 $map->getImageCssBack();
 
             ?>

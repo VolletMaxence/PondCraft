@@ -111,9 +111,9 @@ class map{
             array_push($this->listItems,$tab[0]);
         }
 
-        //select les Personnages déjà présent
+        //select les Personnages déjà présent en vie
         $this->listPersonnages = array();
-        $req  = "SELECT id FROM `Personnage` WHERE idMap='".$id."'";
+        $req  = "SELECT id FROM `Personnage` WHERE idMap='".$id."' and vie > 0";
         $Result = $this->_bdd->query($req);
         while($tab=$Result->fetch()){
             array_push($this->listPersonnages,$tab[0]);
@@ -201,6 +201,8 @@ class map{
         }
         return $lists;
     }
+
+
 
     public function getAllMobs(){
         $lists=array();
@@ -315,7 +317,6 @@ class map{
         $newx = $map->_x;
         $newy = $map->_y;
 
-       
 
         switch ($cardinalite) {
             case "sud":
@@ -355,6 +356,14 @@ class map{
                 return null;
 
         }
+
+          //on va vérifier que la map n'existe pas déjà 
+          /*$req="select id from map where x='".$newx."' AND y='".$newy."'";
+          $Result = $this->_bdd->query($req);
+          if($tab = $Result->fetch()){ 
+              return $this;
+          }*/
+  
 
         $mapExistante = $map->trouveMapAdjacente($map,$cardinalite);
         if(is_object($mapExistante)){
@@ -459,6 +468,9 @@ class map{
                     
                 }
             }
+
+            echo "<p>tu viens de découvrir une nouvelle  position : ". $newmap->getNom()." ".$newmap->getCoordonne()." </p>";
+           
             
                 
 
@@ -472,14 +484,27 @@ class map{
     //permet de charger un map ou d'en creer une selon d'ou l'on viens
     public function loadMap($position,$Cardinalite,$Joueur1){
         if(isset($position) && isset($Cardinalite) ){
+
+            
+            
+            //todo voir si le spam générate est controlé 
             if($position==="Generate"){
+
+                
+
                 //la cardinalité permet de lui dire d'ou on vient
-                $map= new map($this->_bdd);
-                $map = $map->Create($Joueur1->getPersonnage()->getMap(),$_GET["cardinalite"],$Joueur1->getId());
+                //on va 
+                $map= $Joueur1->getPersonnage()->getMap();
+
+                
+
+
+               
+
+                $map = $map->Create($map,$_GET["cardinalite"],$Joueur1->getId());
                 if(!is_null($map)){
-                    echo "<p>tu viens de découvrir une nouvelle  position : ". $map->getNom()." </p>";
-                    //puis on déplace le joueur
-                    $Joueur1->getPersonnage()->ChangeMap($map);
+                    
+
                     return $map;
                     
                 }else{
@@ -489,27 +514,65 @@ class map{
 
             }else if ($position>=0) {
                 //récupération de la map est atttribution au combatant
+                $ancienX = $this->getX();
+                $ancienY = $this->getY();
+                $ancienPosition=$this->getPosition();
+                
                 $this->setMapByPosition($position);
                 echo "<p><b>". $this->getNom()."</b>".$this->getCoordonne()." découvert par ".$this->getPersonnageDecouvreur()->getPrenom()." et ses Personnages</p>";
-                $Joueur1->getPersonnage()->ChangeMap($this);
                 
-                 //chargement des Items
-                if(rand(0,2)>1){
-                    $itemEnplus = new Item($this->_bdd);
-                    $nbItem = rand(0,2);
-                    
-                    for($i=0;$i<$nbItem;$i++){
-                        $this->addItem($itemEnplus->createItemAleatoire()); 
+                
+                //chargement des Items en plus
+                $req="SELECT `laDate` from `Visites` WHERE `idMap` = '".$this->getId()."' ORDER BY `laDate` DESC";
+                $Result = $this->_bdd->query($req);
+                if($tab = $Result->fetch()){
+                    $DatePresent = time("Y-m-d H:i:s");
+                    $DerniereDate = strtotime($tab['laDate'])+5;
+        
+                    if($DerniereDate>=$DatePresent){
+                        if(rand(0,2)>1){
+                            $itemEnplus = new Item($this->_bdd);
+                            $nbItem = rand(0,2);
+                            
+                            for($i=0;$i<$nbItem;$i++){
+        
+                                if(!is_null($this->getMapNord()) && rand(0,3)==0 ){
+                                    $this->getMapNord()->addItem($itemEnplus->createItemAleatoire()); 
+                                }
+                                if(!is_null($this->getMapSud()) && rand(0,3)==1){
+                                    $this->getMapSud()->addItem($itemEnplus->createItemAleatoire()); 
+                                }
+                                if(!is_null($this->getMapEst()) && rand(0,3)==2){
+                                    $this->getMapEst()->addItem($itemEnplus->createItemAleatoire()); 
+                                }
+                                if(!is_null($this->getMapOuest()) && rand(0,3)==3){
+                                    $this->getMapOuest()->addItem($itemEnplus->createItemAleatoire()); 
+                                }
+                                
+                                
+                            }
+                        }
                     }
+
                 }
+
+                //on vérifie la téléportation sinon on ne change pas le joueur 
+                if( abs((abs($this->getX()) - (abs($ancienX) )) ) > 1 
+                     || 
+                     abs((abs($this->getY()) - (abs($ancienY) )) )> 1 
+                  ){
+                    echo '<a href="map.php?position='.$ancienPosition.'"> Tu es téléporté reviens là ou tu étais</a>';
+                  }else{
+                    $Joueur1->getPersonnage()->ChangeMap($this);
+                  }
 
                 
             }else{
-                echo "Tu es en terre  Incconu revient vite là ou tu été";
+                echo '<a href="index.php"> Tu es en terre  Incconu revient vite là ou tu été </a>';
             }
 
         }else{
-            echo "Tu es en terre  Incconu revient vite là ou tu étais";
+            echo '<a href="index.php"> Tu es en terre  Incconu revient vite là ou tu étais </a>' ;
         }
         return $this;
        
@@ -517,6 +580,37 @@ class map{
         
     }
     
+    //permet d'enregistrer une visite et de vérifier si c'est pas trop rapide
+    public function LogVisiteMap($Perso){
+
+        $req="SELECT `laDate` from `Visites` 
+             WHERE `idPersonnage` = '".$Perso->getId()."' 
+             ORDER BY `laDate` DESC";
+        $Result = $this->_bdd->query($req);
+        if($tab = $Result->fetch()){
+            $DatePresent = time("Y-m-d H:i:s");
+            $DerniereDate = strtotime($tab['laDate'])+1;
+
+            if($DerniereDate>=$DatePresent){
+                echo "tu vas trop vite poto tu es pas un super guerrier encore ";
+
+                return false;
+            }
+
+            
+        }
+
+        $req="INSERT INTO `Visites` (`idPersonnage`, `idMap`, `laDate`) 
+        VALUES ('".$Perso->getId()."', '".$this->_id."', '".date("Y-m-d H:i:s")."')";
+        $Result = $this->_bdd->query($req);
+
+        return true;
+
+
+       
+
+    }
+
     
     //retourn un string 
     //hash aléatoire pour une nouvelle position
@@ -565,9 +659,7 @@ class map{
                 case 'est':
                     $affichEst= true;
                     break;
-                default:
-                    echo '<div class="teleportation">Tu est teleporte, tu ne peux pas te déplacer</div>';
-                    break;
+    
             }
 
             
@@ -832,7 +924,7 @@ class map{
         $result = curl_exec($ch); 
         $result = stristr($result, 'https://',false);
         $result = stristr($result, '"',true);
-        if($reult=='https://status.unsplash.com/'){
+        if($result=='https://status.unsplash.com/'){
             $result='https://i0.wp.com/supertrampontheroad.com/wp-content/uploads/2017/02/DSC_3793-1-2.jpg?resize=1024%2C678&ssl=1';
         }
         return  $result;  

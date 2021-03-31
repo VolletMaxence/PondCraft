@@ -169,12 +169,12 @@ class Mob{
             $newMob = new Mob($this->_bdd);
             $type = $this->getTypeAleatoire();
             $lvl = $map->getlvl();
-            $vie = rand(50,100)*$type[2]*$lvl*3;
+            $vie = rand(10,50)*$type[2]*$lvl*$lvl;
             $req="INSERT INTO `Mob`(`nom`,`type`, `vie`, `degat`, `idMap` , `coefXp` ,  `vieMax`) 
             VALUES ('".$this->generateNom($type[0])."',
                     ".$type[1]."
                     ,".$vie."
-                    ,".rand(10,100)*$type[2]*$lvl."
+                    ,".rand(2,10)*$type[2]*$lvl."
                     ,".$map->getId()."
                     ,".$type[2]."
                     ,".$vie."
@@ -194,6 +194,9 @@ class Mob{
     }
 
     //retour un tableau vace le nom du type et id dy type
+    //  $tab[0]=$newTypeNom;
+    //$tab[1]=$newType;
+    //$tab[2]=$coef;
     private function getTypeAleatoire(){
         $req="SELECT * FROM TypeMob ORDER BY rarete ASC";
         $Result = $this->_bdd->query($req);

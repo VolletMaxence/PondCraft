@@ -44,7 +44,43 @@ class Item{
         return $this->_valeur;
     }
 
+    public function getClassRarete(){
+        $req="SELECT rarete FROM TypeItem where id = '".$this->_type."'";
+        $Result = $this->_bdd->query($req);
+        $colorRarete = "background-color : rgba(";
+        if($tab = $Result->fetch()){
+            //pour le moment les raretés vont de 1 à 16
+            //rareté de vert à rouge
+           
+            if($tab[0]<8){
 
+                //on par de 0   255 0 
+                //        à 255 255 0
+                $val = round((($tab[0]/8)*((255-100)+100))+95);
+                $colorRarete .= $val . ',255,0'; 
+
+            }else{
+                //on par de 255 255 0 
+                //        à 255 0   0
+                //et les valeur vont de 8 à 16
+                $val = round(((($tab[0]-8)/8)*((255-100)+100))+95);
+                $val = 255-$val ;
+                $colorRarete .= '255,'.$val . ',0'; 
+            }
+                
+                
+            
+        } else{
+            //poussiere 
+            $colorRarete .=  '255,255,255'; 
+
+        }
+        
+        //max rarete valeur = 1600
+        //1600 = 1
+        $Transparence = (($this->_valeur/160)*((1-0.3)))+0.3 ;
+        return $colorRarete.','.$Transparence.') !important' ;
+    }
     
 
     public function __construct($bdd){
@@ -110,7 +146,7 @@ class Item{
                 $newNom = $newTypeNom.' qui pu';
             break;
         }
-        $newValeur = rand(0,100)*$rarete;
+        $newValeur = rand(5,10)*$rarete;
 
         $this->_bdd->beginTransaction();
         $req="INSERT INTO `Item`( `type`, `nom`, `valeur`) VALUES ('".$newType."','".$newNom."','".$newValeur."')";
