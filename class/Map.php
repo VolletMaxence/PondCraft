@@ -526,7 +526,7 @@ class map{
                 $req="SELECT `laDate` from `Visites` WHERE `idMap` = '".$this->getId()."' ORDER BY `laDate` DESC";
                 $Result = $this->_bdd->query($req);
                 if($tab = $Result->fetch()){
-                    $DatePresent = time("Y-m-d H:i:s");
+                    $DatePresent = time(); //"Y-m-d H:i:s"
                     $DerniereDate = strtotime($tab['laDate'])+5;
         
                     if($DerniereDate>=$DatePresent){
@@ -588,7 +588,7 @@ class map{
              ORDER BY `laDate` DESC";
         $Result = $this->_bdd->query($req);
         if($tab = $Result->fetch()){
-            $DatePresent = time("Y-m-d H:i:s");
+            $DatePresent = time(); //"Y-m-d H:i:s"
             $DerniereDate = strtotime($tab['laDate'])+1;
 
             if($DerniereDate>=$DatePresent){
