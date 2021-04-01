@@ -319,7 +319,8 @@ DIV.monster img{
 
 .map DIV {
 
-    border:1px solid black;
+    
+    border:1px solid rgba(254, 251, 255, 0.47);
 
 }
 
@@ -332,21 +333,21 @@ DIV.monster img{
 .mapVerte{
 
     float: left;
-    border: 1px black;
+    
    
     background-color: rgba(4, 155, 12, 0.685);
 }
 .mapMob{
 
     float: left;
-    border: 1px rgba(58, 58, 58, 0.301);
+   
    
     background-color: rgba(255, 0, 0, 0.664);
 }
 .mapClear{
 
     float: left;
-    border: 1px black;
+    
    
     background-color: rgba(255, 251, 0, 0.603);
 }
