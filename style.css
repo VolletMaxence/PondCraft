@@ -308,3 +308,64 @@ DIV.monster img{
     border:1px black;
     background: linear-gradient(to right, rgb(200, 255, 34), rgb(255, 2, 2));
   }
+
+.map {
+
+    float: left;
+    right:10px;
+    top:10px;
+
+}
+
+.map DIV {
+
+    border:1px solid black;
+
+}
+
+.mapLigne{
+    width:100%;
+
+    float: left;
+}
+
+.mapVerte{
+
+    float: left;
+    border: 1px black;
+   
+    background-color: rgba(4, 155, 12, 0.685);
+}
+.mapMob{
+
+    float: left;
+    border: 1px rgba(58, 58, 58, 0.301);
+   
+    background-color: rgba(255, 0, 0, 0.664);
+}
+.mapClear{
+
+    float: left;
+    border: 1px black;
+   
+    background-color: rgba(255, 251, 0, 0.603);
+}
+.mapRouge{
+
+    float: left;
+
+    background-color: rgba(255, 8, 0, 0.144);
+}
+
+.mapOrigine{
+
+    float: left;
+
+    background-color: rgb(255, 0, 221);
+}
+
+.mapPositionUser{
+    float: left;
+
+    background-color: rgba(21, 255, 0, 0.801);
+}

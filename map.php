@@ -60,6 +60,7 @@ session_start();
                 echo '</ul></div>';
                 echo '</div>';
 
+                $Joueur1->getVisitesHTML(6);
                 //AFFICHAGE DE LA MAP
 
                 echo '<div class="lamap">';
@@ -176,6 +177,9 @@ session_start();
                 
 
                 echo '</div>'; //DIV DE LA MAP
+
+
+                
 
 
                 $map->getMapAdjacenteLienHTML($cardinalite,$Joueur1);

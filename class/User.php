@@ -10,6 +10,7 @@ class User{
 
     private $_bdd;
 
+ 
 
     public function __construct($bdd){
         $this->_bdd = $bdd;
@@ -167,6 +168,130 @@ class User{
         }
 
         return $access;
+    }
+
+    //retourne une carte de Div HTML de tracé de div
+    public function getVisitesHTML($taille){
+        //etape 1 récupéré toutes les visites du user
+        $Map = $this->getPersonnage()->getMap();
+        $maxX=$Map->getX()+$taille;
+        $minX=$Map->getX()-$taille;
+        $maxY=$Map->getY()+$taille;
+        $minY=$Map->getY()-$taille;;
+
+        if ($taille>0){
+            $req="SELECT `map`.`id`,`map`.`x`,`map`.`y` 
+            FROM `Visites`,`Personnage`,`map` 
+            WHERE map.id = Visites.idMap 
+            AND Visites.idPersonnage = Personnage.id 
+            AND `Personnage`.`idUser`='".$this->_id."' 
+            AND map.x > '".$minX."' 
+            AND map.x < '".$maxX."' 
+            AND map.y > '".$minY."' 
+            AND map.y < '".$maxY."' 
+            group by `Visites`.`idMap`";
+        }else{
+            $req="SELECT `map`.`id`,`map`.`x`,`map`.`y` 
+            FROM `Visites`,`Personnage`,`map` 
+            WHERE map.id = Visites.idMap 
+            AND Visites.idPersonnage = Personnage.id 
+            AND `Personnage`.`idUser`='".$this->_id."' 
+            group by `Visites`.`idMap`";
+        }
+       
+        $Result = $this->_bdd->query($req);
+        $allMap = array();
+        
+        while($visite = $Result->fetch()){
+            //$allMap[x][y]=idmap
+            if($visite['x'] > $maxX){
+                $maxX = $visite['x'];
+            }
+            if($visite['x'] < $minX){
+                $minX = $visite['x'];
+            }
+            if($visite['y'] > $maxY){
+                $maxY = $visite['y'];
+            }
+            if($visite['y'] < $minY){
+                $minY = $visite['y'];
+            }
+
+            $allMap[$visite['x']][$visite['y']]=$visite['id'];
+        }
+
+        $LargeurX = $maxX - $minX;
+        $HauteurY = $maxY - $minY;
+
+         ($LargeurX == 0)?$LargeurX =1:$LargeurX;
+
+       $taille=200;
+
+      
+        $HY = $LX = round($taille/$LargeurX);
+        $taille = $LX*$LargeurX;
+      
+
+
+        //permet de réadapter la taille en fonction de l'arondi qui a grossi les div
+        
+
+        $Map = $this->getPersonnage()->getMap();
+        $MapScan = new Map($this->_bdd);
+
+        $style = 'style="width:'.$taille.'px"';
+        $styleCellule = 'style="width:'.$LX.'px;height:'.$HY.'px"';
+
+        //On rajoute largeur de x pour laisser de la place à la border
+        $ligneTaille = $LargeurX*$LX+$LargeurX*2;
+        $styleLigne = 'style="width:'.$ligneTaille.'px;height:'.$HY.'px"';
+        
+        echo '<div class="map" '.$style.'>';
+        for($y=$maxY;$y>$minY;$y--){
+
+            echo '<div class="mapLigne" '.$styleLigne.'>';
+            for($x=$minX;$x<$maxX;$x++){
+               
+                 if ($y==$Map->getY() && $x==$Map->getX()) {
+                    echo '<div class="mapPositionUser" '.$styleCellule.'></div>';
+                }else if($y==0 && $x==0){
+                    echo '<div class="mapOrigine" '.$styleCellule.'></div>';
+                }else{
+                    if(array_key_exists($x,$allMap)){
+                        if(array_key_exists($y,$allMap[$x])){
+                            if(!is_null($allMap[$x][$y])){
+
+                                //map found check it bro 
+                                $MapScan->setMapByID($allMap[$x][$y]);
+
+                                
+                                if(count($MapScan->getAllMobContre($this))){
+                                    echo '<div class="mapMob" '.$styleCellule.'></div>';
+                                }else if (count($MapScan->getAllMobCapture($this))){
+                                    echo '<div class="mapClear" '.$styleCellule.'></div>';
+                                }else{
+                                    echo '<div class="mapVerte" '.$styleCellule.'></div>';
+                                }
+
+                            }else{
+                                echo '<div class="mapRouge" '.$styleCellule.'></div>';
+                            }
+                        }else{
+                            echo '<div class="mapRouge" '.$styleCellule.'></div>';
+                        }
+                    }else{
+                        echo '<div class="mapRouge" '.$styleCellule.'></div>';
+                    }
+                }
+                
+                
+            }
+            echo '</div>';
+
+        }
+        echo '</div>';
+    
+        
     }
 
 }
