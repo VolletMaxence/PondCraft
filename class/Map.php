@@ -489,22 +489,11 @@ class map{
             
             //todo voir si le spam générate est controlé 
             if($position==="Generate"){
-
-                
-
                 //la cardinalité permet de lui dire d'ou on vient
                 //on va 
                 $map= $Joueur1->getPersonnage()->getMap();
-
-                
-
-
-               
-
                 $map = $map->Create($map,$_GET["cardinalite"],$Joueur1->getId());
                 if(!is_null($map)){
-                    
-
                     return $map;
                     
                 }else{
@@ -529,7 +518,7 @@ class map{
                     $DatePresent = time(); //"Y-m-d H:i:s"
                     $DerniereDate = strtotime($tab['laDate'])+5;
         
-                    if($DerniereDate>=$DatePresent){
+                    if($DerniereDate<=$DatePresent){
                         if(rand(0,2)>1){
                             $itemEnplus = new Item($this->_bdd);
                             $nbItem = rand(0,2);

@@ -169,12 +169,21 @@ class Mob{
             $newMob = new Mob($this->_bdd);
             $type = $this->getTypeAleatoire();
             $lvl = $map->getlvl();
-            $vie = rand(10,50)*$type[2]*$lvl*$lvl;
+            $coefAbuseVie = rand(10,50);
+            $coefAbuseArme = rand(2,10);
+            $vie = $coefAbuseVie*$type[2]*$lvl*$lvl;
+            $degat = $coefAbuserme*$type[2]*$lvl;
+            //Menir 
+            if($type[2]==0){
+                $vie = $coefAbuseVie*20*$lvl*$lvl;
+                $degat = 1;
+            }
+
             $req="INSERT INTO `Mob`(`nom`,`type`, `vie`, `degat`, `idMap` , `coefXp` ,  `vieMax`) 
             VALUES ('".$this->generateNom($type[0])."',
                     ".$type[1]."
                     ,".$vie."
-                    ,".rand(2,10)*$type[2]*$lvl."
+                    ,".$degat."
                     ,".$map->getId()."
                     ,".$type[2]."
                     ,".$vie."
@@ -190,6 +199,13 @@ class Mob{
                 $this->_bdd->rollback();
                 return null;
             }
+
+            $itemEnplus = new Item($this->_bdd);
+            $nbItem = rand(2,$coefAbuseArme+round(($coefAbuseVie/10)));
+            
+            for($i=0;$i<$nbItem;$i++){
+                    $map->addItem($itemEnplus->createItemAleatoire());   
+             }
 
     }
 

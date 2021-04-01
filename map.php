@@ -37,13 +37,11 @@ session_start();
                 }else{
                     echo "tu peux appeler un autre Personnage ";
                     $Personnage->getChoixPersonnage($Joueur1->getId());
-
                     $Joueur1->setPersonnage($Personnage);
                 }
 
 
                 echo "</div>";
-
                 echo '<div class="avatar">';
                 $Personnage->renderHTML();
 
@@ -177,13 +175,7 @@ session_start();
                 
 
                 echo '</div>'; //DIV DE LA MAP
-
-
-                
-
-
                 $map->getMapAdjacenteLienHTML($cardinalite,$Joueur1);
-
                 $map->getImageCssBack();
 
             ?>
