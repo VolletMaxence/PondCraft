@@ -169,10 +169,10 @@ class Mob{
             $newMob = new Mob($this->_bdd);
             $type = $this->getTypeAleatoire();
             $lvl = $map->getlvl();
-            $coefAbuseVie = rand(10,50);
-            $coefAbuseArme = rand(2,10);
+            $coefAbuseVie = rand(20,50);
+            $coefAbuseArme = rand(2,20);
             $vie = $coefAbuseVie*$type[2]*$lvl*$lvl;
-            $degat = $coefAbuserme*$type[2]*$lvl;
+            $degat = $coefAbuseArme*$type[2]*$lvl;
             //Menir 
             if($type[2]==0){
                 $vie = $coefAbuseVie*20*$lvl*$lvl;

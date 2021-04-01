@@ -36,7 +36,8 @@ class map{
       $opose = $this->_y * $this->_y;
       $hypotenuse = sqrt ( $adjacent+$opose);
     
-      return round($hypotenuse);
+      //plus on s'éloigne et plus il est difficile de toruver un lvl supérieur
+      return round(sqrt($hypotenuse));
     }
 
     //retourne une chaine de caractere des coordonne x , y
@@ -616,7 +617,6 @@ class map{
     }
 
     
-
     //retourne les liens HTML des 4 map adjacente
     public function getMapAdjacenteLienHTML($cardinalite,$User){
         ?>
