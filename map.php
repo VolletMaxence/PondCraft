@@ -60,7 +60,7 @@ session_start();
                 echo '</ul></div>';
                 echo '</div>';
 
-                $Joueur1->getVisitesHTML(6);
+                
                 //AFFICHAGE DE LA MAP
 
                 echo '<div class="lamap">';
@@ -89,7 +89,7 @@ session_start();
                      //puis on déplace le joueur
                     $Joueur1->getPersonnage()->ChangeMap($map);
                 }
-                
+                $Joueur1->getVisitesHTML(6);
             
                 //affichage des autres joueurs sur la carte
 
