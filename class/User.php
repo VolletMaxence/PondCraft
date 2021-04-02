@@ -210,10 +210,10 @@ class User{
             WHERE map.id = Visites.idMap 
             AND Visites.idPersonnage = Personnage.id 
             AND `Personnage`.`idUser`='".$this->_id."' 
-            AND map.x > '".$minX."' 
-            AND map.x < '".$maxX."' 
-            AND map.y > '".$minY."' 
-            AND map.y < '".$maxY."' 
+            AND map.x >= '".$minX."' 
+            AND map.x <= '".$maxX."' 
+            AND map.y >= '".$minY."' 
+            AND map.y <= '".$maxY."' 
             group by `Visites`.`idMap`";
         }else{
             $req="SELECT `map`.`id`,`map`.`x`,`map`.`y` 
@@ -245,8 +245,8 @@ class User{
             $allMap[$visite['x']][$visite['y']]=$visite['id'];
         }
 
-        $LargeurX = $maxX - $minX;
-        $HauteurY = $maxY - $minY;
+        $LargeurX = $maxX - $minX ;
+        $HauteurY = $maxY - $minY ;
 
          ($LargeurX == 0)?$LargeurX =1:$LargeurX;
 
