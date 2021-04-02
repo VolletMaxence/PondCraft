@@ -68,21 +68,18 @@ class User{
     }
 
     public function ConnectToi(){
-
+        $errorMessage="";
         //si c'est une inscription on valide l'inscription et on le connect
         if( isset($_POST["sub"])){
             if(!empty($_POST['prenom'])){
                 $req ="INSERT INTO `User`( `login`, `prenom`, `mdp`) VALUES ('".$_POST['login']."','".$_POST['prenom']."','".$_POST['password']."')";
                 $Result = $this->_bdd->query($req);
             }else{
-                echo "il faut un prenom à l'inscription";
+                $errorMessage = "il faut un prenom à l'inscription";
             }
             
         }
 
-        
-        
-        
 
         //traitement du formulaire
         $access = false;
@@ -102,6 +99,9 @@ class User{
                 //si on est co on affiche le formulaire de deco
                 $this->DeconnectToi();
             }else{
+                if ($errorMessage==""){
+                    $errorMessage = "Votre login et mdp ne correspondent pas";
+                }
                 $afficheForm = true;
             }
 
@@ -112,6 +112,11 @@ class User{
         if($afficheForm){
         ?>
         <div class="formlogin">
+            <?php
+            if ($errorMessage!=""){
+                echo '<div class="Red">'.$errorMessage.'</div>';
+            }
+            ?>
             <form action="" method="post" >
                 <div>
                     <label for="login">Mail : </label>
@@ -123,15 +128,35 @@ class User{
                 </div>
 
                 <div >
-                    <label for="prenom">Prenom si tu t'inscrit: </label>
-                    <input type="text" name="prenom" id="prenom" >
+                    <label class="inscriptionHide logSub" for="prenom">Prenom si tu t'inscrit: </label>
+                    <input class="inscriptionHide logSub" type="text" name="prenom" id="prenom" >
                 </div>
 
                 <div >
-                    <input type="submit" value="Go!" name="log"><input type="submit" value="inscrit toi!" name="sub">
+                    <input type="submit" value="GO !" name="log" id="logSubsubmit"> <a class="inscriptionShow logSub" id="subCreatclick" onclick="inscription()"> Inscription au jeu </a>
+                    
                 </div>
             </form>
         </div>
+        <script>
+            function inscription(){
+
+                var TabElements = document.getElementsByClassName("logSub");
+                for (var e of TabElements) {
+                    e.classList.add('inscriptionShow');
+                    e.classList.remove('inscriptionHide');
+                    
+                   
+                }
+                document.getElementById("logSubsubmit").setAttribute("name", "sub"); 
+
+                var e = document.getElementById("subCreatclick");  
+                e.className = 'inscriptionHide';
+
+                            
+                
+            }
+        </script>
         <?php
         }
 

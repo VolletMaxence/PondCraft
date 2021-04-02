@@ -17,6 +17,18 @@
     
 }
 
+.Red{
+
+    background-color:rgba(255, 88, 88, 0.733);
+    padding: 5px;
+    border-radius: 10px;
+    margin: 3px;
+    border:1px solid gray;
+    box-shadow:2px 2px 2px gray; 
+    -moz-box-shadow:2px 2px 2px gray;
+    -webkit-box-shadow:2px 2px 2px gray;
+}
+
 ul.Item li{
     background-color:rgb(207, 207, 207);
     padding: 5px;
@@ -27,6 +39,13 @@ ul.Item li{
     -moz-box-shadow:2px 2px 2px gray;
     -webkit-box-shadow:2px 2px 2px gray;
 
+}
+
+.inscriptionShow{
+    display: block;
+}
+.inscriptionHide{
+    display: none;
 }
 
 ul.Sac li{
