@@ -84,7 +84,7 @@ class User{
         
         
 
-            //traitement du formulaire
+        //traitement du formulaire
         $access = false;
         if( isset($_POST["login"]) && isset($_POST["password"])){
             //verif mdp en BDD
@@ -114,11 +114,11 @@ class User{
         <div class="formlogin">
             <form action="" method="post" >
                 <div>
-                    <label for="login">Enter your login: </label>
+                    <label for="login">Mail : </label>
                     <input type="email" name="login" id="login" required >
                 </div>
                 <div >
-                    <label for="password">Enter your pass: </label>
+                    <label for="password">Password: </label>
                     <input type="password" name="password" id="password" required>
                 </div>
 
