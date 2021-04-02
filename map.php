@@ -58,6 +58,16 @@ session_start();
                 echo '</ul></div>';
                 echo '</div>';
 
+
+                //AFFICHAGE d'UN TOOLTIP
+                if(rand(0,1)==1){
+
+                    echo '<div class="letooltip">';
+                        $tooltip = new Tooltip($mabase);
+                        echo $tooltip->getTooltipAleatoire();
+                    echo '</div>';
+                }
+                
                 
                 //AFFICHAGE DE LA MAP
 
