@@ -52,7 +52,7 @@ session_start();
             echo "<p>Ton combattant est sur la position : ".$map->getNom().'</p>';
             echo "<p><h4>Tu peux maintenant ramasser des conneries par terre.</h4></p>";
             echo "<p><h4>Si tu en trouves qui sont parfaitement identiques, elles prennent de la valeur 😄 !</h4></p>";
-            echo "<p><h3>But du jeu : Captures Le \"Super Jedi Légendaire\"</h3></p>";
+            echo "<p><h3>But du jeu : Capture le \"Super Jedi Légendaire\"</h3></p>";
             echo '<div class="tableaChass"> <div class="titreMonster">Voici tes monstres capturés :</div>';
             $MysMob = new Mob($mabase);
             foreach ($Joueur1->getAllMyMobIds() as $mob) {

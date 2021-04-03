@@ -10,8 +10,6 @@ class User{
 
     private $_bdd;
 
- 
-
     public function __construct($bdd){
         $this->_bdd = $bdd;
     }
@@ -75,7 +73,7 @@ class User{
                 $req ="INSERT INTO `User`( `login`, `prenom`, `mdp`) VALUES ('".$_POST['login']."','".$_POST['prenom']."','".$_POST['password']."')";
                 $Result = $this->_bdd->query($req);
             }else{
-                $errorMessage = "il faut un prenom à l'inscription";
+                $errorMessage = "Il faut un prénom à l'inscription.";
             }
             
         }
@@ -100,7 +98,7 @@ class User{
                 $this->DeconnectToi();
             }else{
                 if ($errorMessage==""){
-                    $errorMessage = "Votre login et mdp ne correspondent pas";
+                    $errorMessage = "Votre login et mdp ne correspondent pas.";
                 }
                 $afficheForm = true;
             }
@@ -108,7 +106,7 @@ class User{
         }else{
             $afficheForm = true;
         }
-        
+
         if($afficheForm){
         ?>
         <div class="formlogin">
@@ -128,33 +126,26 @@ class User{
                 </div>
 
                 <div >
-                    <label class="inscriptionHide logSub" for="prenom">Prenom si tu t'inscrit: </label>
+                    <label class="inscriptionHide logSub" for="prenom">Prénom si tu t'inscris : </label>
                     <input class="inscriptionHide logSub" type="text" name="prenom" id="prenom" >
                 </div>
 
                 <div >
-                    <input type="submit" value="GO !" name="log" id="logSubsubmit"> <a class="inscriptionShow logSub" id="subCreatclick" onclick="inscription()"> Inscription au jeu </a>
-                    
+                    <input type="submit" value="GO !" name="log" id="logSubsubmit"> <a class="inscriptionShow logSub" id="subCreatclick" onclick="inscription()">Inscription au jeu</a>
                 </div>
             </form>
         </div>
         <script>
             function inscription(){
-
                 var TabElements = document.getElementsByClassName("logSub");
                 for (var e of TabElements) {
                     e.classList.add('inscriptionShow');
                     e.classList.remove('inscriptionHide');
-                    
-                   
                 }
                 document.getElementById("logSubsubmit").setAttribute("name", "sub"); 
 
                 var e = document.getElementById("subCreatclick");  
                 e.className = 'inscriptionHide';
-
-                            
-                
             }
         </script>
         <?php
@@ -165,7 +156,7 @@ class User{
 
     public function DeconnectToi(){
 
-         //traitement du formulaire
+        //traitement du formulaire
         $afficheForm = true;
         $access = true;
         if( isset($_POST["logout"]) && isset($_POST["logout"])){
@@ -187,11 +178,8 @@ class User{
                     <input type="submit" value="Deco!" name="logout">
                 </div>
             </form>
-
         <?php
-        
         }
-
         return $access;
     }
 
@@ -223,10 +211,10 @@ class User{
             AND `Personnage`.`idUser`='".$this->_id."' 
             group by `Visites`.`idMap`";
         }
-       
+
         $Result = $this->_bdd->query($req);
         $allMap = array();
-        
+
         while($visite = $Result->fetch()){
             //$allMap[x][y]=idmap
             if($visite['x'] > $maxX){
@@ -248,18 +236,15 @@ class User{
         $LargeurX = $maxX - $minX ;
         $HauteurY = $maxY - $minY ;
 
-         ($LargeurX == 0)?$LargeurX =1:$LargeurX;
+        ($LargeurX == 0)?$LargeurX =1:$LargeurX;
 
-       $taille=200;
+        $taille=200;
 
-      
         $HY = $LX = round($taille/$LargeurX);
         $taille = $LX*$LargeurX;
-      
 
 
         //permet de réadapter la taille en fonction de l'arondi qui a grossi les div
-        
 
         $Map = $this->getPersonnage()->getMap();
         $MapScan = new Map($this->_bdd);
@@ -270,14 +255,14 @@ class User{
         //On rajoute largeur de x pour laisser de la place à la border
         $ligneTaille = $LargeurX*$LX+$LargeurX*2;
         $styleLigne = 'style="width:'.$ligneTaille.'px;height:'.$HY.'px"';
-        
+
         echo '<div class="map" '.$style.'>';
         for($y=$maxY;$y>$minY;$y--){
 
             echo '<div class="mapLigne" '.$styleLigne.'>';
             for($x=$minX;$x<$maxX;$x++){
-               
-                 if ($y==$Map->getY() && $x==$Map->getX()) {
+
+                if ($y==$Map->getY() && $x==$Map->getX()) {
                     echo '<div class="mapPositionUser" '.$styleCellule.'></div>';
                 }else if($y==0 && $x==0){
                     echo '<div class="mapOrigine" '.$styleCellule.'></div>';
@@ -289,7 +274,6 @@ class User{
                                 //map found check it bro 
                                 $MapScan->setMapByID($allMap[$x][$y]);
 
-                                
                                 if(count($MapScan->getAllMobContre($this))){
                                     echo '<div class="mapMob" '.$styleCellule.'></div>';
                                 }else if (count($MapScan->getAllMobCapture($this))){
@@ -297,7 +281,6 @@ class User{
                                 }else{
                                     echo '<div class="mapVerte" '.$styleCellule.'></div>';
                                 }
-
                             }else{
                                 echo '<div class="mapRouge" '.$styleCellule.'></div>';
                             }
@@ -308,17 +291,10 @@ class User{
                         echo '<div class="mapRouge" '.$styleCellule.'></div>';
                     }
                 }
-                
-                
             }
             echo '</div>';
-
         }
         echo '</div>';
-    
-        
     }
-
 }
-
 ?>
