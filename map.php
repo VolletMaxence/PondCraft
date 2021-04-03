@@ -51,7 +51,7 @@ session_start();
                 if(count($listItems)>0){
                     foreach ( $listItems as  $Item) {
                         ?>
-                        <li id="itemSac<?php echo $Item->getId()?>"><a onclick="useItem(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></li>
+                        <li id="itemSac<?php echo $Item->getId()?>"><a onclick="useItem(<?php echo $Item->getId()?>)"><?php echo $Item->getNom() ?></a></li>
                         <?php 
                     }
                 }
@@ -69,21 +69,16 @@ session_start();
                 }
                 
                 
-                //AFFICHAGE DE LA MAP
-
-                echo '<div class="lamap">';
+                //GESTION  DE LA MAP
                 $map = $Personnage->getMap();
-
-                //gestion de la téléportation
                 $TelportationPositionDepart = $map->getPosition();
-
+                //gestion de la téléportation    
                 $cardinalite = '';
                 if(isset($_GET["cardinalite"])){
                     $cardinalite = $_GET["cardinalite"];
                 }
 
-                if($map->LogVisiteMap($Personnage)){ //control de spam.
-
+                if($map->LogVisiteMap($Personnage)){ 
                     if(isset($_GET["position"]) && $Personnage->getVie()>0){
                         $map = $map->loadMap($_GET["position"],$cardinalite,$Joueur1);
                     }else{
@@ -94,98 +89,121 @@ session_start();
                         $map = $map->loadMap($map->getPosition(),'nord',$Joueur1);
                     }
                     
-                     //puis on déplace le joueur
+                    //puis on déplace le joueur
                     $Joueur1->getPersonnage()->ChangeMap($map);
                 }
-                $Joueur1->getVisitesHTML(6);
-            
-                //affichage des autres joueurs sur la carte
 
-                $listPersos = $map->getAllPersonnages();
-                if(count($listPersos)>1){
-                    echo '<div class="left">Visiblement tu n\'est pas seul ici il y a aussi :'.'<ul id="ulPersos" class="Persos">';
-                    $PersoJoeuur = $Joueur1->getPersonnage();
-                    foreach ( $listPersos as  $Perso) {
-                        if($Perso->getId()!=$PersoJoeuur->getId()){
-                            ?>
-                            <li id="Perso<?php echo $Perso->getId()?>">
-                            <a onclick="AttaquerPerso(<?php echo $Perso->getId()?>,0)">
-                                <?php  $Perso->renderHTML();?></a>
-                            </li>
-                            <?php 
-                        }
-                    }
-                    echo '</ul></div>';
-                }
+                $BousoleDeplacement = $map->getMapAdjacenteLienHTML($cardinalite,$Joueur1);
 
-                //affiche les mob enemie et capturé;
-                $listMob = $map->getAllMobs();
-                if(count($listMob)>0){
-                    echo '<div class="left">'.'<ul id="ulMob" class="Mob">';
-                    $Mob = new Mob($mabase);
 
-                    //affichage des Mob Enemi
-                    $mobContre = $map->getAllMobContre($Joueur1);
-                    if(count($mobContre)>0){
-                        echo "<div>Tu es bloqué car il y a des mobs<div>";
-                    }
-                    foreach (  $mobContre as  $MobID) {
-                        $Mob->setMobById($MobID);
-                        ?>
-                        <li id="Mob<?php echo $Mob->getId()?>" class="adverse">
-                        <a onclick="AttaquerPerso(<?php echo $Mob->getId()?>,1)">
-                            <?php  
-                            echo $Mob->generateImage();
-                            $Mob->renderHTML();
-                            ?>
-                            
-                        </a>
-                        </li>
-                        <?php 
-                        
-                    }
+                //HTML  DE LA MAP
+                echo '<div class="lamap">';
 
-                    //affichage des Mob Capturés
-                    foreach ( $map->getAllMobCapture($Joueur1) as  $MobID) {
-                        $Mob->setMobById($MobID);
-                        ?>
-                        <li id="Mob<?php echo $Mob->getId()?>" class="Captured">
-                        <a onclick="SoinMob(<?php echo $Mob->getId()?>,1)">
-                            <?php  
-                            echo $Mob->generateImage();
-                            $Mob->renderHTML();
-                            ?>
-                            
-                        </a>
-                        </li>
-                        <?php 
+                    echo $BousoleDeplacement['nord'];
+                   
+                    echo '<div class="mapOuest">';
+                        echo $BousoleDeplacement['ouest'];
+                        echo '<div class="mapEst">';
+                            echo '<div class="mapCentre">';
+                   
                     
-                }
-  
-                    echo '</ul></div>';
-                }
-                //affichage des mob déjà attrapé
+                                $Joueur1->getVisitesHTML(6);
+                                
+                                
+                                //affichage des autres joueurs sur la carte
 
-            
+                                $listPersos = $map->getAllPersonnages();
+                                if(count($listPersos)>1){
+                                    echo '<div class="left">Visiblement tu n\'est pas seul ici il y a aussi :'.'<ul id="ulPersos" class="Persos">';
+                                    $PersoJoeuur = $Joueur1->getPersonnage();
+                                    foreach ( $listPersos as  $Perso) {
+                                        if($Perso->getId()!=$PersoJoeuur->getId()){
+                                            ?>
+                                            <li id="Perso<?php echo $Perso->getId()?>">
+                                            <a onclick="AttaquerPerso(<?php echo $Perso->getId()?>,0)">
+                                                <?php  $Perso->renderHTML();?></a>
+                                            </li>
+                                            <?php 
+                                        }
+                                    }
+                                    echo '</ul></div>';
+                                }
 
-                //AFFICHAGE DES ITEMS DE LA MAP
-                $listItems = $map->getItems();
-                if(count($listItems)>0){
-                    echo '<div class="left">Items Présent : <div class="divRarete"> Commun - Rare</div><ul class="Item">';
-                    foreach ( $listItems as  $Item) {
-                        ?>
-                        <li id="item<?php echo $Item->getId()?>" style="<?php echo $Item->getClassRarete()?>">
-                            <a onclick="CallApiAddItemInSac(<?php echo $Item->getId()?>)">
-                                <?php echo $Item->getNom() ?></a>
-                        </li>
-                        <?php 
-                    }
-                    echo '</ul></div>';
-                }
+                                //affiche les mob enemie et capturé;
+                                $listMob = $map->getAllMobs();
+                                if(count($listMob)>0){
+                                    echo '<div class="left">'.'<ul id="ulMob" class="Mob">';
+                                    $Mob = new Mob($mabase);
+
+                                    //affichage des Mob Enemi
+                                    $mobContre = $map->getAllMobContre($Joueur1);
+                                    if(count($mobContre)>0){
+                                        echo "<div>Tu es bloqué car il y a des mobs<div>";
+                                    }
+                                    foreach (  $mobContre as  $MobID) {
+                                        $Mob->setMobById($MobID);
+                                        ?>
+                                        <li id="Mob<?php echo $Mob->getId()?>" class="adverse">
+                                        <a onclick="AttaquerPerso(<?php echo $Mob->getId()?>,1)">
+                                            <?php  
+                                            echo $Mob->generateImage();
+                                            $Mob->renderHTML();
+                                            ?>
+                                            
+                                        </a>
+                                        </li>
+                                        <?php 
+                                        
+                                    }
+
+                                    //affichage des Mob Capturés
+                                    foreach ( $map->getAllMobCapture($Joueur1) as  $MobID) {
+                                        $Mob->setMobById($MobID);
+                                        ?>
+                                        <li id="Mob<?php echo $Mob->getId()?>" class="Captured">
+                                        <a onclick="SoinMob(<?php echo $Mob->getId()?>,1)">
+                                            <?php  
+                                            echo $Mob->generateImage();
+                                            $Mob->renderHTML();
+                                            ?>
+                                            
+                                        </a>
+                                        </li>
+                                        <?php 
+                                    
+                                    }
                 
+                                    echo '</ul></div>';
+                                }
+                                //affichage des mob déjà attrapé
+                            
 
+                                //AFFICHAGE DES ITEMS DE LA MAP
+                                $listItems = $map->getItems();
+                                if(count($listItems)>0){
+                                    echo '<div class="left">Items Présent : <div class="divRarete"> Commun - Rare</div><ul class="Item">';
+                                    foreach ( $listItems as  $Item) {
+                                        ?>
+                                        <li id="item<?php echo $Item->getId()?>" style="<?php echo $Item->getClassRarete()?>">
+                                            <a onclick="CallApiAddItemInSac(<?php echo $Item->getId()?>)">
+                                                <?php echo $Item->getNom() ?></a>
+                                        </li>
+                                        <?php 
+                                    }
+                                    echo '</ul></div>';
+                                }
+                        
+                            
+                               
+                               
+
+                            echo '</div>' ;//DIV MAP CENTRE; 
+                            echo $BousoleDeplacement['est'];
+                        echo '</div>' ;//DIV MAP EST; 
+                    echo '</div>' ;//DIV MAP OUEST; 
+                    echo $BousoleDeplacement['sud'];
                 echo '</div>'; //DIV DE LA MAP
-                $map->getMapAdjacenteLienHTML($cardinalite,$Joueur1);
+                
                 $map->getImageCssBack();
 
             ?>

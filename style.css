@@ -190,25 +190,66 @@ body {
 	width: 100%;
 }
 .sud {
-    position: absolute;
-    bottom:0px;
-    left: 50%;
+   
+    width: 100%;
+    float: left;
+    background-color:rgba(0, 81, 255, 0.767);
+    height: 30px;
+    text-align: center;
 
 }
 .nord {
-    position: absolute;
-    top:0px;
-    left: 50%;
+    
+    background-image: url("https://publicdomainvectors.org/photos/north-arrow-2.png");
+    background-repeat: no-repeat;
+    width: 100%;
+    float: left;
+    background-color:rgba(0, 81, 255, 0.767);
+    height: 30px;
+    text-align: center;
 }
 .est{
-    position: absolute;
-    right:0px;
+    float: right;
+    width: 30px;
+    height: 100%;
+
 }
 
 .ouest{
-    position: absolute;
-    left:0px
+    float: left;
+    width: 30px;
+    height: 100%;
+
 }
+
+.VerticalText a{
+    transform:rotate(-90deg);
+  transform-origin:top right;
+}
+
+
+
+
+.mapOuest{
+    background-color:rgba(0, 81, 255, 0.767);
+   
+    float: left;
+    width:auto;
+    
+}
+
+.mapEst{
+    background-color:rgba(0, 81, 255, 0.767);
+    float: right;
+    width: 770px;
+    
+}
+
+.mapCentre{
+    
+    float: left;
+}
+
 
 .cardinalite div{
     background-color: cadetblue;

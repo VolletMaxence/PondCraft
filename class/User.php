@@ -278,7 +278,9 @@ class User{
             for($x=$minX;$x<$maxX;$x++){
                
                  if ($y==$Map->getY() && $x==$Map->getX()) {
-                    echo '<div class="mapPositionUser" '.$styleCellule.'></div>';
+                    echo '<div class="mapPositionUser" '.$styleCellule.'>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Compass_Rose_French_North.svg/800px-Compass_Rose_French_North.svg.png" widht="'.$LX.'px" height="'.$LX.'px">
+                    </div>';
                 }else if($y==0 && $x==0){
                     echo '<div class="mapOrigine" '.$styleCellule.'></div>';
                 }else{
