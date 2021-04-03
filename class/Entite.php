@@ -58,6 +58,8 @@ class Entite {
         if ($this->_vie>$this->_vieMax){
             $this->_vie = $this->_vieMax;
         }
+        $req  = "UPDATE `Entite` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
+        $Result = $this->_bdd->query($req);
         return $valeur;
     }
 
