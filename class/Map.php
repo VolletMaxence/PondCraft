@@ -443,10 +443,11 @@ class map{
 
             //chargement d'un Mob aléatoire à la création
             if(rand(0,3)>1){
-                $Mob1 = new Mob($this->_bdd);
-                $nbMob = rand(0,2);
+                
+                $nbMob = rand(0,rand(2,4));
                 for($i=0;$i<$nbMob;$i++){
                     //il faut passer la map($this) au créateur de mob
+                    $Mob1 = new Mob($this->_bdd);
                     $Mob1 = $Mob1->CreateMobAleatoire($newmap);
                     if(!is_null($Mob1)){
                         array_push($newmap->listMobs,$Mob1->getId());

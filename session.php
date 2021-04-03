@@ -1,4 +1,7 @@
 <?php
+
+
+
 include "class/Entite.php";
 include "class/User.php";
 include "class/Personnage.php";
@@ -7,7 +10,7 @@ include "class/Item.php";
 include "class/Mob.php";
 include "class/Tooltip.php";
 
-session_start();
+
 
 //GESTION DE LA BASE -----------------------
 $mabase = null;
