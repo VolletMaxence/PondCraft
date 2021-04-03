@@ -575,7 +575,7 @@ class map{
 
         $req="SELECT `laDate` from `Visites` 
              WHERE `idPersonnage` = '".$Perso->getId()."' 
-             AND idmap = '".$this->_id."' ;
+             AND idmap = '".$this->_id."' 
              ORDER BY `laDate` DESC";
         $Result = $this->_bdd->query($req);
         if($tab = $Result->fetch()){
