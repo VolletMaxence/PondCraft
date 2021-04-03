@@ -12,6 +12,7 @@ session_start();
     <link rel="stylesheet" href="css/combat.css">
     <link rel="stylesheet" href="css/perso.css">
     <link rel="stylesheet" href="css/item.css">
+    <link rel="stylesheet" href="css/map.css">
     <script src="main.js"></script>
     <title>Combat</title>
 </head>
