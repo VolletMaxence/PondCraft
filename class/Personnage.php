@@ -109,7 +109,7 @@ class Personnage extends Entite{
     }
 
     //retourne toute la mécanique d'affichage d'un Personnage
-    public function renderHTML(){
+    /*public function renderHTML(){
         $pourcentage = round(100*$this->_vie/$this->_vieMax);
         ?>
         <div class="perso">
@@ -126,7 +126,7 @@ class Personnage extends Entite{
         </div>
 
         <?php
-    }
+    }*/
 
     public function getItems(){
         $lists=array();

@@ -13,17 +13,8 @@ if(is_null($map)){
 
 
 
-echo '<div class="test Unitaire"><p>Test 1 Lecture d\'un Mob  </p>';
-$newMob->setMobById(1);
-$newMob->getNom();
-$newMob->getBardeVie();
-$newMob->renderHTML();
-
-echo "</div>";
-
-
-echo '<div class="testUnitaire"><p>Test 2 Lecture d\'un Mob de type Perso </p>';
-$newMob->setMobById(412);
+echo '<div class="testUnitaire"><p>Test 1 Lecture d\'un Mob  </p>';
+$newMob->setMobById(460);
 $newMob->getNom();
 $newMob->getBardeVie();
 $newMob->renderHTML();

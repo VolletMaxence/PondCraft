@@ -91,10 +91,8 @@ class Mob extends Entite{
    
 
     //retourne toute la mécanique d'affichage d'un mob
-    public function renderHTML(){
-        if ($this->_vieMax<0 || $this->_vieMax=="0" ){
-            $this->_vieMax=10;
-        }
+    /*public function renderHTML(){
+       
         $pourcentage = round(100*$this->_vie/$this->_vieMax);
         ?>
         <div class="mob">
@@ -108,7 +106,7 @@ class Mob extends Entite{
             </div>
         </div>
         <?php
-    }
+    }*/
 
     public function CreateMobAleatoire($map){
             $newMob = new Mob($this->_bdd);
@@ -124,7 +122,7 @@ class Mob extends Entite{
                 $degat = 1;
             }
 
-            $newMob->CreateEntite($this->generateNom($type[0]), $vie, $degat, $map->getId(),$vie,'',null,2);
+            $newMob->CreateEntite($this->generateNom($type[0]), $vie, $degat, $map->getId(),$vie,$type[3],null,2);
 
             $req="INSERT INTO `Mob`(`coefXp`, `id`) 
             VALUES ('".$type[2]."','".$this->_id."')";
@@ -147,6 +145,7 @@ class Mob extends Entite{
     //$tab[0]=$newTypeNom;
     //$tab[1]=$newType;
     //$tab[2]=$coef;
+    //$tab[3]=image
     private function getTypeAleatoire(){
         $req="SELECT * FROM TypeMob ORDER BY rarete ASC";
         $Result = $this->_bdd->query($req);
@@ -156,6 +155,7 @@ class Mob extends Entite{
         $newType=0;
         $rarete=0;
         $newTypeNom='Menir';
+        $image = $this->generateImageMob($newTypeNom);
         while($tab=$Result->fetch()){
            if(rand(0,$imax)<$i){
             $newType = $tab['id'];
@@ -165,9 +165,12 @@ class Mob extends Entite{
            }
            $i--;
         }
+        
+        
         $tab[0]=$newTypeNom;
         $tab[1]=$newType;
         $tab[2]=$coef;
+        $tab[3]=$image;
         return $tab;
     }
 
@@ -282,8 +285,12 @@ class Mob extends Entite{
         return $nom ." ". $Adjectif." ".$Consone;
     }
 
-    public function generateImage(){
-        $topic='creature';
+    public function generateImageMob($topic){
+        //echo '<img src="'.$partialString3.'" widht="200px">';
+        if(empty($topic)){
+            $topic='creature';
+        }
+
         $ofs=mt_rand(0, 100);
         $geturl='http://www.google.ca/images?q=' . $topic . '&start=' . $ofs . '&gbv=1';
         $data=file_get_contents($geturl);
@@ -303,7 +310,9 @@ class Mob extends Entite{
         $urlLength=strpos($partialString2, $f3);
         $partialString3 = substr($partialString2, 0,  $urlLength);
 
-        echo '<img src="'.$partialString3.'" widht="200px">';
+        return $partialString3;
+
+        
     }
 }
 ?>

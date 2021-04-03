@@ -27,7 +27,7 @@ session_start();
     if($access){
 
         echo '<div class="TestIntegration"> TEST ITEM';
-            //include "testUnitaire/testItem.php"; 
+            include "testUnitaire/testItem.php"; 
         echo "</div>" ;
         echo '<div class="TestIntegration"> TEST ENTITE';
            include "testUnitaire/testEntite.php"; 

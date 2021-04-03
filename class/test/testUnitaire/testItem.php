@@ -41,9 +41,9 @@
 
 
 
-        echo '<div class="testUnitaire"><p>Test 3 100 Item aléatoire </p>';
+        echo '<div class="testUnitaire"><p>Test 3 création 20 Item aléatoire </p>';
         $listItems = array();
-        for($i=0;$i<100;$i++){
+        for($i=0;$i<20;$i++){
             $item = $newItem->createItemAleatoire();
             if(is_null($item)){
                 echo '<div style="color:red">Un item  null a été créer c\'est pas normal </div>';
