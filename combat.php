@@ -28,12 +28,16 @@ session_start();
             echo '<div class="reglement"><p>Il faut créer un personnage d\'abord.</p>';
             echo '<p><a  href="index.php" >Retour à l\'origine du tout </a></p></div>';
         }else{
-            echo '<div class="reglement"><h1>Bienvenue '.$Joueur1->getPrenom()."</h1>";
+           
             $personnage->getChoixPersonnage($Joueur1->getId());
             $map = $personnage->getMap();
-
-           
+            $tabDirection = $map->getMapAdjacenteLienHTML('nord',$Joueur1);
+            
+            echo '<div class="reglement">';
+            echo $tabDirection['nord'];
+            echo '<h1>Bienvenue '.$Joueur1->getPrenom()."</h1>";
             echo "Tu as décidé de combattre avec ".$Joueur1->getNomPersonnage(). ", il a une fortune de ".$personnage->getValeur()." (NFT)";
+            
             echo '<div class="avatar">';
                 $personnage->renderHTML();
 
@@ -67,7 +71,7 @@ session_start();
             </div><p><a href="index.php" >Créer un autre personnage.</a></p></div>
             </div>
             <?php
-            $map->getMapAdjacenteLienHTML('nord',$Joueur1);
+            $tabDirection = $map->getMapAdjacenteLienHTML('nord',$Joueur1);
         }
 
     }else{
