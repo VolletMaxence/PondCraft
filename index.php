@@ -16,7 +16,7 @@ session_start();
     <?php
     //c'est dans fonction que l'on gère les formulaires de Co et les sessions
 
-    include "fonction.php"; 
+    include "session.php"; 
     if($access){
         $access = $Joueur1->deconnectToi();
     }

@@ -19,7 +19,7 @@ session_start();
 <body class="bodyAccueil">
     
     <?php
-    include "fonction.php"; 
+    include "session.php"; 
 
     if($access){
         $access = $Joueur1->deconnectToi();
