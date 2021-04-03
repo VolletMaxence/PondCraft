@@ -56,7 +56,7 @@
                     if(count($listItems)>0){
                         foreach ($listItems as $Item){
                             ?>
-                                <li id="itemSac<?= $Item->getId() ?>"><a onclick="useItem(<?= $Item->getId() ?>)"><?= $Item->getNom() ?></li>
+                                <li id="itemSac<?= $Item->getId() ?>"><a onclick="useItem(<?= $Item->getId() ?>)"><?= $Item->getNom() ?></a></li>
                             <?php 
                         }
                     }
