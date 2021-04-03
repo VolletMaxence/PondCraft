@@ -7,7 +7,7 @@ include "class/Item.php";
 include "class/Mob.php";
 include "class/Tooltip.php";
 
-
+session_start();
 
 //GESTION DE LA BASE -----------------------
 $mabase = null;
