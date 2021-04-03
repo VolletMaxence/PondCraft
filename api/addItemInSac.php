@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "../fonction.php"; 
+include "../session.php"; 
 $reponse[0]=0;
 $reponse[1]=0;
 if($access){
