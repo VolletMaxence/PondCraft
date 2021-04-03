@@ -29,11 +29,12 @@ session_start();
             echo '<p><a  href="index.php" >Retour à l\'origine du tout </a></p></div>';
         }else{
            
+            echo '<div class="reglement">';
             $personnage->getChoixPersonnage($Joueur1->getId());
             $map = $personnage->getMap();
             $tabDirection = $map->getMapAdjacenteLienHTML('nord',$Joueur1);
             
-            echo '<div class="reglement">';
+            
             echo $tabDirection['nord'];
             echo '<h1>Bienvenue '.$Joueur1->getPrenom()."</h1>";
             echo "Tu as décidé de combattre avec ".$Joueur1->getNomPersonnage(). ", il a une fortune de ".$personnage->getValeur()." (NFT)";
