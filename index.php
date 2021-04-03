@@ -16,15 +16,15 @@ session_start();
     <?php
     //c'est dans fonction que l'on gère les formulaires de Co et les sessions
 
-    include "session.php"; 
+    include "session.php";
     if($access){
         $access = $Joueur1->deconnectToi();
     }
     if($access){
-
-        echo '<div class="reglement">';
-        echo "BIENVENUE ".$Joueur1->getPrenom();
-
+        ?>
+            <div class="reglement">
+                <p>BIENVENUE <?= $Joueur1->getPrenom() ?> </p>
+        <?php
         $PersoChoisie = new Personnage($mabase);
         $PersoCree = new Personnage($mabase);
         $PersoCree = $PersoCree->CreatNewPersonnage($Joueur1->getId());
@@ -33,21 +33,24 @@ session_start();
         if(!is_null($PersoCree)){
             $PersoChoisie = $PersoCree;
         }
-
         if(!$PersoChoisie->getId()==0){
             $Joueur1->setPersonnage($PersoChoisie);
         }
         ?>
-        <div class="Action">
+                <div class="Action">
         <?php
         if(!empty($PersoChoisie->getNom())){
-            echo '<a href="combat.php">Viens combattre avec '.$PersoChoisie->getNom().'</a>';
+        ?>
+                    <p> <a href="combat.php">Viens combattre avec <?= $PersoChoisie->getNom() ?> </a> </p>
+        <?php
         }else{
-            echo '<a href="combat.php">Viens combattre avec '.$Joueur1->getNomPersonnage().'</a>';
+        ?>
+                    <p> <a href="combat.php">Viens combattre avec <?= $Joueur1->getNomPersonnage() ?> </a> </p>
+        <?php
         }
         ?>
-        </div>
-        </div><!-- div reglement-->
+                </div>
+            </div><!-- div reglement-->
         <?php
     }else{
         echo $errorMessage;
