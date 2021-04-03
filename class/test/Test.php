@@ -31,6 +31,14 @@ session_start();
         echo "<div> TEST ENTITE";
            include "testUnitaire/testEntite.php"; 
         echo "</div>" ;
+        echo "<div> TEST PERSONNAGE";
+            include "testUnitaire/testPersonnage.php"; 
+        echo "</div>" ;
+
+        echo "<div> TEST MOB";
+            include "testUnitaire/testMob.php"; 
+        echo "</div>" ;
+
 
 
     }else{

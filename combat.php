@@ -36,7 +36,7 @@ session_start();
                 ?>
                     <div class="reglement">
                 <?php
-                $personnage->getChoixPersonnage($Joueur1->getId());
+                $personnage->getChoixPersonnage($Joueur1);
                 $map = $personnage->getMap();
                 $tabDirection = $map->getMapAdjacenteLienHTML('nord',$Joueur1); 
                 ?>

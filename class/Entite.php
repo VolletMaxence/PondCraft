@@ -4,18 +4,18 @@
 
 class Entite {
     
-    private $_id;
-    private $_nom;
-    private $_vie;
-    private $_vieMax;
-    private $_degat;
-    private $_imageLien;
+    protected $_id;
+    protected $_nom;
+    protected $_vie;
+    protected $_vieMax;
+    protected $_degat;
+    protected $_imageLien;
 
-    private $_type; //1 = hero 2= mob
+    protected $_type; //1 = hero 2= mob
 
-    private $map;
+    protected $map;
 
-    private $_bdd;
+    protected $_bdd;
 
     //private $sacItems=array();
 
@@ -53,7 +53,7 @@ class Entite {
 
     //il n'est possible de booster la vie au dela de vie max
     public function SoinPourcentage($pourcentage){
-        $valeur = round(($this->_vie*$pourcentage)/100);
+        $valeur = round(($this->_vieMax*$pourcentage)/100);
         $this->_vie =  $valeur+ $this->_vie;
         if ($this->_vie>$this->_vieMax){
             $this->_vie = $this->_vieMax;
@@ -72,16 +72,16 @@ class Entite {
         return $this->_vie;
     }
 
-    /*
+    
     public function getAllMyMobIdByMap($map){
         $listMob=array();
-        $req="SELECT `id` FROM `Mob` WHERE `idEntiteProprio` = '".$this->_id."' AND `idMap` = '".$map->getId()."' )";
+        $req="SELECT `id` FROM `Entite` WHERE `idUser` = '".$this->_id."' AND `idMap` = '".$map->getId()."' )";
         $Result = $this->_bdd->query($req);
         while($tab=$Result->fetch()){
             array_push($listMob,$tab);
         }
         return $listMob;
-    }*/
+    }
 
     public function SubitDegatByMob($Mob){
 
@@ -206,18 +206,7 @@ class Entite {
         return $this->map;
     }
 
-    /*
-    public function getItems(){
-        $lists=array();
-        foreach ($this->sacItems  as $ItemId) {
-            $newItem = new Item($this->_bdd);
-            $newItem->setItemByID($ItemId);
-            array_push($lists,$newItem);
-        }
-        return $lists;
-    }
-    */
-
+   
     public function lvlupAttaque($attaque){
         $this->_degat += $attaque;
         $sql = "UPDATE `Entite` SET `degat`='".$this->_degat."' WHERE `id`='".$this->_id."'";
@@ -242,15 +231,7 @@ class Entite {
         $this->_bdd->query($sql);
     }
 
-    /*
-    public function removeItemByID($id){
-        unset($this->sacItems[array_search($id, $this->sacItems)]);
-        $req="DELETE FROM `EntiteSacItems` WHERE idEntite='".$this->getId()."' AND idItem='".$id."'";
-        $this->_bdd->query($req);
-        $req="DELETE FROM `Item` WHERE id='".$id."'";
-        $this->_bdd->query($req);
-    }
-    */
+
 
     public function setEntiteById($id){
         $Result = $this->_bdd->query("SELECT * FROM `Entite` WHERE `id`='".$id."' ");
@@ -270,51 +251,29 @@ class Entite {
         }
     }
 
-    //ajoute un lien entre item et la entite en bdd 
-    //et accroche l'item dans la collection itemID dans le sac du perso
-    /*public function addItem($newItem){
-        array_push($this->sacItems,$newItem->getId());
-        $req="INSERT INTO `EntiteSacItems`(`idEntite`, `idItem`) VALUES ('".$this->getId()."','".$newItem->getId()."')";
-        $this->_bdd->query($req);
-    }*/
 
     //Retourne un formulaire HTML pourcreer un entite
     //et permet d'attribuer automatiquement à user
     // retour un objet entite
-    public function CreatNewEntite($idUser){
-        ?>
-        <div class = "formCreatio">
-        <?php $imageUrl = $this->generateImage(); ?>
-
-        <form action="" method="post" onclick="this.submit()">
-            <img src="<?php echo $imageUrl;?>" width="200px" >
-        </form>
-
-        <form action="" method="post">
-            <div>Créez un entite ou choisissez-en un :</div>
-            <input type="text" name="NomEntite" required>
-            <input type="submit" value="Creer" name="createEntite">
-            <input type="hidden" name="image" value="<?php echo $imageUrl;?>">
-        </form>
-        </div>
-        <?php
-        if (isset($_POST["createEntite"])){
-            $newperso = new Entite($this->_bdd);
-            $this->_nom=htmlentities($_POST['NomEntite'], ENT_QUOTES);
-            $this->_imageLien=$_POST['image'];
-            $req="INSERT INTO `Entite`(`nom`, `vie`, `degat`, `idMap`,`vieMax`,`lienImage`,`idUser`,`type`) VALUES ('".$this->_nom."',10,10,0,10,'".$this->_imageLien."','".$idUser."',1)";
-            $this->_bdd->beginTransaction();
-            $Result = $this->_bdd->query($req);
-            $lastID = $this->_bdd->lastInsertId();
-            if($lastID){ 
-                $newperso->setEntiteById($lastID);
-                $this->_bdd->commit();
-                return $newperso;
-            }else{
-                $this->_bdd->rollback();
-                return null;
-            }
+    public function CreateEntite($nom, $vie, $degat, $idMap,$vieMax,$lienImage,$idUser,$type){
+        
+        $newperso = new Entite($this->_bdd);
+        $this->_nom=htmlentities($nom, ENT_QUOTES);
+        $this->_imageLien=$lienImage;
+        $req="INSERT INTO `Entite`(`nom`, `vie`, `degat`, `idMap`,`vieMax`,`lienImage`,`idUser`,`type`) 
+        VALUES ('".$this->_nom."','.$vie.','.$degat.','.$idMap.','.$vieMax.','".$this->_imageLien."','".$idUser."','.$type.')";
+        $this->_bdd->beginTransaction();
+        $Result = $this->_bdd->query($req);
+        $this->_id = $this->_bdd->lastInsertId();
+        if($this->_id ){ 
+            $newperso->setEntiteById($this->_id );
+            $this->_bdd->commit();
+            return $newperso;
+        }else{
+            $this->_bdd->rollback();
+            return null;
         }
+        
 
         return null;
     }

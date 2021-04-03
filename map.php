@@ -40,7 +40,7 @@ session_start();
                     //TODO lol la fleme de faire la negation de ce if
                 }else{
                     echo "Tu peux appeler un autre personnage.";
-                    $Personnage->getChoixPersonnage($Joueur1->getId());
+                    $Personnage->getChoixPersonnage($Joueur1);
                     $Joueur1->setPersonnage($Personnage);
                 }
 

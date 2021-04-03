@@ -24,7 +24,7 @@ if($access){
             if($_GET["idItem"]==$item->getId()){
 
                 //on retire l'item du perso
-                $Perso->removeItemById($_GET["idItem"]);
+                $Perso->removeItemById($item->getId());
 
                 //selon l'id du type on fait un truc différent
                 $type = $item->getType();
