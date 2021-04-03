@@ -471,7 +471,7 @@ class map{
                 $ancienPosition=$this->getPosition();
 
                 $this->setMapByPosition($position);
-                echo "<p><b>". $this->getNom()."</b>".$this->getCoordonne()." découvert par ".$this->getPersonnageDecouvreur()->getPrenom()." et ses Personnages</p>";
+                echo "<p><b>". $this->getNom()."</b>".$this->getCoordonne()." découvert par ".$this->getPersonnageDecouvreur()->getPrenom()." et ses personnages.</p>";
 
                 //chargement des Items en plus
                 $req="SELECT `laDate` from `Visites` WHERE `idMap` = '".$this->getId()."' ORDER BY `laDate` DESC";
