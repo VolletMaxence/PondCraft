@@ -854,7 +854,8 @@ class map{
 
     public function getAleatoireImage($typeName){
         $typeName2 = str_replace(' ',',',$typeName);
-        $url = "https://source.unsplash.com/random/1280×720?".$typeName2."&auto=compress";
+        
+        $url = "https://source.unsplash.com/random/1600x900/?".$typeName2;
         $ch = curl_init();  
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
         curl_setopt($ch, CURLOPT_URL, $url); 
