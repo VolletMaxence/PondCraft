@@ -111,7 +111,7 @@ class map{
 
         //select les Personnages déjà présent en vie
         $this->listPersonnages = array();
-        $req  = "SELECT id FROM `Personnage` WHERE idMap='".$id."' and vie > 0";
+        $req  = "SELECT id FROM `Entite` WHERE idMap='".$id."' and vie > 0 AND type='1'";
         $Result = $this->_bdd->query($req);
         while($tab=$Result->fetch()){
             array_push($this->listPersonnages,$tab[0]);
@@ -119,7 +119,7 @@ class map{
 
          //select les Mob déjà présent
          $this->listMobs = array();
-         $req  = "SELECT id FROM `Mob` WHERE idMap='".$id."'";
+         $req  = "SELECT id FROM `Entite` WHERE idMap='".$id."' AND type='2' ";
          $Result = $this->_bdd->query($req);
          while($tab=$Result->fetch()){
              array_push($this->listMobs,$tab[0]);

@@ -25,16 +25,7 @@ $newEntite->renderHTML();
 
 echo "</div>";
 
-echo "<div><p>Test 2 création d'un Entite de type Perso </p>";
-$newEntite = $newEntite->CreatNewEntite(1);
-if(!is_null($newEntite)){
-    $newEntite->getBardeVie();
-    $newEntite->renderHTML();
-}
 
-
-
-echo "</div>";
 
 
 

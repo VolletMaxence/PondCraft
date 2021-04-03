@@ -57,7 +57,7 @@ class User{
 
     public function getAllMyMobIds(){
         $listMob=array();
-        $req="SELECT `id` FROM `Mob` WHERE `idPersoProprio`  in (SELECT `id` FROM `Personnage` WHERE `idUser` = '".$this->_id."')";
+        $req="SELECT `id` FROM `Entite` WHERE `idUser`  = '".$this->_id."'";
         $Result = $this->_bdd->query($req);
         while($tab=$Result->fetch()){
             array_push($listMob,$tab[0]);
@@ -194,10 +194,10 @@ class User{
 
         if ($taille>0){
             $req="SELECT `map`.`id`,`map`.`x`,`map`.`y` 
-            FROM `Visites`,`Personnage`,`map` 
+            FROM `Visites`,`map` , `Entite`
             WHERE map.id = Visites.idMap 
-            AND Visites.idPersonnage = Personnage.id 
-            AND `Personnage`.`idUser`='".$this->_id."' 
+            AND Visites.idPersonnage = Entite.id 
+            AND `Entite`.`idUser`='".$this->_id."' 
             AND map.x >= '".$minX."' 
             AND map.x <= '".$maxX."' 
             AND map.y >= '".$minY."' 
@@ -205,10 +205,10 @@ class User{
             group by `Visites`.`idMap`";
         }else{
             $req="SELECT `map`.`id`,`map`.`x`,`map`.`y` 
-            FROM `Visites`,`Personnage`,`map` 
+            FROM `Visites`,`Entite`,`map` 
             WHERE map.id = Visites.idMap 
-            AND Visites.idPersonnage = Personnage.id 
-            AND `Personnage`.`idUser`='".$this->_id."' 
+            AND Visites.idPersonnage = Entite.id 
+            AND `Entite`.`idUser`='".$this->_id."' 
             group by `Visites`.`idMap`";
         }
 

@@ -3,30 +3,52 @@
 //IL FAUT REFACTORISER AVEC DE LhERITAGE
 
 class Mob extends Entite{
+    private $_id;
+    private $_type;
+    private $_nom;
+    private $_degat;
+    private $_vie;
+    private $_vieMax;
+    private $_idProprio;
 
+    private $HostoriqueAttaque=array();
+
+    //permet de donner plus ou moins xp
     private $_coefXP;
-   
+
     public function __construct($bdd){
-        Parent::__construct($bdd);
+        $this->_bdd = $bdd;
     }
     
-   
+    public function getId(){
+        return $this->_id ;
+    }
+    public function getNom(){
+        return $this->_nom ;
+    }
+    public function getVie(){
+        return $this->_vie ;
+    }
+    public function getVieMax(){
+        return $this->_vieMax ;
+    }
+    public function getAttaque(){
+        return $this->_degat;
+    }
     public function getCoefXp(){
         return $this->_coefXP;
     }
 
     public function setMob($id,$type,$nom,$degat,$vie,$coefXP,$vieMax,$idProprio){
-        Parent::setMob($id,$type,$nom,$degat,$vie,$coefXP,$vieMax,$idProprio,2);
+        $this->_id = $id;
+        $this->_type = $type;
+        $this->_nom = $nom;
+        $this->_degat = $degat;
+        $this->_vie = $vie;
+        $this->_coefXP = $coefXP;
+        $this->_vieMax = $vieMax;
+        $this->_idProprio = $idProprio;
     }
-
-    public function setMobById($id){
-        Parent::setEntiteByIdWithoutMap($id);
-    }
-
-    public function setMobByIdWithMap($id){
-        Parent::setEntiteById($id);
-    }
-
 
     //methode appelé quand un personnage attaque un mob 
     //le perso est passé en param
@@ -86,9 +108,28 @@ class Mob extends Entite{
         return $this->$HostoriqueAttaque;
     }
 
-   
+    //cette méthode ne charge pas la MAP du mob
+    public function setMobById($id){
+        $Result = $this->_bdd->query("SELECT * FROM `Mob` WHERE `id`='".$id."' ");
+        if($tab = $Result->fetch()){ 
+            $this->setMob($tab["id"],$tab["type"],$tab["nom"],$tab["degat"],$tab["vie"],$tab["coefXp"],$tab["vieMax"],$tab["idPersoProprio"]);   
+        }
+    }
 
-   
+    //cette méthode  charge la map en plus
+    public function setMobByIdWithMap($id){
+        $Result = $this->_bdd->query("SELECT * FROM `Mob` WHERE `id`='".$id."' ");
+        if($tab = $Result->fetch()){ 
+
+            $this->setMob($tab["id"],$tab["type"],$tab["nom"],$tab["degat"],$tab["vie"],$tab["coefXp"],$tab["vieMax"],$tab["idPersoProprio"]);
+
+            //recherche de sa position
+            $map = new map($this->_bdd);
+            $map->setMapByID($tab["idMap"]);
+            $this->map = $map;
+            
+        }
+    }
 
     //retourne toute la mécanique d'affichage d'un mob
     public function renderHTML(){
@@ -124,16 +165,24 @@ class Mob extends Entite{
                 $degat = 1;
             }
 
-            $newMob->CreateEntite($this->generateNom($type[0]), $vie, $degat, $map->getId(),$vie,'',null,2);
-
-            $req="INSERT INTO `Mob`(`coefXp`, `id`) 
-            VALUES ('".$type[2]."','".$this->_id."')";
+            $req="INSERT INTO `Mob`(`nom`,`type`, `vie`, `degat`, `idMap` , `coefXp` ,  `vieMax`) 
+            VALUES ('".$this->generateNom($type[0])."',
+                    ".$type[1]."
+                    ,".$vie."
+                    ,".$degat."
+                    ,".$map->getId()."
+                    ,".$type[2]."
+                    ,".$vie."
+                    )";
+            $this->_bdd->beginTransaction();
             $Result = $this->_bdd->query($req);
-           
-            if( $newMob->getId()){ 
-                $newMob->setMobById( $newMob->getId());
+            $lastID = $this->_bdd->lastInsertId();
+            if($lastID){ 
+                $newMob->setMobById($lastID);
+                $this->_bdd->commit();
                 return $newMob;
             }else{
+                $this->_bdd->rollback();
                 return null;
             }
             $itemEnplus = new Item($this->_bdd);
