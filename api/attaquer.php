@@ -3,7 +3,7 @@
 //cette API retourne un tableau avec idDuPersoattaque, sa vie restant et sa vie de base
 // cette api retour un tableau avec 0 si elle n'a pas eccecuter le code attendu
 session_start();
-include "../fonction.php"; 
+include "../session.php"; 
 $reponse[0]=0;
 if($access){
     if(isset($_GET["id"]) && isset($_GET["type"])){

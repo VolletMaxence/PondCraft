@@ -2,7 +2,7 @@
 session_start();
 //cette api retourne aprés usage d'une item l'atttaque la vie et la vie max 
 //elle retourn 0 si çà c'est pas bien passé
-include "../fonction.php"; 
+include "../session.php"; 
 $reponse[0]=0;
 $reponse[1]=0;
 if($access){

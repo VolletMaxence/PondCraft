@@ -50,7 +50,6 @@ session_start();
                 //AFFICHAGE d'UN TOOLTIP
                 include "ihm/affichageTooltip.php";
                 
-                
                 //CHARGEMENT  DE LA MAP
                 include "ihm/chargementDeLaMap.php";
 
