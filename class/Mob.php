@@ -1,8 +1,6 @@
 <?php
-
-// TODO MOB ET PERSONNAGE ON TROP DE SIMILITUDE 
+//TODO MOB ET PERSONNAGE ON TROP DE SIMILITUDE 
 //IL FAUT REFACTORISER AVEC DE LhERITAGE
-
 
 class Mob{
     private $_id;
@@ -21,27 +19,25 @@ class Mob{
     public function __construct($bdd){
         $this->_bdd = $bdd;
     }
-
     public function getId(){
         return $this->_id ;
     }
     public function getNom(){
         return $this->_nom ;
     }
-
     public function getVie(){
         return $this->_vie ;
     }
     public function getVieMax(){
         return $this->_vieMax ;
     }
-
     public function getAttaque(){
         return $this->_degat;
     }
     public function getCoefXp(){
         return $this->_coefXP;
     }
+
     public function setMob($id,$type,$nom,$degat,$vie,$coefXP,$vieMax,$idProprio){
         $this->_id = $id;
         $this->_type = $type;
@@ -51,8 +47,6 @@ class Mob{
         $this->_coefXP = $coefXP;
         $this->_vieMax = $vieMax;
         $this->_idProprio = $idProprio;
-
-         
     }
 
     //methode appelé quand un personnage attaque un mob 
@@ -74,8 +68,6 @@ class Mob{
             $Result = $this->_bdd->query($req);
         }
 
-       
-
         //on va rechercher l'historique
         $req  = "SELECT * FROM `AttaquePersoMob` where idMob = '".$this->_id."' and idPersonnage = '".$Personnage->getId()."'" ;
         $Result = $this->_bdd->query($req);
@@ -96,9 +88,6 @@ class Mob{
             $Result = $this->_bdd->query($req);
         }
 
-
-        
-        
         //update AttaquePersoMob
         $req="UPDATE `AttaquePersoMob` SET 
         `nbCoup`=".$tabAttaque['nbCoup'].",
@@ -106,9 +95,7 @@ class Mob{
         `DegatsReçus`=".$tabAttaque['DegatsReçus']."
          WHERE idMob = '".$this->getId()."' AND idPersonnage ='".$Personnage->getId()."' ";
             $Result = $this->_bdd->query($req);
-
         return $this->_vie;
-        
     }
 
     public function getHistoriqueAttaque(){
@@ -134,7 +121,7 @@ class Mob{
         if($tab = $Result->fetch()){ 
 
             $this->setMob($tab["id"],$tab["type"],$tab["nom"],$tab["degat"],$tab["vie"],$tab["coefXp"],$tab["vieMax"],$tab["idPersoProprio"]);
-            
+
             //recherche de sa position
             $map = new map($this->_bdd);
             $map->setMapByID($tab["idMap"]);
@@ -157,11 +144,9 @@ class Mob{
             </div>
             <div class="attaque" id="attaqueMobValeur<?php echo $this->_id ;?>"><?php echo $this->_degat ;?></div>
             <div class="barreDeVie" id="vieMob<?php echo $this->_id ;?>">
-               
                 <div class="vie" id="vieMobValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
             </div>
         </div>
-
         <?php
     }
 
@@ -199,18 +184,15 @@ class Mob{
                 $this->_bdd->rollback();
                 return null;
             }
-
             $itemEnplus = new Item($this->_bdd);
             $nbItem = rand(2,$coefAbuseArme+round(($coefAbuseVie/10)));
-            
             for($i=0;$i<$nbItem;$i++){
                     $map->addItem($itemEnplus->createItemAleatoire());   
              }
-
     }
 
     //retour un tableau vace le nom du type et id dy type
-    //  $tab[0]=$newTypeNom;
+    //$tab[0]=$newTypeNom;
     //$tab[1]=$newType;
     //$tab[2]=$coef;
     private function getTypeAleatoire(){
@@ -237,10 +219,10 @@ class Mob{
         return $tab;
     }
 
-     //Permet de générer un nom de map
-     public function generateNom($type){
+    //Permet de générer un nom de map
+    public function generateNom($type){
         $nom =$type;
-        
+
         $Adjectif ="";
         switch (rand(0,10)){
             case 0:
@@ -344,36 +326,32 @@ class Mob{
                 $Consone .=" ";
             }
         }
-        
+
         return $nom ." ". $Adjectif." ".$Consone;
     }
-
 
     public function generateImage(){
         $topic='creature';
         $ofs=mt_rand(0, 100);
         $geturl='http://www.google.ca/images?q=' . $topic . '&start=' . $ofs . '&gbv=1';
         $data=file_get_contents($geturl);
-        
 
         //partialString1 is bigger link.. in it will be a scr for the beginning of the url
         $f1='<div class="lIMUZd"><div><table class="TxbwNb"><tr><td><a href="/url?q=';
         $pos1=strpos($data, $f1)+strlen($f1);
         $partialString1 = substr($data, $pos1);
-        
+
         //partialString 2 starts with the URL
         $f2='src="';
         $pos2=strpos($partialString1, $f2)+strlen($f2);
         $partialString2 = substr($partialString1, $pos2, 400);
-        
+
         //PartialString3 ends the url when it sees the "&amp;"
         $f3='&amp;';
         $urlLength=strpos($partialString2, $f3);
         $partialString3 = substr($partialString2, 0,  $urlLength);
-        
+
         echo '<img src="'.$partialString3.'" widht="200px">';
     }
-
 }
-
 ?>

@@ -6,12 +6,11 @@ include "../fonction.php";
 $reponse[0]=0;
 $reponse[1]=0;
 if($access){
-
     if(isset($_GET["idItem"])){
 
         //on doit toujours vérifier en bdd la posibilité de l'appel de API
         //iici on va utiliser un item pour un personnage.
-       
+
         $reponse[0]=0;
         $reponse[1]=0;
         $Perso = $Joueur1->getPersonnage();
@@ -19,18 +18,16 @@ if($access){
             $Perso->resurection();
             $reponse[1]="ton perso est mort";
         }
-        
-        
+ 
         //une fois que j'ai mes objet je vérifie que le perso possède bien item
         foreach ($Perso->getItems()  as $item) {
             if($_GET["idItem"]==$item->getId()){
 
                 //on retire l'item du perso
                 $Perso->removeItemById($_GET["idItem"]);
-               
+
                 $viemore=$item->getValeur();
                 $attaque=round($viemore/2);
-                
 
                 $Perso->lvlupAttaque($attaque);
                 $Perso->lvlupVie($viemore);
@@ -40,15 +37,9 @@ if($access){
                 $reponse[2]=$Perso->getVie();
                 $reponse[1]=$Perso->getAttaque();
                 $reponse[0]=$Perso->getId();
-                
             }
         }  
-        
     }
 }
 echo json_encode($reponse);
-
 ?>
-
-
-

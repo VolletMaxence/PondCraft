@@ -29,10 +29,10 @@ class Personnage{
         $pourcentage = round(100*$this->_vie/$this->_vieMax);
         ?>
         <div class="PersoPrincipalBarreVie">
-            
+
             <div class="attaque" id="attaquePersoValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
             <div class="barreDeVie" id="viePerso<?php echo $this->_id ;?>">
-                
+
                 <div class="vie" id="viePersoValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">
                 ♥️<?php echo $this->_vie ;?>
                 </div>
@@ -98,14 +98,12 @@ class Personnage{
         $this->_vie = $this->_vie - $MobDegatAttaqueEnvoyer;
         if($this->_vie<0){
             $this->_vie =0;
-
             //on ne peut pas donner plus de degat que la vie d'un perso
             $tabAttaque['DegatsDonnes'] = $vieAvantAttaque;
             //retour en zone 0,0
         }
         $req  = "UPDATE `Personnage` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
-
 
         //update AttaquePersoMob pour mettre a jour combien le perso a pris de degat 
         $req="UPDATE `AttaquePersoMob` SET 
@@ -124,12 +122,12 @@ class Personnage{
         $this->_degat = $degat;
         $this->_imageLien = $image;
 
-         //select les items déjà présent
-         $req  = "SELECT idItem FROM `PersoSacItems` WHERE idPersonnage='".$id."'";
-         $Result = $this->_bdd->query($req);
-         while($tab=$Result->fetch()){
-             array_push($this->sacItems,$tab[0]);
-         }
+        //select les items déjà présent
+        $req  = "SELECT idItem FROM `PersoSacItems` WHERE idPersonnage='".$id."'";
+        $Result = $this->_bdd->query($req);
+        while($tab=$Result->fetch()){
+            array_push($this->sacItems,$tab[0]);
+        }
     }
 
     public function getNom(){
@@ -172,14 +170,14 @@ class Personnage{
             </div>
             <div class="attaque" id="attaquePersoValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
             <div class="barreDeVie" id="viePerso<?php echo $this->_id ;?>">
-                
+
                  <div class="vie" id="viePersoValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
             </div>
         </div>
 
         <?php
     }
-    
+
     public function getId(){
         return $this->_id;
     }
@@ -207,15 +205,12 @@ class Personnage{
         $this->_vie += $viemore;
         $sql = "UPDATE `Personnage` SET `vie`='".$this->_vie."' WHERE `id`='".$this->_id."'";
         $this->_bdd->query($sql);
-
     }
     public function lvlupVieMax($viemore){
         $this->_vieMax += $viemore;
         $sql = "UPDATE `Personnage` SET `vieMax`='".$this->_vieMax."' WHERE `id`='".$this->_id."'";
         $this->_bdd->query($sql);
-
     }
-
 
     //permet de changer la position du joueur sur la carte
     public function changeMap($NewMap){
@@ -223,7 +218,6 @@ class Personnage{
         //on mémorise çà en base
         $sql = "UPDATE `Personnage` SET `idMap`='".$NewMap->getId()."' WHERE `id`='".$this->_id."'";
         $this->_bdd->query($sql);
-        
     }
 
     public function removeItemByID($id){
@@ -237,23 +231,18 @@ class Personnage{
     public function setPersonnageById($id){
         $Result = $this->_bdd->query("SELECT * FROM `Personnage` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
-
             $this->setPersonnage($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"]);
-            
             //recherche de sa position
             $map = new map($this->_bdd);
             $map->setMapByID($tab["idMap"]);
             $this->map = $map;
-            
         }
     }
 
     public function setPersonnageByIdWithoutMap($id){
         $Result = $this->_bdd->query("SELECT * FROM `Personnage` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
-
             $this->setPersonnage($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"]);
-            
         }
     }
 
@@ -269,20 +258,19 @@ class Personnage{
     //et permet d'attribuer automatiquement à user
     // retour un objet personnage
     public function CreatNewPersonnage($idUser){
-        
         ?>
         <div class = "formCreatio">
         <?php $imageUrl = $this->generateImage(); ?>
-            
+
         <form action="" method="post" onclick="this.submit()">
             <img src="<?php echo $imageUrl;?>" width="200px" >
         </form>
-           
+
         <form action="" method="post">
-            <div>Creer un Perso ou choisie en un</div>
-           <input type="text" name="NomPersonnage" required>
-           <input type="submit" value="Creer" name="createPerso">
-           <input type="hidden" name="image" value="<?php echo $imageUrl;?>">
+            <div>Créez un personnage ou choisissez-en un :</div>
+            <input type="text" name="NomPersonnage" required>
+            <input type="submit" value="Creer" name="createPerso">
+            <input type="hidden" name="image" value="<?php echo $imageUrl;?>">
         </form>
         </div>
         <?php
@@ -307,8 +295,7 @@ class Personnage{
         return null;
     }
 
-
-     //Retourne une liste HTML de tous les personnages
+    //Retourne une liste HTML de tous les personnages
     //et permet d'attribuer un perso à un user
     // retour un objet personnage
     public function getChoixPersonnage($idUser){
@@ -319,28 +306,23 @@ class Personnage{
             }
             //si le personnage est mort on le place ne origine 0,0
         }
-
         $Result = $this->_bdd->query("SELECT * FROM `Personnage` where idUser='".$idUser."' ");
         ?>
         <form action="" method="post" onchange="this.submit()">
             <select name="idPersonnage" id="idPersonnage">
-            <option value=""> Choisi un perso</option>
+            <option value="">Choisir un personnage</option>
                 <?php while($tab=$Result->fetch()){
-                    
                     ($tab['id']==$this->_id)?$selected='selected':$selected='';
                     echo '<option value="'.$tab["id"].'" '.$selected.'> '.$tab["nom"].'</option>';
-
                 }
                 ?>
             </select>
         </form>
         <?php
-       
         return $this;
     }
 
     public function generateImage(){
-
         switch (rand(0,3)) {
             case 0:
                 $topic='league+of+legend+fan+art';
@@ -362,25 +344,23 @@ class Personnage{
         $ofs=mt_rand(0, 100);
         $geturl='http://www.google.ca/images?q=' . $topic . '&start=' . $ofs . '&gbv=1';
         $data=file_get_contents($geturl);
-        
 
         //partialString1 is bigger link.. in it will be a scr for the beginning of the url
         $f1='<div class="lIMUZd"><div><table class="TxbwNb"><tr><td><a href="/url?q=';
         $pos1=strpos($data, $f1)+strlen($f1);
         $partialString1 = substr($data, $pos1);
-        
+
         //partialString 2 starts with the URL
         $f2='src="';
         $pos2=strpos($partialString1, $f2)+strlen($f2);
         $partialString2 = substr($partialString1, $pos2, 400);
-        
+
         //PartialString3 ends the url when it sees the "&amp;"
         $f3='&amp;';
         $urlLength=strpos($partialString2, $f3);
         $partialString3 = substr($partialString2, 0,  $urlLength);
-        
+
         return $partialString3;
     }
 }
-
 ?>

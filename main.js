@@ -16,17 +16,13 @@ function attaquer(idPerso,type){
             if(data[1]<=0){
                 location.reload();
             }
-            
         }
-        
-
     })
     .catch(function(error) {
         // This is where you run code if the server returns any errors
         console.log(error);
     });
 }
-
 
 function useItem(idItem){
     //pour appeler une API on utilise la méthode fetch()
@@ -34,18 +30,16 @@ function useItem(idItem){
     .then(function(data) {
         // code for handling the data you get from the API
         console.log(data);
-        
         lvlUp(data[0],data[1],data[2],data[3],idItem);
-
-
     })
     .catch(function(error) {
         // This is where you run code if the server returns any errors
         console.log(error);
     });
 }
+
 function lvlUp(id,attaque,vie,vieMax,idItem){
-    
+
     if(id==0){
         alert("La magie à fait chou blanc" );
     }else{
@@ -54,22 +48,16 @@ function lvlUp(id,attaque,vie,vieMax,idItem){
             let pourcentage = vie/vieMax*100;
             e1.style.width = pourcentage+"%";
             e1.innerHTML = '♥️'+vie+'/'+vieMax;
-            
         }
         var e2 = document.getElementById("attaquePersoValeur"+id);
         if(e2!="undefine"){
-           
             e2.innerHTML = attaque;
-            
         }
         var li = document.getElementById("itemSac"+idItem)
         if (li!='undefine'){
             li.remove();
         }
     }
-
-
-   
 }
 
 function UpdateVie(id,vie,vieMax,viPerso,viMaxPerso,id2,message){
@@ -78,20 +66,14 @@ function UpdateVie(id,vie,vieMax,viPerso,viMaxPerso,id2,message){
         let pourcentage = vie/vieMax*100;
         e1.style.width = pourcentage+"%";
         e1.innerHTML = '♥️'+vie+'/'+vieMax;
-        
     }
     var e2 = document.getElementById(id2);
     if(e2!="undefine"){
         let pourcentage = viPerso/viMaxPerso*100;
         e2.style.width = pourcentage+"%";
         e2.innerHTML = '♥️'+viPerso+'/'+viMaxPerso;
-        
     }
     if(viPerso==0 || message!=''){
         alert(message);
     }
-
-
-   
 }
-

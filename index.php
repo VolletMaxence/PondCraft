@@ -1,6 +1,5 @@
 <?php 
 session_start();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +12,6 @@ session_start();
     <title>Document</title>
 </head>
 <body class="bodyAccueil">
-    
     <?php
     //c'est dans fonction que l'on gère les formulaires de Co et les sessions
 
@@ -22,10 +20,10 @@ session_start();
         $access = $Joueur1->deconnectToi();
     }
     if($access){
-        
+
         echo '<div class="reglement">';
         echo "BIENVENUE ".$Joueur1->getPrenom();
-        
+
         $PersoChoisie = new Personnage($mabase);
         $PersoCree = new Personnage($mabase);
         $PersoCree = $PersoCree->CreatNewPersonnage($Joueur1->getId());
@@ -35,7 +33,6 @@ session_start();
             $PersoChoisie = $PersoCree;
         }
 
-
         if(!$PersoChoisie->getId()==0){
             $Joueur1->setPersonnage($PersoChoisie);
         }
@@ -43,15 +40,14 @@ session_start();
         <div class="Action">
         <?php
         if(!empty($PersoChoisie->getNom())){
-            echo '<a href="combat.php">vient combatre avec '.$PersoChoisie->getNom().'</a>';
+            echo '<a href="combat.php">Viens combattre avec '.$PersoChoisie->getNom().'</a>';
         }else{
-            echo '<a href="combat.php">vient combatre avec '.$Joueur1->getNomPersonnage().'</a>';
+            echo '<a href="combat.php">Viens combattre avec '.$Joueur1->getNomPersonnage().'</a>';
         }
         ?>
         </div>
         </div><!-- div reglement-->
         <?php
-        
     }else{
         echo $errorMessage;
     }
