@@ -10,7 +10,7 @@ if($access){
 
         //on doit toujours vérifier en bdd la posibilité de l'appel de API
         //iici on va utiliser un item pour un personnage.
-
+        $message ='';
         $reponse[0]=0;
         $reponse[1]=0;
         $Perso = $Joueur1->getPersonnage();
@@ -26,13 +26,28 @@ if($access){
                 //on retire l'item du perso
                 $Perso->removeItemById($_GET["idItem"]);
 
-                $viemore=$item->getValeur();
-                $attaque=round($viemore/2);
+                //selon l'id du type on fait un truc différent
+                $type = $item->getType();
+                switch ($type['id']) {
+                    case 2:
+                        $calcul = $item->getEfficacite()*$item->getLvl()*$item->getValeur();
+                        $valeur = $Perso->SoinPourcentage($calcul);
+                        $message = $Perso->getNom()." à été soigné de ".$valeur."pts de vie avec une efficacite de ".$calcul."%";
+                        break;
+                    
+                    default:
+                        $viemore=$item->getValeur();
+                        $attaque=round($viemore/2);
+                        $message = $Perso->getNom()." à utilisé un objet";
+                        $Perso->lvlupAttaque($attaque);
+                        $Perso->lvlupVie($viemore);
+                        $Perso->lvlupVieMax($viemore);
+                        break;
+                }
 
-                $Perso->lvlupAttaque($attaque);
-                $Perso->lvlupVie($viemore);
-                $Perso->lvlupVieMax($viemore);
+                
 
+                $reponse[4]=$message;
                 $reponse[3]=$Perso->getVieMax();
                 $reponse[2]=$Perso->getVie();
                 $reponse[1]=$Perso->getAttaque();

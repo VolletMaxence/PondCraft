@@ -1,10 +1,12 @@
 <?php
+include "class/Entite.php";
 include "class/User.php";
 include "class/Personnage.php";
 include "class/Map.php";
 include "class/Item.php";
 include "class/Mob.php";
 include "class/Tooltip.php";
+
 
 
 //GESTION DE LA BASE -----------------------

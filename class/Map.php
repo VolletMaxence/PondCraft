@@ -478,7 +478,7 @@ class map{
                 $Result = $this->_bdd->query($req);
                 if($tab = $Result->fetch()){
                     $DatePresent = time(); //"Y-m-d H:i:s"
-                    $DerniereDate = strtotime($tab['laDate'])+5;
+                    $DerniereDate = strtotime($tab['laDate'])+2;
 
                     if($DerniereDate<=$DatePresent){
                         if(rand(0,2)>1){
@@ -501,6 +501,16 @@ class map{
                                 }
                             }
                         }
+                    }
+                }
+
+                //item de vie
+                if(rand(0,2)>1){
+                    $itemEnplus = new Item($this->_bdd);
+                    $nbItem = rand(0,2);
+
+                    for($i=0;$i<$nbItem;$i++){
+                        $this->addItem($itemEnplus->createItemSoinConsommable()); 
                     }
                 }
 
