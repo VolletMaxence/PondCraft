@@ -17,7 +17,6 @@ if(count($listMob)>0){
         <li id="Mob<?php echo $Mob->getId()?>" class="adverse">
         <a onclick="AttaquerPerso(<?php echo $Mob->getId()?>,1)">
             <?php  
-            echo $Mob->generateImage();
             $Mob->renderHTML();
             ?>
             
@@ -34,7 +33,6 @@ if(count($listMob)>0){
         <li id="Mob<?php echo $Mob->getId()?>" class="Captured">
         <a onclick="SoinMob(<?php echo $Mob->getId()?>,1)">
             <?php  
-            echo $Mob->generateImage();
             $Mob->renderHTML();
             ?>
             

@@ -28,7 +28,6 @@ class Item{
                          
         }
     }
-
     public function setItem($id,$type,$nom,$valeur,$efficacite,$lvl){
         $this->_id = $id;
         $this->_nom = $nom;
@@ -37,32 +36,26 @@ class Item{
         $this->_efficacite = $efficacite;
         $this->_lvl = $lvl;
     }
-
     public function getLvl(){
         return $this->_lvl;
     }
-
     public function getEfficacite(){
         return $this->_efficacite;
     }
-
     public function deleteItem($id){
         $req="DELETE FROM Item WHERE id='".$id."' ";
 
         $Result = $this->_bdd->query($req);
     }
-
     public function getNom(){
         return $this->_nom;
     }
-
     public function getId(){
         return $this->_id;
     }
     public function getValeur(){
         return $this->_valeur;
     }
-
     //retourn un tableau avec id information lienImage nom rarete
     public function getType(){
 
@@ -75,7 +68,7 @@ class Item{
             return null;
         }
     }
-
+    //retour le style de couleur de la rareté d'un item
     public function getClassRarete(){
         $req="SELECT rarete FROM TypeItem where id = '".$this->_type."'";
         $Result = $this->_bdd->query($req);
@@ -83,9 +76,7 @@ class Item{
         if($tab = $Result->fetch()){
             //pour le moment les raretés vont de 1 à 16
             //rareté de vert à rouge
-
             if($tab[0]<8){
-
                 //on par de 0   255 0 
                 //        à 255 255 0
                 $val = round((($tab[0]/8)*((255-100)+100))+95);
@@ -110,11 +101,9 @@ class Item{
         $Transparence = (($this->_valeur/160)*((1-0.3)))+0.3 ;
         return $colorRarete.','.$Transparence.') !important' ;
     }
-
     public function __construct($bdd){
         $this->_bdd = $bdd;
     }
-
     public function createItemSoinConsommable(){
         $newItem = new Item($this->_bdd);
         $req="SELECT * FROM TypeItem where id = 2";

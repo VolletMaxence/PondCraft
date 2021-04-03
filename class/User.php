@@ -57,7 +57,7 @@ class User{
 
     public function getAllMyMobIds(){
         $listMob=array();
-        $req="SELECT `id` FROM `Entite` WHERE `idUser`  = '".$this->_id."'";
+        $req="SELECT `id` FROM `Entite` WHERE `idUser`   in (SELECT `id` FROM `Entite` WHERE `idUser` = '".$this->_id."') AND Type=2";
         $Result = $this->_bdd->query($req);
         while($tab=$Result->fetch()){
             array_push($listMob,$tab[0]);

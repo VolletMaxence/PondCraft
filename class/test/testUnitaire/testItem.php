@@ -64,6 +64,12 @@
                         <?php echo $Item->getNom() ?></a>
                 </li>
                 <?php 
+
+                if($item->getEfficacite() == 0 || $item->getLvl() == 0  || $item->getValeur() == 0){
+                    echo '<div style="color:red">il est pas possible d\'avoir 0 en valeur efficacite lvl</div>';
+                }
+
+                
                 $Item->deleteItem($Item->getId());
             }
             echo '</ul></div>';

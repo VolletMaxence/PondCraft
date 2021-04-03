@@ -185,18 +185,18 @@ class Entite {
         }
         $pourcentage = round(100*$this->_vie/$this->_vieMax);
         ?>
-        <div class="perso">
-            <div>
+        
+        <div>
             <?php echo $this->_nom ?>( <?php echo $this->getValeur() ?> NFT)
-            </div>
-            <div><img class="Entite" src="<?php echo $this->_imageLien;?>">
-            </div>
-            <div class="attaque" id="attaqueEntiteValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
-            <div class="barreDeVie" id="vieEntite<?php echo $this->_id ;?>">
-
-                 <div class="vie" id="vieEntiteValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
-            </div>
         </div>
+        <div>
+            <img class="Entite" src="<?php echo $this->_imageLien;?>">
+        </div>
+        <div class="attaque" id="attaqueEntiteValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
+        <div class="barreDeVie" id="vieEntite<?php echo $this->_id ;?>">
+                <div class="vie" id="vieEntiteValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
+        </div>
+        
 
         <?php
     }

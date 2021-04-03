@@ -30,8 +30,8 @@ class Mob extends Entite{
 
     //methode appelé quand un personnage attaque un mob 
     //le perso est passé en param
-    public function SubitDegat($Personnage){
-        $this->_vie = $this->_vie - $Personnage->getAttaque();
+    public function SubitDegat($Entite){
+        $this->_vie = $this->_vie - $Entite->getAttaque();
 
         $coupFatal = 0;
         if($this->_vie<0){
@@ -39,30 +39,30 @@ class Mob extends Entite{
             $coupFatal=1;
 
             //on va attribuer le mob au perssonage sa vie revient a fond pour le propriétaire
-            $req  = "UPDATE `Mob` SET `vie`='".$this->_vieMax."',`idPersoProprio`='".$Personnage->getId()."' WHERE `id` = '".$this->_id ."'";
+            $req  = "UPDATE `Entite` SET `vie`='".$this->_vieMax."',`idUser`='".$Entite->getId()."' WHERE `id` = '".$this->_id ."'";
             $Result = $this->_bdd->query($req);
 
         }else{
-            $req  = "UPDATE `Mob` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
+            $req  = "UPDATE `Entite` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
             $Result = $this->_bdd->query($req);
         }
 
         //on va rechercher l'historique
-        $req  = "SELECT * FROM `AttaquePersoMob` where idMob = '".$this->_id."' and idPersonnage = '".$Personnage->getId()."'" ;
+        $req  = "SELECT * FROM `AttaquePersoMob` where idMob = '".$this->_id."' and idPersonnage = '".$Entite->getId()."'" ;
         $Result = $this->_bdd->query($req);
         $tabAttaque['nbCoup']=0;
         $tabAttaque['DegatsDonnes']=0;
-        $tabAttaque['DegatsReçus']=$Personnage->getAttaque();
+        $tabAttaque['DegatsReçus']=$Entite->getAttaque();
         if($tab=$Result->fetch()){
             $tabAttaque = $tab;
-            $tabAttaque['DegatsReçus']+=$Personnage->getAttaque();
+            $tabAttaque['DegatsReçus']+=$Entite->getAttaque();
             $tabAttaque['nbCoup']++;
 
         }else{
             //insertion d'une nouvelle attaque
             $req="INSERT INTO `AttaquePersoMob`(`idMob`, `idPersonnage`, `nbCoup`, `coupFatal`, `DegatsDonnes`, `DegatsReçus`) 
             VALUES (
-                '".$this->_id."','".$Personnage->getId()."',1,0,0,".$tabAttaque['DegatsReçus']."
+                '".$this->_id."','".$Entite->getId()."',1,0,0,".$tabAttaque['DegatsReçus']."
             )";
             $Result = $this->_bdd->query($req);
         }
@@ -72,7 +72,7 @@ class Mob extends Entite{
         `nbCoup`=".$tabAttaque['nbCoup'].",
         `coupFatal`=".$coupFatal.",
         `DegatsReçus`=".$tabAttaque['DegatsReçus']."
-         WHERE idMob = '".$this->getId()."' AND idPersonnage ='".$Personnage->getId()."' ";
+         WHERE idMob = '".$this->getId()."' AND idPersonnage ='".$Entite->getId()."' ";
             $Result = $this->_bdd->query($req);
         return $this->_vie;
     }
@@ -91,22 +91,18 @@ class Mob extends Entite{
    
 
     //retourne toute la mécanique d'affichage d'un mob
-    /*public function renderHTML(){
+    public function renderHTML(){
        
-        $pourcentage = round(100*$this->_vie/$this->_vieMax);
         ?>
         <div class="mob">
-            <div>
-            <?php echo $this->_nom ?>
-            ( x<?php echo $this->getCoefXp() ?> xp)
-            </div>
-            <div class="attaque" id="attaqueMobValeur<?php echo $this->_id ;?>"><?php echo $this->_degat ;?></div>
-            <div class="barreDeVie" id="vieMob<?php echo $this->_id ;?>">
-                <div class="vie" id="vieMobValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
-            </div>
+           <?php
+            Parent::renderHTML();
+           ?>
         </div>
+
         <?php
-    }*/
+        
+    }
 
     public function CreateMobAleatoire($map){
             $newMob = new Mob($this->_bdd);
@@ -155,7 +151,7 @@ class Mob extends Entite{
         $newType=0;
         $rarete=0;
         $newTypeNom='Menir';
-        $image = $this->generateImageMob($newTypeNom);
+        
         while($tab=$Result->fetch()){
            if(rand(0,$imax)<$i){
             $newType = $tab['id'];
@@ -165,6 +161,7 @@ class Mob extends Entite{
            }
            $i--;
         }
+        $image = $this->generateImageMob($newTypeNom);
         
         
         $tab[0]=$newTypeNom;

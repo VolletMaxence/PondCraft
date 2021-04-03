@@ -14,7 +14,7 @@ if(is_null($map)){
 
 
 echo '<div class="testUnitaire"><p>Test 1 Lecture d\'un Mob  </p>';
-$newMob->setMobById(460);
+$newMob->setMobById(494);
 $newMob->getNom();
 $newMob->getBardeVie();
 $newMob->renderHTML();

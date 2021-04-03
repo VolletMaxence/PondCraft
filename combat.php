@@ -81,7 +81,6 @@ session_start();
                         <div class="monster">
                             <?php
                                 $MysMob->setMobById($mob);
-                                echo $MysMob->generateImage();
                                 $MysMob->renderHTML();
                             ?>
                         </div>

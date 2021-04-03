@@ -109,24 +109,17 @@ class Personnage extends Entite{
     }
 
     //retourne toute la mécanique d'affichage d'un Personnage
-    /*public function renderHTML(){
-        $pourcentage = round(100*$this->_vie/$this->_vieMax);
+    public function renderHTML(){
+       
         ?>
         <div class="perso">
-            <div>
-            <?php echo $this->_nom ?>( <?php echo $this->getValeur() ?> NFT)
-            </div>
-            <div><img class="Personnage" src="<?php echo $this->_imageLien;?>">
-            </div>
-            <div class="attaque" id="attaquePersoValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
-            <div class="barreDeVie" id="viePerso<?php echo $this->_id ;?>">
-
-                 <div class="vie" id="viePersoValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
-            </div>
+           <?php
+            Parent::renderHTML();
+           ?>
         </div>
 
         <?php
-    }*/
+    }
 
     public function getItems(){
         $lists=array();
