@@ -12,6 +12,7 @@ session_start();
     <link rel="stylesheet" href="../../css/perso.css">
     <link rel="stylesheet" href="../../css/item.css">
     <link rel="stylesheet" href="../../css/entite.css">
+    <link rel="stylesheet" href="../../css/test.css">
     <script src="main.js"></script>
     <title>Document</title>
 </head>
@@ -25,17 +26,17 @@ session_start();
     }
     if($access){
 
-        echo "<div> TEST ITEM";
+        echo '<div class="TestIntegration"> TEST ITEM';
             //include "testUnitaire/testItem.php"; 
         echo "</div>" ;
-        echo "<div> TEST ENTITE";
+        echo '<div class="TestIntegration"> TEST ENTITE';
            include "testUnitaire/testEntite.php"; 
         echo "</div>" ;
-        echo "<div> TEST PERSONNAGE";
+        echo '<div class="TestIntegration"> TEST PERSONNAGE';
             include "testUnitaire/testPersonnage.php"; 
         echo "</div>" ;
 
-        echo "<div> TEST MOB";
+        echo '<div class="TestIntegration"> TEST MOB';
             include "testUnitaire/testMob.php"; 
         echo "</div>" ;
 

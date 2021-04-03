@@ -119,7 +119,7 @@ class Mob extends Entite{
             $vie = $coefAbuseVie*$type[2]*$lvl*$lvl;
             $degat = $coefAbuseArme*$type[2]*$lvl;
             //Menir 
-            if($type[2]==0){
+            if($type[1]==0){
                 $vie = $coefAbuseVie*20*$lvl*$lvl;
                 $degat = 1;
             }

@@ -5,7 +5,7 @@
 
 
 
-        echo "<div><p>Test 1 Creation Item de Soin </p>";
+        echo '<div class="testUnitaire"><p>Test 1 Creation Item de Soin </p>';
         $newItem= $newItem->createItemSoinConsommable();
         echo "<p>le nom est : ".$newItem->getNom()."</p>";
         echo "<p>le id est : ".$newItem->getId()."</p>";
@@ -19,7 +19,7 @@
         }
         echo "</div>";
 
-        echo "<div><p>Test 2 Creation Item aléatoire </p>";
+        echo '<div class="testUnitaire"><p>Test 2 Creation Item aléatoire </p>';
         $newItem= $newItem->createItemAleatoire();
         echo "<p>le nom est : ".$newItem->getNom()." ";
         echo " le id est : ".$newItem->getId()." ";
@@ -41,7 +41,7 @@
 
 
 
-        echo "<div><p>Test 3 100 Item aléatoire </p>";
+        echo '<div class="testUnitaire"><p>Test 3 100 Item aléatoire </p>';
         $listItems = array();
         for($i=0;$i<100;$i++){
             $item = $newItem->createItemAleatoire();
