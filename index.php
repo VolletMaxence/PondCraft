@@ -18,7 +18,7 @@ session_start();
 
     include "session.php";
     if($access){
-        $access = $Joueur1->deconnectToi();
+        $access = $Joueur1->DeconnectToi();
     }
     if($access){
         ?>
