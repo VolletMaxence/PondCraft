@@ -25,15 +25,15 @@ session_start();
 
         $personnage = $Joueur1->getPersonnage();
         if(is_null($personnage->getId())){
-            echo '<div class="reglement"><p>il faut creer un personnage avant</p>';
-            echo '<p><a  href="index.php" >retour à l\'origine de tout </a></p></div>';
+            echo '<div class="reglement"><p>Il faut créer un personnage d\'abord.</p>';
+            echo '<p><a  href="index.php" >Retour à l\'origine du tout </a></p></div>';
         }else{
-            echo '<div class="reglement"><h1>Bienvenu '.$Joueur1->getPrenom()."</h1>";
+            echo '<div class="reglement"><h1>Bienvenue '.$Joueur1->getPrenom()."</h1>";
             $personnage->getChoixPersonnage($Joueur1->getId());
             $map = $personnage->getMap();
 
            
-            echo "Tu as choisie de combatre avec ".$Joueur1->getNomPersonnage(). " il a une fortune de ".$personnage->getValeur()." (NFT)";
+            echo "Tu as décidé de combattre avec ".$Joueur1->getNomPersonnage(). ", il a une fortune de ".$personnage->getValeur()." (NFT)";
             echo '<div class="avatar">';
                 $personnage->renderHTML();
 
@@ -48,13 +48,12 @@ session_start();
                     }
                 }
                 echo '</ul></div>';
-                
-            echo "<p>Ton combatant est sur la position : ".$map->getNom().'</p>';
-            echo "<p><h4>Tu peux maintenant ramasser des conneries par terre</h4></p>";
-            echo "<p><h4>Si tu en trouve des parfaitements identiques elle prennent de la valeur :D</h4></p>";
-            echo "<p><h3>But du jeu : capture Le ''Super jedi Legendaire''</h3></p>";
-            
-            echo '<div class="tableaChass"> <div class="titreMonster">Voici tes monstres capturé :</div>';
+
+            echo "<p>Ton combattant est sur la position : ".$map->getNom().'</p>';
+            echo "<p><h4>Tu peux maintenant ramasser des conneries par terre.</h4></p>";
+            echo "<p><h4>Si tu en trouves qui sont parfaitement identiques, elles prennent de la valeur 😄 !</h4></p>";
+            echo "<p><h3>But du jeu : Capture le \"Super Jedi Légendaire\"</h3></p>";
+            echo '<div class="tableaChass"> <div class="titreMonster">Voici tes monstres capturés :</div>';
             $MysMob = new Mob($mabase);
             foreach ($Joueur1->getAllMyMobIds() as $mob) {
                 echo '<div class="monster">';
@@ -64,8 +63,8 @@ session_start();
                 echo "</div>";
             }?>
 
-                <div class="titreMonster">Seul une certain pouvoir peuvent protéger tes mobs d'une capture..</div>
-            </div><p><a href="index.php" >Creer un autre personnage</a></p></div>
+                <div class="titreMonster">Seul un certain pouvoir peut protéger tes monstres d'une capture...</div>
+            </div><p><a href="index.php" >Créer un autre personnage.</a></p></div>
             </div>
             <?php
             $map->getMapAdjacenteLienHTML('nord',$Joueur1);

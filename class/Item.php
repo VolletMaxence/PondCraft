@@ -9,10 +9,9 @@ class Item{
     private $_bdd;
 
     public function setItemByID($id){
-        
+
         $req="SELECT * FROM Item WHERE id='".$id."' ";
 
-        
         $Result = $this->_bdd->query($req);
         if($tab = $Result->fetch()){ 
 
@@ -21,10 +20,7 @@ class Item{
                           $tab["nom"],
                           $tab["valeur"]);
         }
-        
     }
-
-  
 
     public function setItem($id,$type,$nom,$valeur){
         $this->_id = $id;
@@ -51,7 +47,7 @@ class Item{
         if($tab = $Result->fetch()){
             //pour le moment les raretés vont de 1 à 16
             //rareté de vert à rouge
-           
+
             if($tab[0]<8){
 
                 //on par de 0   255 0 
@@ -67,21 +63,17 @@ class Item{
                 $val = 255-$val ;
                 $colorRarete .= '255,'.$val . ',0'; 
             }
-                
-                
-            
+
         } else{
             //poussiere 
             $colorRarete .=  '255,255,255'; 
 
         }
-        
         //max rarete valeur = 1600
         //1600 = 1
         $Transparence = (($this->_valeur/160)*((1-0.3)))+0.3 ;
         return $colorRarete.','.$Transparence.') !important' ;
     }
-    
 
     public function __construct($bdd){
         $this->_bdd = $bdd;
@@ -89,7 +81,7 @@ class Item{
 
     public function createItemAleatoire(){
         $newItem = new Item($this->_bdd);
-        
+
         $req="SELECT * FROM TypeItem ORDER BY rarete ASC";
         $Result = $this->_bdd->query($req);
         $i = $Result->rowCount();
@@ -161,11 +153,6 @@ class Item{
             $this->_bdd->rollback();
             return null;
         }
-
-        
     }
-
-
 }
-
 ?>
