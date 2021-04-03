@@ -104,11 +104,11 @@ session_start();
                         echo $BousoleDeplacement['ouest'];
                         echo '<div class="mapEst">';
                             echo '<div class="mapCentre">';
-                   
                     
                                 $Joueur1->getVisitesHTML(6);
-                                
-                                
+                                echo '<div class="infoMap">';
+                                    echo $map->getInfoMap();
+                                echo '</div>';
                                 //affichage des autres joueurs sur la carte
 
                                 $listPersos = $map->getAllPersonnages();

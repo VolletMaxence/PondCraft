@@ -211,27 +211,44 @@ body {
 .est{
     float: right;
     width: 30px;
-    height: 100%;
+    margin:auto;
+    background-color:rgba(0, 81, 255, 0.767);
+    min-height: 100vh;
+
+}
+
+
+.infoMap{
+    float:left;
+    padding: 10px;
+    width: 200px;
+    background-color: rgba(97, 71, 0, 0.829);
+    border-color: rgb(53, 77, 78);
+    border:1px solid rgb(119, 150, 236);
+    box-shadow:2px 2px 2px rgb(83, 95, 235); 
+    -moz-box-shadow:2px 2px 2px rgb(91, 113, 236);
+    -webkit-box-shadow:2px 2px 2px rgb(66, 53, 185);
 
 }
 
 .ouest{
     float: left;
     width: 30px;
-    height: 100%;
+    margin:auto;
+    background-color:rgba(0, 81, 255, 0.767);
+    min-height: 100vh;
 
 }
 
-.VerticalText a{
-    transform:rotate(-90deg);
-  transform-origin:top right;
+.VerticalText {
+    writing-mode: vertical-rl;
 }
 
 
 
 
 .mapOuest{
-    background-color:rgba(0, 81, 255, 0.767);
+   
    
     float: left;
     width:auto;
@@ -239,14 +256,14 @@ body {
 }
 
 .mapEst{
-    background-color:rgba(0, 81, 255, 0.767);
+    
     float: right;
     width: 770px;
     
 }
 
 .mapCentre{
-    
+    width: 740px;
     float: left;
 }
 
