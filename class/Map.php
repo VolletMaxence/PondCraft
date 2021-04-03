@@ -575,29 +575,34 @@ class map{
 
         $req="SELECT `laDate` from `Visites` 
              WHERE `idPersonnage` = '".$Perso->getId()."' 
+             AND idmap = '".$this->_id."' ;
              ORDER BY `laDate` DESC";
         $Result = $this->_bdd->query($req);
         if($tab = $Result->fetch()){
-            $DatePresent = time(); //"Y-m-d H:i:s"
+
+            /*$DatePresent = time(); 
             $DerniereDate = strtotime($tab['laDate'])+1;
 
             if($DerniereDate>=$DatePresent){
                 echo "tu vas trop vite poto tu es pas un super guerrier encore ";
 
                 return false;
-            }
+            }*/
 
+            $req="UPDATE  `Visites` SET `laDate` =  '".date("Y-m-d H:i:s")."'
+            WHERE   `idPersonnage` = '".$Perso->getId()."' 
+            AND idmap = '".$this->_id."' ;";
+            $Result = $this->_bdd->query($req);
             
+        }else{
+            $req="INSERT INTO `Visites` (`idPersonnage`, `idMap`, `laDate`) 
+            VALUES ('".$Perso->getId()."', '".$this->_id."', '".date("Y-m-d H:i:s")."')";
+            $Result = $this->_bdd->query($req);
         }
 
-        $req="INSERT INTO `Visites` (`idPersonnage`, `idMap`, `laDate`) 
-        VALUES ('".$Perso->getId()."', '".$this->_id."', '".date("Y-m-d H:i:s")."')";
-        $Result = $this->_bdd->query($req);
 
         return true;
 
-
-       
 
     }
 
@@ -905,7 +910,7 @@ class map{
 
     public function getAleatoireImage($typeName){
         $typeName2 = str_replace(' ',',',$typeName);
-        $url = "https://source.unsplash.com/random/1280×720?".$typeName2;
+        $url = "https://source.unsplash.com/random/1280×720?".$typeName2."&auto=compress";
         $ch = curl_init();  
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
         curl_setopt($ch, CURLOPT_URL, $url); 
