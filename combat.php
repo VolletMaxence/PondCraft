@@ -8,7 +8,10 @@ session_start();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/combat.css">
+    <link rel="stylesheet" href="css/perso.css">
+    <link rel="stylesheet" href="css/item.css">
     <script src="main.js"></script>
     <title>Combat</title>
 </head>

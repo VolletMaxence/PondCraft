@@ -1,0 +1,158 @@
+.Red{
+
+    background-color:rgba(255, 88, 88, 0.733);
+    padding: 5px;
+    border-radius: 10px;
+    margin: 3px;
+    border:1px solid gray;
+    box-shadow:2px 2px 2px gray; 
+    -moz-box-shadow:2px 2px 2px gray;
+    -webkit-box-shadow:2px 2px 2px gray;
+}
+.lamap{
+    float:left;
+    width:100%;
+    background-color:rgba(232, 240, 222, 0.37);
+    padding: 5px;
+    margin: 3px;
+    border:1px solid rgb(53, 52, 48);
+    box-shadow:2px 2px 2px rgb(31, 32, 31); 
+    -moz-box-shadow:2px 2px 2px rgb(51, 53, 50);
+    -webkit-box-shadow:2px 2px 2px rgb(52, 53, 52);
+}
+
+.sud {
+   
+    width: 100%;
+    float: left;
+    background-color:rgba(0, 81, 255, 0.767);
+    height: 30px;
+    text-align: center;
+
+}
+.nord {
+    
+    background-image: url("https://publicdomainvectors.org/photos/north-arrow-2.png");
+    background-repeat: no-repeat;
+    width: 100%;
+    float: left;
+    background-color:rgba(0, 81, 255, 0.767);
+    height: 30px;
+    text-align: center;
+}
+.est{
+    float: right;
+    width: 30px;
+    margin:auto;
+    background-color:rgba(0, 81, 255, 0.767);
+    min-height: 100vh;
+
+}
+
+
+.map DIV {
+
+    
+    border:1px solid rgba(254, 251, 255, 0.47);
+
+}
+
+.mapLigne{
+    width:100%;
+
+    float: left;
+}
+
+.mapVerte{
+
+    float: left;
+    
+   
+    background-color: rgba(4, 155, 12, 0.685);
+}
+.mapMob{
+
+    float: left;
+   
+   
+    background-color: rgba(255, 0, 0, 0.664);
+}
+.mapClear{
+
+    float: left;
+    
+   
+    background-color: rgba(255, 251, 0, 0.603);
+}
+.mapRouge{
+
+    float: left;
+
+    background-color: rgba(255, 8, 0, 0.144);
+}
+
+.mapOrigine{
+
+    float: left;
+
+    background-color: rgb(255, 0, 221);
+}
+
+.mapPositionUser{
+    float: left;
+
+    background-color: rgba(21, 255, 0, 0.801);
+}
+
+
+.mapOuest{
+   
+   
+    float: left;
+    width:auto;
+    
+}
+
+.mapEst{
+    
+    float: right;
+    width: 770px;
+    
+}
+
+.mapCentre{
+    width: 740px;
+    float: left;
+}
+
+
+.cardinalite div{
+    background-color: cadetblue;
+    border-color: rgb(53, 77, 78);
+    border:1px solid rgb(119, 150, 236);
+    box-shadow:2px 2px 2px rgb(83, 95, 235); 
+    -moz-box-shadow:2px 2px 2px rgb(91, 113, 236);
+    -webkit-box-shadow:2px 2px 2px rgb(66, 53, 185);
+}
+
+.infoMap{
+    float:left;
+    padding: 10px;
+    width: 200px;
+    background-color: rgba(97, 71, 0, 0.829);
+    border-color: rgb(53, 77, 78);
+    border:1px solid rgb(119, 150, 236);
+    box-shadow:2px 2px 2px rgb(83, 95, 235); 
+    -moz-box-shadow:2px 2px 2px rgb(91, 113, 236);
+    -webkit-box-shadow:2px 2px 2px rgb(66, 53, 185);
+
+}
+
+.ouest{
+    float: left;
+    width: 30px;
+    margin:auto;
+    background-color:rgba(0, 81, 255, 0.767);
+    min-height: 100vh;
+
+}

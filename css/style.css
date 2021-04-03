@@ -1,0 +1,105 @@
+
+.centragePrincipal
+{
+    width:800px;
+    margin:auto;
+}
+.basdepage{
+    
+    height:200px;
+}
+
+
+
+
+.left{float:left}
+
+
+
+
+
+
+
+
+
+
+li{
+    float:left;
+    list-style-type: none;
+    padding-left: 10px;
+}
+ul{ 
+    float:left ;    
+    width:100%;
+}
+
+html, body {
+	height: 100%;
+	margin: 0; padding: 0;
+}
+body {
+	display : table;
+	width: 100%;
+}
+
+
+.VerticalText {
+    writing-mode: vertical-rl;
+}
+
+
+.reglement{
+    margin-top:100px;
+    padding: 20px;
+    width:600px;
+    background-color: rgba(199, 82, 154, 0.829);
+    border-color: rgb(53, 77, 78);
+    border:1px solid rgb(119, 150, 236);
+    box-shadow:2px 2px 2px rgb(83, 95, 235); 
+    -moz-box-shadow:2px 2px 2px rgb(91, 113, 236);
+    -webkit-box-shadow:2px 2px 2px rgb(66, 53, 185);
+    margin-right:auto;
+    margin-left:auto;
+}
+
+
+
+.bodyAccueil{
+    background-image:  url('https://raw.githubusercontent.com/EnseignantLapro/ProjetFullStack/master/IHM/wallpaper_mmo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+
+
+.divRarete {
+    height: 15px;
+    width:105px;
+    border:1px black;
+    background: linear-gradient(to right, rgb(200, 255, 34), rgb(255, 2, 2));
+  }
+
+.map {
+
+    float: left;
+    right:10px;
+    top:10px;
+
+}
+
+
+.letooltip{
+    float:left;
+    margin-bottom: 20px;
+    padding: 20px;
+    width:560px;
+    background-color: rgba(216, 186, 16, 0.829);
+    border-color: rgb(53, 77, 78);
+    border:1px solid rgb(119, 150, 236);
+    box-shadow:2px 2px 2px rgb(83, 95, 235); 
+    -moz-box-shadow:2px 2px 2px rgb(91, 113, 236);
+    -webkit-box-shadow:2px 2px 2px rgb(66, 53, 185);
+    margin-right:auto;
+    margin-left:auto;
+}

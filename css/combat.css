@@ -1,0 +1,49 @@
+
+
+
+
+
+
+.tableaChass{
+    float:left;
+    margin-bottom: 20px;
+    padding: 20px;
+    width:560px;
+    background-color: rgba(216, 186, 16, 0.829);
+    border-color: rgb(53, 77, 78);
+    border:1px solid rgb(119, 150, 236);
+    box-shadow:2px 2px 2px rgb(83, 95, 235); 
+    -moz-box-shadow:2px 2px 2px rgb(91, 113, 236);
+    -webkit-box-shadow:2px 2px 2px rgb(66, 53, 185);
+    margin-right:auto;
+    margin-left:auto;
+}
+
+DIV.monster {
+    background-color: rgba(216, 153, 16, 0.733);
+    float:left;
+    width:140px;
+    border-color: rgb(53, 77, 78);
+    border:1px solid rgb(119, 150, 236);
+    box-shadow:2px 2px 2px rgb(83, 95, 235); 
+    -moz-box-shadow:2px 2px 2px rgb(91, 113, 236);
+    -webkit-box-shadow:2px 2px 2px rgb(66, 53, 185);
+}
+.titreMonster{
+    width:100%;
+    margin:10px;
+    background-color: rgba(97, 75, 29, 0.733);
+}
+
+DIV.monster img{
+    width:140px;
+    height:80px;
+}
+
+.adverse{
+    background-color: rgba(199, 82, 154, 0.829) !important;
+
+}
+.Captured{
+    background-color: rgba(219, 199, 12, 0.829)  !important;
+}
