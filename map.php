@@ -18,7 +18,7 @@ session_start();
 <body>
     <div class="centragePrincipal">
     <?php
-    include "fonction.php"; 
+    include "session.php"; 
     
     if($access){
         $access = $Joueur1->deconnectToi();
