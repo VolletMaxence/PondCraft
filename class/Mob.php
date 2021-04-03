@@ -114,18 +114,23 @@ class Mob extends Entite{
                 $degat = 1;
             }
 
-            $newMob->CreateEntite($this->generateNom($type[0]), $vie, $degat, $map->getId(),$vie,$type[3],null,2);
+            $newMob = $newMob->CreateEntite($this->generateNom($type[0]), $vie, $degat, $map->getId(),$vie,$type[3],null,2,$lvl);
 
-            $req="INSERT INTO `Mob`(`coefXp`, `id`) 
-            VALUES ('".$type[2]."','".$this->_id."')";
-            $Result = $this->_bdd->query($req);
-           
-            if( $newMob->getId()){ 
-                $newMob->setMobById( $newMob->getId());
-                return $newMob;
+            if(!is_null($newMob)){
+                $req="INSERT INTO `Mob`(`coefXp`, `id`) 
+                VALUES ('".$type[2]."','".$this->_id."')";
+                $Result = $this->_bdd->query($req);
+               
+                if( $newMob->getId()){ 
+                    $newMob->setEntiteById( $newMob->getId());
+                    return $newMob;
+                }else{
+                    return null;
+                }
             }else{
                 return null;
             }
+           
             $itemEnplus = new Item($this->_bdd);
             $nbItem = rand(2,$coefAbuseArme+round(($coefAbuseVie/10)));
             for($i=0;$i<$nbItem;$i++){

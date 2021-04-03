@@ -32,12 +32,24 @@ class map{
     //calcule pitagorien pour avoir une distance au point d'origine
     //la distance determine le niveau
     public function getlvl(){
-      $adjacent = $this->_x * $this->_x;
-      $opose = $this->_y * $this->_y;
+        $x = $this->_x;
+        $y = $this->_x;
+        if($x==0){
+            $x=1;
+        }
+        if($y==0){
+            $y=1;
+        }
+      $adjacent = $x * $x;
+      $opose = $y * $y;
       $hypotenuse = sqrt ( $adjacent+$opose);
     
+      $lvl = round(sqrt($hypotenuse)/10);
+      if($lvl<1){
+        $lvl= 1;
+      }
       //plus on s'éloigne et plus il est difficile de toruver un lvl supérieur
-      return round(sqrt($hypotenuse));
+      return $lvl;
     }
 
     //retourne une chaine de caractere des coordonne x , y

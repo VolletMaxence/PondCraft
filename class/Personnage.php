@@ -4,7 +4,8 @@
 
 class Personnage extends Entite{
     
-    
+    private $_xp;
+
     private $sacItems=array();
 
     public function __construct($bdd){
@@ -79,8 +80,9 @@ class Personnage extends Entite{
         return $this->_vie;
     }
 
-    public function setPersonnage(){
+    public function setPersonnage($xp){
         //un personnage n'a pas de propriete en plus pour le moment
+        $this->_xp = $xp;
     }
 
   
@@ -154,7 +156,7 @@ class Personnage extends Entite{
         if (isset($_POST["createPerso"])){
 
             $newperso = new Personnage($this->_bdd);
-            $newperso = $newperso->CreateEntite($_POST['NomPersonnage'], 100, 10, 0,100,$_POST['image'],$idUser,1);
+            $newperso = $newperso->CreateEntite($_POST['NomPersonnage'], 100, 10, 0,100,$_POST['image'],$idUser,1,1);
 
             if($newperso->getId()){ 
                 $req="INSERT INTO `Personnage`(`id`) VALUES ('".$newperso->getId()."')";
