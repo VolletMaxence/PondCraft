@@ -196,7 +196,7 @@ class Personnage extends Entite{
 
     public function removeItemByID($id){
         unset($this->sacItems[array_search($id, $this->sacItems)]);
-        $req="DELETE FROM `PersonnageSacItems` WHERE idPersonnage='".$this->getId()."' AND idItem='".$id."'";
+        $req="DELETE FROM `PersoSacItems` WHERE idPersonnage='".$this->getId()."' AND idItem='".$id."'";
         $this->_bdd->query($req);
         $req="DELETE FROM `Item` WHERE id='".$id."'";
         $this->_bdd->query($req);
