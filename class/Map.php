@@ -854,16 +854,19 @@ class map{
 
     public function getAleatoireImage($typeName){
         $typeName2 = str_replace(' ',',',$typeName);
-        $url = "https://source.unsplash.com/random/1280×720?".$typeName2."&auto=compress";
+        
+        $url = "https://source.unsplash.com/random/?".$typeName2;
         $ch = curl_init();  
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
         curl_setopt($ch, CURLOPT_URL, $url); 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $result = curl_exec($ch); 
         $result = stristr($result, 'https://',false);
-        $result = stristr($result, '"',true);
-        if($result=='https://status.unsplash.com/'){
+        $result = stristr($result, '?',true);
+        if($result=='https://status.unsplash.com/' || $result=='https://images.unsplash.com/source-404'){
             $result='https://i0.wp.com/supertrampontheroad.com/wp-content/uploads/2017/02/DSC_3793-1-2.jpg?resize=1024%2C678&ssl=1';
+        }else {
+            $result.="?w=800";
         }
         return  $result;  
     }
