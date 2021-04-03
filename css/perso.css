@@ -62,21 +62,7 @@ ul.AutrePersos li{
     
 }
 
-.barreDeVie{
-    width:100px;
-    height: 26px;
-    display:block;
-    float:left;
-    background-color: darkgray;
-    
-}
 
-.vie{
-    float:left;
-    white-space:nowrap;
-    background:rgb(34, 190, 34);
-    
-}
 
 ul.Persos li:hover{
     cursor:  url('epee.cur'), pointer;

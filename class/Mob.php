@@ -2,7 +2,7 @@
 //TODO MOB ET PERSONNAGE ON TROP DE SIMILITUDE 
 //IL FAUT REFACTORISER AVEC DE LhERITAGE
 
-class Mob{
+class Mob extends Entite{
     private $_id;
     private $_type;
     private $_nom;

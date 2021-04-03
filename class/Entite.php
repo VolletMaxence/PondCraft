@@ -2,7 +2,7 @@
 // TODO MOB ET PERSONNAGE ON TROP DE SIMILITUDE 
 //IL FAUT REFACTORISER AVEC DE LhERITAGE
 
-class Personnage extends Entite{
+class Entite {
     
     private $_id;
     private $_nom;
@@ -11,11 +11,13 @@ class Personnage extends Entite{
     private $_degat;
     private $_imageLien;
 
+    private $_type; //1 = hero 2= mob
+
     private $map;
 
     private $_bdd;
 
-    private $sacItems=array();
+    //private $sacItems=array();
 
     public function __construct($bdd){
         $this->_bdd = $bdd;
@@ -28,12 +30,12 @@ class Personnage extends Entite{
     public function getBardeVie(){
         $pourcentage = round(100*$this->_vie/$this->_vieMax);
         ?>
-        <div class="PersoPrincipalBarreVie">
+        <div class="EntitePrincipalBarreVie">
 
-            <div class="attaque" id="attaquePersoValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
-            <div class="barreDeVie" id="viePerso<?php echo $this->_id ;?>">
+            <div class="attaque" id="attaqueEntiteValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
+            <div class="barreDeVie" id="vieEntite<?php echo $this->_id ;?>">
 
-                <div class="vie" id="viePersoValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">
+                <div class="vie" id="vieEntiteValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">
                 ♥️<?php echo $this->_vie ;?>
                 </div>
             </div>
@@ -59,26 +61,27 @@ class Personnage extends Entite{
         return $valeur;
     }
 
-    public function SubitDegatByPersonnage($Personnage){
-        $this->_vie = $this->_vie - $Personnage->getAttaque();
+    public function SubitDegatByEntite($Entite){
+        $this->_vie = $this->_vie - $Entite->getAttaque();
         if($this->_vie<0){
             $this->_vie =0;
             //retour en zone 0,0
         }
-        $req  = "UPDATE `Personnage` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
+        $req  = "UPDATE `Entite` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
         return $this->_vie;
     }
 
+    /*
     public function getAllMyMobIdByMap($map){
         $listMob=array();
-        $req="SELECT `id` FROM `Mob` WHERE `idPersoProprio` = '".$this->_id."' AND `idMap` = '".$map->getId()."' )";
+        $req="SELECT `id` FROM `Mob` WHERE `idEntiteProprio` = '".$this->_id."' AND `idMap` = '".$map->getId()."' )";
         $Result = $this->_bdd->query($req);
         while($tab=$Result->fetch()){
             array_push($listMob,$tab);
         }
         return $listMob;
-    }
+    }*/
 
     public function SubitDegatByMob($Mob){
 
@@ -86,7 +89,7 @@ class Personnage extends Entite{
         $vieAvantAttaque = $this->_vie;
 
         //on va rechercher l'historique
-        $req  = "SELECT * FROM `AttaquePersoMob` where idMob = '".$Mob->getId()."' and idPersonnage = '".$this->_id."'" ;
+        $req  = "SELECT * FROM `AttaqueEntiteMob` where idMob = '".$Mob->getId()."' and idEntite = '".$this->_id."'" ;
         $Result = $this->_bdd->query($req);
         $tabAttaque['nbCoup']=0;
         $tabAttaque['DegatsDonnes']=$MobDegatAttaqueEnvoyer;
@@ -97,7 +100,7 @@ class Personnage extends Entite{
 
         }else{
             //insertion d'une nouvelle attaque
-            $req="INSERT INTO `AttaquePersoMob`(`idMob`, `idPersonnage`, `nbCoup`, `coupFatal`, `DegatsDonnes`, `DegatsReçus`) 
+            $req="INSERT INTO `AttaqueEntiteMob`(`idMob`, `idEntite`, `nbCoup`, `coupFatal`, `DegatsDonnes`, `DegatsReçus`) 
             VALUES (
                 '".$Mob->getId()."','".$this->_id."',0,0,".$tabAttaque['DegatsReçus'].",0
             )";
@@ -112,32 +115,35 @@ class Personnage extends Entite{
             $tabAttaque['DegatsDonnes'] = $vieAvantAttaque;
             //retour en zone 0,0
         }
-        $req  = "UPDATE `Personnage` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
+        $req  = "UPDATE `Entite` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
 
-        //update AttaquePersoMob pour mettre a jour combien le perso a pris de degat 
-        $req="UPDATE `AttaquePersoMob` SET 
+        //update AttaqueEntiteMob pour mettre a jour combien le perso a pris de degat 
+        $req="UPDATE `AttaqueEntiteMob` SET 
         `DegatsDonnes`=".$tabAttaque['DegatsDonnes']."
-         WHERE idMob = '".$Mob->getId()."' AND idPersonnage ='".$this->_id."' ";
+         WHERE idMob = '".$Mob->getId()."' AND idEntite ='".$this->_id."' ";
         $Result = $this->_bdd->query($req);
 
         return $this->_vie;
     }
 
-    public function setPersonnage($id,$nom,$vie,$degat,$vieMax,$image){
+    public function setEntite($id,$nom,$vie,$degat,$vieMax,$image,$type){
         $this->_id = $id;
         $this->_nom = $nom;
         $this->_vie = $vie;
         $this->_vieMax = $vieMax;
         $this->_degat = $degat;
         $this->_imageLien = $image;
+        $this->_type = $type;
 
         //select les items déjà présent
-        $req  = "SELECT idItem FROM `PersoSacItems` WHERE idPersonnage='".$id."'";
+        /*
+        $req  = "SELECT idItem FROM `EntiteSacItems` WHERE idEntite='".$id."'";
         $Result = $this->_bdd->query($req);
         while($tab=$Result->fetch()){
             array_push($this->sacItems,$tab[0]);
-        }
+        }*/
+
     }
 
     public function getNom(){
@@ -149,7 +155,7 @@ class Personnage extends Entite{
         $vieMax = intdiv ($this->_vieMax,2);
         $attaque = intdiv ($this->_vieMax,2);
         if($vieMax<10){$vieMax=10;}
-        $req  = "UPDATE `Personnage` SET `degat`='".$attaque."',`vieMax`='".$vieMax."',`vie`='".$vieMax."' WHERE `id` = '".$this->_id ."'";
+        $req  = "UPDATE `Entite` SET `degat`='".$attaque."',`vieMax`='".$vieMax."',`vie`='".$vieMax."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
         $this->_vie=$vieMax;
         $this->_vieMax=$vieMax;
@@ -160,15 +166,19 @@ class Personnage extends Entite{
     }
 
     //retourne un entier de toutes ses valeurs
+    
     public function getValeur(){
         $valeur = 0;
-        foreach ($this->getItems() as $value) {
+        /*oreach ($this->getItems() as $value) {
             $valeur+=$value->getValeur();
-        }
+        }*/
+
+        $valeur = 100;
+
         return  $valeur;
     }
 
-    //retourne toute la mécanique d'affichage d'un Personnage
+    //retourne toute la mécanique d'affichage d'un Entite
     public function renderHTML(){
         $pourcentage = round(100*$this->_vie/$this->_vieMax);
         ?>
@@ -176,12 +186,12 @@ class Personnage extends Entite{
             <div>
             <?php echo $this->_nom ?>( <?php echo $this->getValeur() ?> NFT)
             </div>
-            <div><img class="Personnage" src="<?php echo $this->_imageLien;?>">
+            <div><img class="Entite" src="<?php echo $this->_imageLien;?>">
             </div>
-            <div class="attaque" id="attaquePersoValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
-            <div class="barreDeVie" id="viePerso<?php echo $this->_id ;?>">
+            <div class="attaque" id="attaqueEntiteValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
+            <div class="barreDeVie" id="vieEntite<?php echo $this->_id ;?>">
 
-                 <div class="vie" id="viePersoValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
+                 <div class="vie" id="vieEntiteValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
             </div>
         </div>
 
@@ -196,6 +206,7 @@ class Personnage extends Entite{
         return $this->map;
     }
 
+    /*
     public function getItems(){
         $lists=array();
         foreach ($this->sacItems  as $ItemId) {
@@ -205,20 +216,21 @@ class Personnage extends Entite{
         }
         return $lists;
     }
+    */
 
     public function lvlupAttaque($attaque){
         $this->_degat += $attaque;
-        $sql = "UPDATE `Personnage` SET `degat`='".$this->_degat."' WHERE `id`='".$this->_id."'";
+        $sql = "UPDATE `Entite` SET `degat`='".$this->_degat."' WHERE `id`='".$this->_id."'";
         $this->_bdd->query($sql);
     }
     public function lvlupVie($viemore){
         $this->_vie += $viemore;
-        $sql = "UPDATE `Personnage` SET `vie`='".$this->_vie."' WHERE `id`='".$this->_id."'";
+        $sql = "UPDATE `Entite` SET `vie`='".$this->_vie."' WHERE `id`='".$this->_id."'";
         $this->_bdd->query($sql);
     }
     public function lvlupVieMax($viemore){
         $this->_vieMax += $viemore;
-        $sql = "UPDATE `Personnage` SET `vieMax`='".$this->_vieMax."' WHERE `id`='".$this->_id."'";
+        $sql = "UPDATE `Entite` SET `vieMax`='".$this->_vieMax."' WHERE `id`='".$this->_id."'";
         $this->_bdd->query($sql);
     }
 
@@ -226,22 +238,24 @@ class Personnage extends Entite{
     public function changeMap($NewMap){
         $this->map = $NewMap;
         //on mémorise çà en base
-        $sql = "UPDATE `Personnage` SET `idMap`='".$NewMap->getId()."' WHERE `id`='".$this->_id."'";
+        $sql = "UPDATE `Entite` SET `idMap`='".$NewMap->getId()."' WHERE `id`='".$this->_id."'";
         $this->_bdd->query($sql);
     }
 
+    /*
     public function removeItemByID($id){
         unset($this->sacItems[array_search($id, $this->sacItems)]);
-        $req="DELETE FROM `PersoSacItems` WHERE idPersonnage='".$this->getId()."' AND idItem='".$id."'";
+        $req="DELETE FROM `EntiteSacItems` WHERE idEntite='".$this->getId()."' AND idItem='".$id."'";
         $this->_bdd->query($req);
         $req="DELETE FROM `Item` WHERE id='".$id."'";
         $this->_bdd->query($req);
     }
+    */
 
-    public function setPersonnageById($id){
-        $Result = $this->_bdd->query("SELECT * FROM `Personnage` WHERE `id`='".$id."' ");
+    public function setEntiteById($id){
+        $Result = $this->_bdd->query("SELECT * FROM `Entite` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
-            $this->setPersonnage($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"]);
+            $this->setEntite($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"],$tab["type"]);
             //recherche de sa position
             $map = new map($this->_bdd);
             $map->setMapByID($tab["idMap"]);
@@ -249,25 +263,25 @@ class Personnage extends Entite{
         }
     }
 
-    public function setPersonnageByIdWithoutMap($id){
-        $Result = $this->_bdd->query("SELECT * FROM `Personnage` WHERE `id`='".$id."' ");
+    public function setEntiteByIdWithoutMap($id){
+        $Result = $this->_bdd->query("SELECT * FROM `Entite` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
-            $this->setPersonnage($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"]);
+            $this->setEntite($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"],$tab["type"]);
         }
     }
 
-    //ajoute un lien entre item et la personnage en bdd 
+    //ajoute un lien entre item et la entite en bdd 
     //et accroche l'item dans la collection itemID dans le sac du perso
-    public function addItem($newItem){
+    /*public function addItem($newItem){
         array_push($this->sacItems,$newItem->getId());
-        $req="INSERT INTO `PersoSacItems`(`idPersonnage`, `idItem`) VALUES ('".$this->getId()."','".$newItem->getId()."')";
+        $req="INSERT INTO `EntiteSacItems`(`idEntite`, `idItem`) VALUES ('".$this->getId()."','".$newItem->getId()."')";
         $this->_bdd->query($req);
-    }
+    }*/
 
-    //Retourne un formulaire HTML pourcreer un personnage
+    //Retourne un formulaire HTML pourcreer un entite
     //et permet d'attribuer automatiquement à user
-    // retour un objet personnage
-    public function CreatNewPersonnage($idUser){
+    // retour un objet entite
+    public function CreatNewEntite($idUser){
         ?>
         <div class = "formCreatio">
         <?php $imageUrl = $this->generateImage(); ?>
@@ -277,23 +291,23 @@ class Personnage extends Entite{
         </form>
 
         <form action="" method="post">
-            <div>Créez un personnage ou choisissez-en un :</div>
-            <input type="text" name="NomPersonnage" required>
-            <input type="submit" value="Creer" name="createPerso">
+            <div>Créez un entite ou choisissez-en un :</div>
+            <input type="text" name="NomEntite" required>
+            <input type="submit" value="Creer" name="createEntite">
             <input type="hidden" name="image" value="<?php echo $imageUrl;?>">
         </form>
         </div>
         <?php
-        if (isset($_POST["createPerso"])){
-            $newperso = new Personnage($this->_bdd);
-            $this->_nom=htmlentities($_POST['NomPersonnage'], ENT_QUOTES);
+        if (isset($_POST["createEntite"])){
+            $newperso = new Entite($this->_bdd);
+            $this->_nom=htmlentities($_POST['NomEntite'], ENT_QUOTES);
             $this->_imageLien=$_POST['image'];
-            $req="INSERT INTO `Personnage`(`nom`, `vie`, `degat`, `idMap`,`vieMax`,`lienImage`,`idUser`) VALUES ('".$this->_nom."',10,10,0,10,'".$this->_imageLien."','".$idUser."')";
+            $req="INSERT INTO `Entite`(`nom`, `vie`, `degat`, `idMap`,`vieMax`,`lienImage`,`idUser`,`type`) VALUES ('".$this->_nom."',10,10,0,10,'".$this->_imageLien."','".$idUser."',1)";
             $this->_bdd->beginTransaction();
             $Result = $this->_bdd->query($req);
             $lastID = $this->_bdd->lastInsertId();
             if($lastID){ 
-                $newperso->setPersonnageById($lastID);
+                $newperso->setEntiteById($lastID);
                 $this->_bdd->commit();
                 return $newperso;
             }else{
@@ -305,22 +319,22 @@ class Personnage extends Entite{
         return null;
     }
 
-    //Retourne une liste HTML de tous les personnages
+    //Retourne une liste HTML de tous les entites
     //et permet d'attribuer un perso à un user
-    // retour un objet personnage
-    public function getChoixPersonnage($idUser){
-        if (isset($_POST["idPersonnage"])){
-            $this->setPersonnageById($_POST["idPersonnage"]);
+    // retour un objet entite
+    public function getChoixEntite($idUser){
+        if (isset($_POST["idEntite"])){
+            $this->setEntiteById($_POST["idEntite"]);
             if($this->_vie==0){
                 $this->resurection();
             }
-            //si le personnage est mort on le place ne origine 0,0
+            //si le entite est mort on le place ne origine 0,0
         }
-        $Result = $this->_bdd->query("SELECT * FROM `Personnage` where idUser='".$idUser."' ");
+        $Result = $this->_bdd->query("SELECT * FROM `Entite` where idUser='".$idUser."' ");
         ?>
         <form action="" method="post" onchange="this.submit()">
-            <select name="idPersonnage" id="idPersonnage">
-            <option value="">Choisir un personnage</option>
+            <select name="idEntite" id="idEntite">
+            <option value="">Choisir un entite</option>
                 <?php while($tab=$Result->fetch()){
                     ($tab['id']==$this->_id)?$selected='selected':$selected='';
                     echo '<option value="'.$tab["id"].'" '.$selected.'> '.$tab["nom"].'</option>';
