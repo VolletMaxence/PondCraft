@@ -49,6 +49,16 @@ class Personnage{
         return $this->_degat;
     }
 
+    //il n'est possible de booster la vie au dela de vie max
+    public function SoinPourcentage($pourcentage){
+        $valeur = round(($this->_vie*$pourcentage)/100);
+        $this->_vie =  $valeur+ $this->_vie;
+        if ($this->_vie>$this->_vieMax){
+            $this->_vie = $this->_vieMax;
+        }
+        return $valeur;
+    }
+
     public function SubitDegatByPersonnage($Personnage){
         $this->_vie = $this->_vie - $Personnage->getAttaque();
         if($this->_vie<0){

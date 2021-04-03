@@ -21,9 +21,13 @@
 
         echo "<div><p>Test 2 Creation Item aléatoire </p>";
         $newItem= $newItem->createItemAleatoire();
-        echo "<p>le nom est : ".$newItem->getNom()."</p>";
-        echo "<p>le id est : ".$newItem->getId()."</p>";
-        echo "<p>la valeur est : ".$newItem->getValeur()."</p>";
+        echo "<p>le nom est : ".$newItem->getNom()." ";
+        echo " le id est : ".$newItem->getId()." ";
+        echo " la valeur est : ".$newItem->getValeur()." ";
+        echo " le lvl  est : ".$newItem->getLvl()." ";
+        echo " l'efficacite est : ".$newItem->getEfficacite()." ";
+        $type = $newItem->getType();
+        echo "  <p>le type est : id ".$type['id']." / info :".$type['information']." / nom : ".$type['nom']." </p>" ;
         $newItem->getClassRarete();
         if($newItem->getId()>0){
             echo "<p>suppression de l'item".$newItem->deleteItem($newItem->getId())."</p>";
@@ -33,11 +37,22 @@
         echo "</div>";
 
 
+        
+
+
 
         echo "<div><p>Test 3 100 Item aléatoire </p>";
         $listItems = array();
         for($i=0;$i<100;$i++){
-            array_push($listItems,$newItem->createItemAleatoire());
+            $item = $newItem->createItemAleatoire();
+            if(is_null($item)){
+                echo '<div style="color:red">Un item  null a été créer c\'est pas normal </div>';
+            }else{
+                array_push($listItems,$newItem->createItemAleatoire());
+            }
+
+            
+            
         }
         
         if(count($listItems)>0){

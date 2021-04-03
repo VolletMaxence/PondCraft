@@ -5,6 +5,8 @@ class Item{
     private $_type;
     private $_nom;
     private $_valeur;
+    private $_efficacite;
+    private $_lvl;
 
     private $_bdd;
 
@@ -18,15 +20,30 @@ class Item{
             $this->setItem($tab["id"],
                           $tab["type"],
                           $tab["nom"],
-                          $tab["valeur"]);
+                          $tab["valeur"],
+                          $tab["efficacite"],
+                          $tab["lvl"]);
+
+
+                         
         }
     }
 
-    public function setItem($id,$type,$nom,$valeur){
+    public function setItem($id,$type,$nom,$valeur,$efficacite,$lvl){
         $this->_id = $id;
         $this->_nom = $nom;
         $this->_type = $type;
         $this->_valeur = $valeur;
+        $this->_efficacite = $efficacite;
+        $this->_lvl = $lvl;
+    }
+
+    public function getLvl(){
+        return $this->_lvl;
+    }
+
+    public function getEfficacite(){
+        return $this->_efficacite;
     }
 
     public function deleteItem($id){
@@ -44,6 +61,19 @@ class Item{
     }
     public function getValeur(){
         return $this->_valeur;
+    }
+
+    //retourn un tableau avec id information lienImage nom rarete
+    public function getType(){
+
+        $req="SELECT * FROM TypeItem WHERE id='".$this->_type."' ";
+
+        $Result = $this->_bdd->query($req);
+        if($tab = $Result->fetch()){ 
+            return $tab;
+        }else{
+            return null;
+        }
     }
 
     public function getClassRarete(){
@@ -103,7 +133,7 @@ class Item{
             $lastID = $this->_bdd->lastInsertId();
             if($lastID){ 
     
-                $newItem->setItem($lastID,$newType,$newNom,$newValeur);
+                $newItem->setItem($lastID,$newType,$newNom,$newValeur,$efficacite,1);
                 $this->_bdd->commit();
                 return $newItem;
             }else{
@@ -148,12 +178,12 @@ class Item{
         $Result = $this->_bdd->query($req);
         $lastID = $this->_bdd->lastInsertId();
         if($lastID){ 
-
-            $newItem->setItem($lastID,$newType,$newNom,$newValeur);
+            $newItem->setItem($lastID,$newType,$newNom,$newValeur,$efficacite,1);
             $this->_bdd->commit();
             return $newItem;
         }else{
             $this->_bdd->rollback();
+            echo "erreur anormal createItemAleatoire item.php ".$req;
             return null;
         }
     }
