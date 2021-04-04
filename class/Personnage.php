@@ -105,7 +105,7 @@ class Personnage extends Entite{
         $vieMax = intdiv ($this->_vieMax,2);
         $attaque = intdiv ($this->_vieMax,2);
         if($vieMax<10){$vieMax=10;}
-        $req  = "UPDATE `Personnage` SET `degat`='".$attaque."',`vieMax`='".$vieMax."',`vie`='".$vieMax."' WHERE `id` = '".$this->_id ."'";
+        $req  = "UPDATE `Entite` SET `degat`='".$attaque."',`vieMax`='".$vieMax."',`vie`='".$vieMax."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
         $this->_vie=$vieMax;
         $this->_vieMax=$vieMax;
@@ -151,7 +151,7 @@ class Personnage extends Entite{
         return $lists;
     }
 
-    
+
   
 
    //Retourne un formulaire HTML pourcreer un personnage
