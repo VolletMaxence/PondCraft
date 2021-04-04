@@ -117,8 +117,8 @@ class Mob extends Entite{
             $newMob = $newMob->CreateEntite($this->generateNom($type[0]), $vie, $degat, $map->getId(),$vie,$type[3],null,2,$lvl);
 
             if(!is_null($newMob)){
-                $req="INSERT INTO `Mob`(`coefXp`, `id`) 
-                VALUES ('".$type[2]."','".$this->_id."')";
+                $req="INSERT INTO `Mob`(`coefXp`, `id` ,`type` ) 
+                VALUES ('".$type[2]."','".$this->_id."','".$type[1]."')";
                 $Result = $this->_bdd->query($req);
                
                 if( $newMob->getId()){ 
