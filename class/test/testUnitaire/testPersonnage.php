@@ -8,11 +8,15 @@ $newPersonnage = new Personnage($mabase);
 
 
 
-echo '<div class="testUnitaire"><p>Test 1 Lecture d\'un entite de type Personnage  </p>';
+echo '<div class="testUnitaire"><p>Test 1 Lecture d\'un  Personnage  </p>';
 $newPersonnage->setPersonnageById(1);
-$newPersonnage->getNom();
+echo $newPersonnage->getNom();
 $newPersonnage->getBardeVie();
 $newPersonnage->renderHTML();
+echo "<p>Ajout de 10 pts xp</p>";
+$newPersonnage->addXP(10);
+$newPersonnage->renderHTML();
+
 
 echo "</div>";
 

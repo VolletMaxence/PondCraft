@@ -13,6 +13,9 @@ class Personnage extends Entite{
         Parent::__construct($bdd);
     }
 
+    public function getXp(){
+        return $this->_xp;
+    }
   
 
     public function SubitDegatByPersonnage($Personnage){
@@ -21,8 +24,11 @@ class Personnage extends Entite{
             $this->_vie =0;
             //retour en zone 0,0
         }
-        $req  = "UPDATE `Personnage` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
+        $req  = "UPDATE `Entite` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
+
+       
+
         return $this->_vie;
     }
 
@@ -68,7 +74,7 @@ class Personnage extends Entite{
             $tabAttaque['DegatsDonnes'] = $vieAvantAttaque;
             //retour en zone 0,0
         }
-        $req  = "UPDATE `Personnage` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
+        $req  = "UPDATE `Entite` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
 
         //update AttaquePersoMob pour mettre a jour combien le perso a pris de degat 
@@ -85,6 +91,13 @@ class Personnage extends Entite{
         $this->_xp = $xp;
     }
 
+    //retourne la nouvelle xp 
+    public function addXP($value){
+        $this->_xp += $value ;
+        $req  = "UPDATE `Personnage` SET `xp`='".$this->_xp ."' WHERE `id` = '".$this->_id ."'";
+        $Result = $this->_bdd->query($req);
+        return $this->_xp;
+    }
   
     //met a jour la vie de depart et replace le joueur
     public function resurection(){
@@ -115,9 +128,10 @@ class Personnage extends Entite{
        
         ?>
         <div class="perso">
-           <?php
-            Parent::renderHTML();
-           ?>
+            <div class="persoXP"><?php echo $this->_xp?>pts xp</div>
+            <?php
+                Parent::renderHTML();
+            ?>
         </div>
 
         <?php
@@ -179,6 +193,16 @@ class Personnage extends Entite{
 
     public function setPersonnageById($id){
         Parent::setEntiteById($id);
+
+        //select les info personnage
+        $req  = "SELECT * FROM `Personnage` WHERE id='".$id."'";
+        $Result = $this->_bdd->query($req);
+        if($tab=$Result->fetch()){
+            $this->_xp  = $tab['xp'];
+        }else{
+            $req  = "INSERT  INTO `Personnage` (id,xp) VALUE ('".$id."','10')";
+            $Result = $this->_bdd->query($req);
+        }
 
         //select les items déjà présent
         $req  = "SELECT idItem FROM `PersoSacItems` WHERE idPersonnage='".$id."'";

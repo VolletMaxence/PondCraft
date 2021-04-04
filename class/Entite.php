@@ -28,6 +28,10 @@ class Entite {
         return $this->_vie ;
     }
 
+    public function getLvl(){
+        return $this->_lvl ;
+    }
+
     public function getBardeVie(){
         $pourcentage = round(100*$this->_vie/$this->_vieMax);
         ?>
@@ -191,7 +195,7 @@ class Entite {
         ?>
         
         <div>
-            <?php echo $this->_nom ?>( <?php echo $this->getValeur() ?> NFT)
+            <?php echo $this->_nom ?>( <?php echo $this->getValeur() ?> NFT) lvl  <?php echo $this->_lvl ?>
         </div>
         <div>
             <img class="Entite" src="<?php echo $this->_imageLien;?>">
