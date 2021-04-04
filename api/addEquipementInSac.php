@@ -7,7 +7,7 @@ $reponse[0]=0;
 $reponse[1]=0;
 if($access){
 
-    if(isset($_GET["idItem"])){
+    if(isset($_GET["idEquipement"])){
 
         //on doit toujours vérifier en bdd la posibilité de l'appel de API
         //iici on va pour un personnage prendre un item de la map et la mettre dans son sac.
@@ -25,16 +25,16 @@ if($access){
         $idmap = $map->getId();
 
         //que l'item est bien dans la map si ya un mob on peut pas le prendre
-        foreach ($map->getItems()  as $item) {
-            if($_GET["idItem"]==$item->getId()){
+        foreach ($map->getEquipements()  as $item) {
+            if($_GET["idEquipement"]==$item->getId()){
 
                 //vérifier si ya des mob
                 if(count($map->getAllMobContre($Joueur1))==0){
                     //on retire l'item de la map et on la rajoute dans le sac
-                    $map->removeItemById($_GET["idItem"]);
-                    $item = new Item($mabase);
-                    $item->setItemByID($_GET["idItem"]);
-                    $Perso->addItem($item);
+                    $map->removeEquipementById($_GET["idEquipement"]);
+                    $item = new Equipement($mabase);
+                    $item->setEquipementByID($_GET["idEquipement"]);
+                    $Perso->addEquipement($item);
                     $reponse[1]=1;
                     $reponse[0]=1;
                 }else{

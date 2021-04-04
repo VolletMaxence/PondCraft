@@ -70,6 +70,8 @@ session_start();
                                                     include "ihm/affichageItemsMap.php";
                                                     //AFFICHAGE DES ITEMS DE LA MAP
                                                     include "ihm/affichageTousLesMobs.php";
+                                                    //AFFICHAGE DES EQUIPEMENT DE LA MAP
+                                                    include "ihm/affichageEquipementsMap.php";
                                                 ?>
                                             </div>
                                             <?= $BousoleDeplacement['est'] ?>

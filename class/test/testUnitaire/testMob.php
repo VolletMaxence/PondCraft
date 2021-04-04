@@ -6,7 +6,7 @@
 
 $newMob = new Mob($mabase);
 $map = New Map($mabase);
-$map->setMapByID(0);
+$map->setMapByID($idMap);
 if(is_null($map)){
     echo "<h1>map non chargé</h1>";
 }

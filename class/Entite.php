@@ -11,6 +11,7 @@ class Entite {
     protected $_degat;
     protected $_imageLien;
     protected $_lvl;
+    private $sacEquipements=array();
 
     protected $_type; //1 = hero 2= mob
 
@@ -24,12 +25,43 @@ class Entite {
         $this->_bdd = $bdd;
     }
 
+
+
+    public function removeEquipementByID($id){
+        unset($this->sacEquipements[array_search($id, $this->sacEquipements)]);
+        $req="DELETE FROM `EntiteEquipement` WHERE idEntite='".$this->getId()."' AND idEquipement='".$id."'";
+        $this->_bdd->query($req);
+
+        //todo retirer un equipement ne doit pas etre une suppression
+        $req="DELETE FROM `Equipement` WHERE id='".$id."'";
+        $this->_bdd->query($req);
+    }
+
+   
+    //ajoute un lien entre item et la personnage en bdd 
+    //et accroche l'item dans la collection itemID dans le sac du perso
+    public function addEquipement($newEquipement){
+        array_push($this->sacEquipements,$newEquipement->getId());
+        $req="INSERT INTO `EntiteEquipement`(`idEntite`, `idEquipement`) VALUES ('".$this->getId()."','".$newEquipement->getId()."')";
+        $this->_bdd->query($req);
+    }
+
     public function getVie(){
         return $this->_vie ;
     }
 
     public function getLvl(){
         return $this->_lvl ;
+    }
+
+    public function getEquipements(){
+        $lists=array();
+        foreach ($this->sacEquipements  as $EquipementId) {
+            $newEquipement = new Equipement($this->_bdd);
+            $newEquipement->setEquipementByID($EquipementId);
+            array_push($lists,$newEquipement);
+        }
+        return $lists;
     }
 
     public function getBardeVie(){
@@ -144,13 +176,13 @@ class Entite {
         $this->_type = $type;
         $this->_lvl = $lvl;
 
-        //select les items déjà présent
-        /*
-        $req  = "SELECT idItem FROM `EntiteSacItems` WHERE idEntite='".$id."'";
+        //select les Equipement déjà présent
+        
+        $req  = "SELECT idEquipement FROM `EntiteEquipement` WHERE idEntite='".$id."'";
         $Result = $this->_bdd->query($req);
         while($tab=$Result->fetch()){
-            array_push($this->sacItems,$tab[0]);
-        }*/
+            array_push($this->sacEquipements,$tab[0]);
+        }
 
     }
 
@@ -177,9 +209,9 @@ class Entite {
     
     public function getValeur(){
         $valeur = 0;
-        /*oreach ($this->getItems() as $value) {
+        foreach ($this->getEquipements() as $value) {
             $valeur+=$value->getValeur();
-        }*/
+        }
 
         $valeur = 100;
 
@@ -252,6 +284,13 @@ class Entite {
             $map = new map($this->_bdd);
             $map->setMapByID($tab["idMap"]);
             $this->map = $map;
+
+             //select les items déjà présent
+            $req  = "SELECT idEquipement FROM `EntiteEquipement` WHERE idEntite='".$id."'";
+            $Result = $this->_bdd->query($req);
+            while($tab=$Result->fetch()){
+                array_push($this->sacEquipements,$tab[0]);
+            }
         }
     }
 

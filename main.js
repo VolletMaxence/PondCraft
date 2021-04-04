@@ -28,6 +28,34 @@ function useItem(idItem){
         // code for handling the data you get from the API
         console.log(data);
         lvlUp(data[0],data[1],data[2],data[3],idItem);
+        if(data[0]!=0){ 
+            var li = document.getElementById("itemSac"+idItem)
+            if (li!='undefine'){
+                li.remove();
+            }
+        }
+    })
+    .catch(function(error) {
+        // This is where you run code if the server returns any errors
+        console.log(error);
+    });
+}
+
+function useEquipement(idEquipement){
+    //pour appeler une API on utilise la méthode fetch()
+    fetch('api/useEquipement.php?idEquipement='+idEquipement).then((resp) => resp.json())
+    .then(function(data) {
+        // code for handling the data you get from the API
+        console.log(data);
+        lvlUp(data[0],data[1],data[2],data[3],idEquipement);
+       
+        if(data[0]!=0){ 
+            var li = document.getElementById("equipementSac"+idEquipement)
+            if (li!='undefine'){
+                li.remove();
+            }
+        }
+        
     })
     .catch(function(error) {
         // This is where you run code if the server returns any errors
@@ -38,7 +66,8 @@ function useItem(idItem){
 function lvlUp(id,attaque,vie,vieMax,idItem){
 
     if(id==0){
-        alert("La magie à fait chou blanc" );
+         alert("La magie à fait chou blanc" );
+         
     }else{
         var e1 = document.getElementById("vieEntiteValeur"+id);
         if(e1!="undefine"){
@@ -50,10 +79,7 @@ function lvlUp(id,attaque,vie,vieMax,idItem){
         if(e2!="undefine"){
             e2.innerHTML = attaque;
         }
-        var li = document.getElementById("itemSac"+idItem)
-        if (li!='undefine'){
-            li.remove();
-        }
+        
     }
 }
 

@@ -7,6 +7,7 @@ class Personnage extends Entite{
     private $_xp;
 
     private $sacItems=array();
+ 
 
     public function __construct($bdd){
 
@@ -120,6 +121,9 @@ class Personnage extends Entite{
         foreach ($this->getItems() as $value) {
             $valeur+=$value->getValeur();
         }
+        foreach ($this->getEquipements() as $value) {
+            $valeur+=$value->getValeur();
+        }
         return  $valeur;
     }
 
@@ -146,6 +150,8 @@ class Personnage extends Entite{
         }
         return $lists;
     }
+
+  
 
    //Retourne un formulaire HTML pourcreer un personnage
     //et permet d'attribuer automatiquement à user

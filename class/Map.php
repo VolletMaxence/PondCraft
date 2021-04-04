@@ -12,6 +12,7 @@ class map{
 
     private $idUserDecouverte;
     Private $listItems=array();
+    Private $listEquipements=array();
     Private $listPersonnages=array();
     Private $listMobs=array();
 
@@ -121,6 +122,14 @@ class map{
             array_push($this->listItems,$tab[0]);
         }
 
+        //select les Equipements déjà présent
+        $this->listEquipements = array();
+        $req  = "SELECT idEquipement FROM `MapEquipements` WHERE idMap='".$id."'";
+        $Result = $this->_bdd->query($req);
+        while($tab=$Result->fetch()){
+            array_push($this->listEquipements,$tab[0]);
+        }
+
         //select les Personnages déjà présent en vie
         $this->listPersonnages = array();
         $req  = "SELECT id FROM `Entite` WHERE idMap='".$id."' and vie > 0 AND type='1'";
@@ -193,6 +202,16 @@ class map{
             $newItem = new Item($this->_bdd);
             $newItem->setItemByID($ItemId);
             array_push($lists,$newItem);
+        }
+        return $lists;
+    }
+
+    public function getEquipements(){
+        $lists=array();
+        foreach ($this->listEquipements  as $EquipementId) {
+            $newEquipement = new Equipement($this->_bdd);
+            $newEquipement->setEquipementByID($EquipementId);
+            array_push($lists,$newEquipement);
         }
         return $lists;
     }
@@ -277,6 +296,20 @@ class map{
     public function addItem($newItem){
         array_push($this->listItems,$newItem->getId());
         $req="INSERT INTO `MapItems`(`idMap`, `idItem`) VALUES ('".$this->getId()."','".$newItem->getId()."')";
+        $this->_bdd->query($req);
+    }
+
+      //ajoute un lien entre item et la map en bdd 
+    //et accroche l'item dans la collection itemID dans la map
+    public function addEquipement($newEquipement){
+        array_push($this->listEquipements,$newEquipement->getId());
+        $req="INSERT INTO `MapEquipements`(`idMap`, `idEquipement`) VALUES ('".$this->getId()."','".$newEquipement->getId()."')";
+        $this->_bdd->query($req);
+    }
+
+    public function removeEquipementByID($id){
+        unset($this->listEquipements[array_search($id, $this->listEquipements)]);
+        $req="DELETE FROM `MapEquipements` WHERE idMap='".$this->getId()."' AND idEquipement='".$id."'";
         $this->_bdd->query($req);
     }
 
@@ -441,6 +474,16 @@ class map{
                 }
             }
 
+             //chargement d'un Equipement aléatoire
+             if(rand(0,3)>1){
+                $equipement1 = new Equipement($this->_bdd);
+                $nbItem = rand(0,3);
+
+                for($i=0;$i<$nbItem;$i++){
+                    $newmap->addEquipement($equipement1->createEquipementAleatoire()); 
+                }
+            }
+
             //chargement d'un Mob aléatoire à la création
             if(rand(0,3)>1){
                 
@@ -517,6 +560,26 @@ class map{
                                 }
                                 if(!is_null($this->getMapOuest()) && rand(0,3)==3){
                                     $this->getMapOuest()->addItem($itemEnplus->createItemAleatoire()); 
+                                }
+                            }
+                        }
+                        if(rand(0,2)>1){
+                            $equipementEnplus = new Equipement($this->_bdd);
+                            $nbEquipement = rand(0,2);
+
+                            for($i=0;$i<$nbEquipement;$i++){
+        
+                                if(!is_null($this->getMapNord()) && rand(0,3)==0 ){
+                                    $this->getMapNord()->addEquipement($equipementEnplus->createEquipementAleatoire()); 
+                                }
+                                if(!is_null($this->getMapSud()) && rand(0,3)==1){
+                                    $this->getMapSud()->addEquipement($equipementEnplus->createEquipementAleatoire()); 
+                                }
+                                if(!is_null($this->getMapEst()) && rand(0,3)==2){
+                                    $this->getMapEst()->addEquipement($equipementEnplus->createEquipementAleatoire()); 
+                                }
+                                if(!is_null($this->getMapOuest()) && rand(0,3)==3){
+                                    $this->getMapOuest()->addEquipement($equipementEnplus->createEquipementAleatoire()); 
                                 }
                             }
                         }

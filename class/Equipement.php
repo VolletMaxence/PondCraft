@@ -1,5 +1,5 @@
 <?php
-class Item{
+class Equipement{
 
     private $_id;
     private $_type;
@@ -10,14 +10,14 @@ class Item{
 
     private $_bdd;
 
-    public function setItemByID($id){
+    public function setEquipementByID($id){
 
-        $req="SELECT * FROM Item WHERE id='".$id."' ";
+        $req="SELECT * FROM Equipement WHERE id='".$id."' ";
 
         $Result = $this->_bdd->query($req);
         if($tab = $Result->fetch()){ 
 
-            $this->setItem($tab["id"],
+            $this->setEquipement($tab["id"],
                           $tab["type"],
                           $tab["nom"],
                           $tab["valeur"],
@@ -28,7 +28,7 @@ class Item{
                          
         }
     }
-    public function setItem($id,$type,$nom,$valeur,$efficacite,$lvl){
+    public function setEquipement($id,$type,$nom,$valeur,$efficacite,$lvl){
         $this->_id = $id;
         $this->_nom = $nom;
         $this->_type = $type;
@@ -42,8 +42,8 @@ class Item{
     public function getEfficacite(){
         return $this->_efficacite;
     }
-    public function deleteItem($id){
-        $req="DELETE FROM Item WHERE id='".$id."' ";
+    public function deleteEquipement($id){
+        $req="DELETE FROM Equipement WHERE id='".$id."' ";
 
         $Result = $this->_bdd->query($req);
     }
@@ -59,7 +59,7 @@ class Item{
     //retourn un tableau avec id information lienImage nom rarete
     public function getType(){
 
-        $req="SELECT * FROM TypeItem WHERE id='".$this->_type."' ";
+        $req="SELECT * FROM TypeEquipement WHERE id='".$this->_type."' ";
 
         $Result = $this->_bdd->query($req);
         if($tab = $Result->fetch()){ 
@@ -68,9 +68,9 @@ class Item{
             return null;
         }
     }
-    //retour le style de couleur de la rareté d'un item
+    //retour le style de couleur de la rareté d'un equipement
     public function getClassRarete(){
-        $req="SELECT rarete FROM TypeItem where id = '".$this->_type."'";
+        $req="SELECT rarete FROM TypeEquipement where id = '".$this->_type."'";
         $Result = $this->_bdd->query($req);
         $colorRarete = "background-color : rgba(";
         if($tab = $Result->fetch()){
@@ -104,41 +104,11 @@ class Item{
     public function __construct($bdd){
         $this->_bdd = $bdd;
     }
-    public function createItemSoinConsommable(){
-        $newItem = new Item($this->_bdd);
-        $req="SELECT * FROM TypeItem where id = 2";
-        $Result = $this->_bdd->query($req);
-        if($tab=$Result->fetch()){
-            $newType = $tab['id'];
-            $newTypeNom = $tab['nom'];
-            $rarete=$tab['rarete'];
-            $getAdjectifEfficace = $this->getAdjectifEfficace($newTypeNom);
-            $newNom = $getAdjectifEfficace['newNom'];
-            $efficacite = $getAdjectifEfficace['efficacite'];
-            $newValeur = rand(5,10)*$rarete;
-            $this->_bdd->beginTransaction();
-            $req="INSERT INTO `Item`( `type`, `nom`, `valeur`, `efficacite`,`lvl`) VALUES ('".$newType."','".$newNom."','".$newValeur."','".$efficacite."',1)";
-            $Result = $this->_bdd->query($req);
-            $lastID = $this->_bdd->lastInsertId();
-            if($lastID){ 
-    
-                $newItem->setItem($lastID,$newType,$newNom,$newValeur,$efficacite,1);
-                $this->_bdd->commit();
-                return $newItem;
-            }else{
-                $this->_bdd->rollback();
-                return null;
-            }
-            
-        }else{
-            return null;
-        }
+   
+    public function createEquipementAleatoire(){
+        $newEquipement = new Equipement($this->_bdd);
 
-    }
-    public function createItemAleatoire(){
-        $newItem = new Item($this->_bdd);
-
-        $req="SELECT * FROM TypeItem ORDER BY rarete ASC";
+        $req="SELECT * FROM TypeEquipement ORDER BY rarete ASC";
         $Result = $this->_bdd->query($req);
         $i = $Result->rowCount();
         $imax=$i*3;
@@ -162,16 +132,16 @@ class Item{
         $newValeur = rand(5,10)*$rarete;
 
         $this->_bdd->beginTransaction();
-        $req="INSERT INTO `Item`( `type`, `nom`, `valeur`, `efficacite`,`lvl`) VALUES ('".$newType."','".$newNom."','".$newValeur."','".$efficacite."',1)";
+        $req="INSERT INTO `Equipement`( `type`, `nom`, `valeur`, `efficacite`,`lvl`) VALUES ('".$newType."','".$newNom."','".$newValeur."','".$efficacite."',1)";
         $Result = $this->_bdd->query($req);
         $lastID = $this->_bdd->lastInsertId();
         if($lastID){ 
-            $newItem->setItem($lastID,$newType,$newNom,$newValeur,$efficacite,1);
+            $newEquipement->setEquipement($lastID,$newType,$newNom,$newValeur,$efficacite,1);
             $this->_bdd->commit();
-            return $newItem;
+            return $newEquipement;
         }else{
             $this->_bdd->rollback();
-            echo "erreur anormal createItemAleatoire item.php ".$req;
+            echo "erreur anormal createEquipementAleatoire equipement.php ".$req;
             return null;
         }
     }

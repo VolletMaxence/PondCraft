@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-lapro.alwaysdata.net
--- Generation Time: Apr 04, 2021 at 10:58 AM
+-- Generation Time: Apr 04, 2021 at 12:04 PM
 -- Server version: 10.5.8-MariaDB
 -- PHP Version: 7.2.29
 
@@ -1064,6 +1064,21 @@ INSERT INTO `Entite` (`id`, `idMap`, `idUser`, `vie`, `vieMax`, `lienImage`, `no
 (1169, 0, 0, 184, 184, 'http://t0.gstatic.com/images?q=tbn:ANd9GcSz1qbh34lKDRH8lqljDvIwvDDNkjEVtwTQuaxCHVMhOOzhtmqDCGfIhfpOwg', 'Mutant Pas belle patpatri', 2, 68, 1),
 (1170, 0, 0, 48, 48, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQRuLXR4T3PE1P_svxufxxHMX6YQr-hMMfB2Yolc4RDY9BQ2UX8ubSu8DXfbA', 'Zombie des loups fabelsion', 2, 34, 1),
 (1171, 0, 0, 540, 540, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQEpVtVv693z3l-_oZ1XMqjvgX4rXhZXMy0RS0WQjls1EMxcJP3mAGJA_zlYg', 'Menir Du pauvre orgasion', 2, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Equipement`
+--
+
+CREATE TABLE `Equipement` (
+  `id` int(11) NOT NULL,
+  `nom` int(11) NOT NULL,
+  `type` int(11) NOT NULL,
+  `efficacite` int(11) NOT NULL,
+  `valeur` int(11) NOT NULL,
+  `lvl` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -5949,6 +5964,20 @@ INSERT INTO `Tooltip` (`id`, `tooltip`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `TypeEquipement`
+--
+
+CREATE TABLE `TypeEquipement` (
+  `id` int(11) NOT NULL,
+  `information` int(11) NOT NULL,
+  `lienImage` varchar(500) NOT NULL,
+  `nom` varchar(100) NOT NULL,
+  `rarete` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `TypeItem`
 --
 
@@ -9184,6 +9213,13 @@ ALTER TABLE `Entite`
   ADD KEY `type` (`type`);
 
 --
+-- Indexes for table `Equipement`
+--
+ALTER TABLE `Equipement`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `type` (`type`);
+
+--
 -- Indexes for table `Item`
 --
 ALTER TABLE `Item`
@@ -9219,6 +9255,12 @@ ALTER TABLE `PersoSacItems`
 -- Indexes for table `Tooltip`
 --
 ALTER TABLE `Tooltip`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `TypeEquipement`
+--
+ALTER TABLE `TypeEquipement`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -9265,6 +9307,12 @@ ALTER TABLE `Entite`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1172;
 
 --
+-- AUTO_INCREMENT for table `Equipement`
+--
+ALTER TABLE `Equipement`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `Item`
 --
 ALTER TABLE `Item`
@@ -9281,6 +9329,12 @@ ALTER TABLE `map`
 --
 ALTER TABLE `Tooltip`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `TypeEquipement`
+--
+ALTER TABLE `TypeEquipement`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `TypeItem`
