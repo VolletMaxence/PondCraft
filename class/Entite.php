@@ -10,6 +10,7 @@ class Entite {
     protected $_vieMax;
     protected $_degat;
     protected $_imageLien;
+    protected $_lvl;
 
     protected $_type; //1 = hero 2= mob
 
@@ -129,7 +130,7 @@ class Entite {
         return $this->_vie;
     }
 
-    public function setEntite($id,$nom,$vie,$degat,$vieMax,$image,$type){
+    public function setEntite($id,$nom,$vie,$degat,$vieMax,$image,$type,$lvl){
         $this->_id = $id;
         $this->_nom = $nom;
         $this->_vie = $vie;
@@ -137,6 +138,7 @@ class Entite {
         $this->_degat = $degat;
         $this->_imageLien = $image;
         $this->_type = $type;
+        $this->_lvl = $lvl;
 
         //select les items déjà présent
         /*
@@ -241,7 +243,7 @@ class Entite {
     public function setEntiteById($id){
         $Result = $this->_bdd->query("SELECT * FROM `Entite` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
-            $this->setEntite($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"],$tab["type"]);
+            $this->setEntite($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"],$tab["type"],$tab["lvl"]);
             //recherche de sa position
             $map = new map($this->_bdd);
             $map->setMapByID($tab["idMap"]);
@@ -252,7 +254,7 @@ class Entite {
     public function setEntiteByIdWithoutMap($id){
         $Result = $this->_bdd->query("SELECT * FROM `Entite` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
-            $this->setEntite($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"],$tab["type"]);
+            $this->setEntite($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"],$tab["type"],$tab["lvl"]);
         }
     }
 
@@ -260,13 +262,14 @@ class Entite {
     //Retourne un formulaire HTML pourcreer un entite
     //et permet d'attribuer automatiquement à user
     // retour un objet entite
-    public function CreateEntite($nom, $vie, $degat, $idMap,$vieMax,$lienImage,$idUser,$type){
+    public function CreateEntite($nom, $vie, $degat, $idMap,$vieMax,$lienImage,$idUser,$type,$lvl){
         
         $newperso = new Entite($this->_bdd);
         $this->_nom=htmlentities($nom, ENT_QUOTES);
+        $this->_lvl = $lvl;
         $this->_imageLien=$lienImage;
-        $req="INSERT INTO `Entite`(`nom`, `vie`, `degat`, `idMap`,`vieMax`,`lienImage`,`idUser`,`type`) 
-        VALUES ('".$this->_nom."','.$vie.','.$degat.','.$idMap.','.$vieMax.','".$this->_imageLien."','".$idUser."','.$type.')";
+        $req="INSERT INTO `Entite`(`nom`, `vie`, `degat`, `idMap`,`vieMax`,`lienImage`,`idUser`,`type`,`lvl`) 
+        VALUES ('".$this->_nom."','.$vie.','.$degat.','.$idMap.','.$vieMax.','".$this->_imageLien."','".$idUser."','.$type.','.$lvl.')";
         $this->_bdd->beginTransaction();
         $Result = $this->_bdd->query($req);
         $this->_id = $this->_bdd->lastInsertId();

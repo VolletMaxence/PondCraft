@@ -6,7 +6,7 @@
 
 $newMob = new Mob($mabase);
 $map = New Map($mabase);
-$map->setMapByID(1);
+$map->setMapByID(0);
 if(is_null($map)){
     echo "<h1>map non chargé</h1>";
 }
@@ -14,7 +14,7 @@ if(is_null($map)){
 
 
 echo '<div class="testUnitaire"><p>Test 1 Lecture d\'un Mob  </p>';
-$newMob->setMobById(494);
+$newMob->setMobById(994);
 $newMob->getNom();
 $newMob->getBardeVie();
 $newMob->renderHTML();

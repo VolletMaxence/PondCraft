@@ -32,12 +32,24 @@ class map{
     //calcule pitagorien pour avoir une distance au point d'origine
     //la distance determine le niveau
     public function getlvl(){
-      $adjacent = $this->_x * $this->_x;
-      $opose = $this->_y * $this->_y;
+        $x = $this->_x;
+        $y = $this->_x;
+        if($x==0){
+            $x=1;
+        }
+        if($y==0){
+            $y=1;
+        }
+      $adjacent = $x * $x;
+      $opose = $y * $y;
       $hypotenuse = sqrt ( $adjacent+$opose);
     
+      $lvl = round(sqrt($hypotenuse)/10);
+      if($lvl<1){
+        $lvl= 1;
+      }
       //plus on s'éloigne et plus il est difficile de toruver un lvl supérieur
-      return round(sqrt($hypotenuse));
+      return $lvl;
     }
 
     //retourne une chaine de caractere des coordonne x , y
@@ -431,10 +443,11 @@ class map{
 
             //chargement d'un Mob aléatoire à la création
             if(rand(0,3)>1){
-                $Mob1 = new Mob($this->_bdd);
-                $nbMob = rand(0,2);
+                
+                $nbMob = rand(0,rand(2,4));
                 for($i=0;$i<$nbMob;$i++){
                     //il faut passer la map($this) au créateur de mob
+                    $Mob1 = new Mob($this->_bdd);
                     $Mob1 = $Mob1->CreateMobAleatoire($newmap);
                     if(!is_null($Mob1)){
                         array_push($newmap->listMobs,$Mob1->getId());

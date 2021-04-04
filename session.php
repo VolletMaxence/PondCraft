@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 include "class/Entite.php";
 include "class/User.php";
 include "class/Personnage.php";
