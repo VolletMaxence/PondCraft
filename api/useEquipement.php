@@ -38,6 +38,7 @@ if($access){
                         if(!is_null($Perso->getArme())){
                             $reponse[6]=$Perso->getArme()->getId();
                         }
+                        $equipement->desequipeEntite($Perso);
                         $equipement->equipeEntite($Perso);
                         $reponse[5] = $equipement->getNom();
                         $message.= 's\'équipe de '.$equipement->getNom();
