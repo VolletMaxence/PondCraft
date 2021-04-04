@@ -470,7 +470,13 @@ class map{
                 //la cardinalité permet de lui dire d'ou on vient
                 //on va 
                 $map= $Joueur1->getPersonnage()->getMap();
-                $map = $map->Create($map,$_GET["cardinalite"],$Joueur1->getId());
+
+                //on vérifie si un mob est présent la ou on est car on est bloqué normalement
+                $listMob = $map->getAllMobs();
+                if( is_null($listMob) || count($listMob) == 0){
+                    $map = $map->Create($map,$_GET["cardinalite"],$Joueur1->getId());
+                }
+               
                 if(!is_null($map)){
                     return $map;
                 }else{
