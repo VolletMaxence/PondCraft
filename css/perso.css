@@ -108,3 +108,11 @@ img.Personnage {
     height:120px;
     width:135px;
 }
+
+.persoXP{
+    float:left;
+}
+
+.mobCoef{
+    float:left;
+}

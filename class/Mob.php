@@ -5,6 +5,7 @@
 class Mob extends Entite{
 
     private $_coefXP;
+    private $_typeMob;
    
     public function __construct($bdd){
         Parent::__construct($bdd);
@@ -15,16 +16,36 @@ class Mob extends Entite{
         return $this->_coefXP;
     }
 
+    public function getTypeMob(){
+        return $this->_typeMob;
+    }
+
     public function setMob($id,$type,$nom,$degat,$vie,$coefXP,$vieMax,$idProprio){
         Parent::setMob($id,$type,$nom,$degat,$vie,$coefXP,$vieMax,$idProprio,2);
     }
 
     public function setMobById($id){
         Parent::setEntiteByIdWithoutMap($id);
+        $this->initInfo($id);
     }
 
     public function setMobByIdWithMap($id){
         Parent::setEntiteById($id);
+        $this->initInfo($id);
+
+    }
+
+    private function initInfo($id){
+         //select les info personnage
+         $req  = "SELECT * FROM `Mob` WHERE id='".$id."'";
+         $Result = $this->_bdd->query($req);
+         if($tab=$Result->fetch()){
+             $this->_typeMob  = $tab['type'];
+             $this->_coefXP  = $tab['coefXp'];
+         }else{
+             $req  = "INSERT  INTO `Mob` (id,type,coefXp) VALUE ('".$id."','0','1')";
+             $Result = $this->_bdd->query($req);
+         }
     }
 
 
@@ -93,6 +114,7 @@ class Mob extends Entite{
     //retourne toute la mécanique d'affichage d'un mob
     public function renderHTML(){
         ?><div class="mob">
+            <div class="mobCoef">Coef <?php echo $this->_coefXP ?></div>
            <?php
             Parent::renderHTML();
            ?>

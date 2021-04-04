@@ -10,7 +10,7 @@ if($access){
 
         //on récupere la force du perso en cours
         $Attaquant = $Joueur1->getPersonnage();
-
+        $Attaquant->addXP(2);
         $message="";
         $vieMax=0;
         $vie=0;
@@ -29,18 +29,24 @@ if($access){
                     if($vieAttaquant!=0){
                         $vie=$Deffensseur->SubitDegatByPersonnage($Attaquant);
                         $vieMax = $Deffensseur->getVieMax();
-
+                        $Deffensseur->addXP(1);
                         //on va retirer le coup d'attaque de base du deffensseur
                         //car une attaque n'est pas gratuite
                         $vieAttaquant=$Attaquant->SubitDegatByPersonnage($Deffensseur);
+                        
                         if($vieAttaquant==0){
-                            $message .= "Ton personnage est mort.";
+                            $message .= " Ton personnage est mort.";
+                        }
+                        if($vie==0){
+                            $lvl = $Deffensseur->getLvl();
+                            $Attaquant->addXP($lvl*rand(80,100));
+                            $message .= " Tu as tué ".$Deffensseur->getNom();
                         }
                     }else{
-                        $message .= "Tu es déjà mort, tu ne peux plus attaquer.";
+                        $message .= " Tu es déjà mort, tu ne peux plus attaquer.";
                     }
                 }else{
-                    $message .= "Ce personnage est déjà mort.";
+                    $message .= " Ce personnage est déjà mort.";
                 }
             }
 
@@ -64,6 +70,8 @@ if($access){
                         //si le perso tu le mob il faut envoyer un message
                         if($vie<=0)
                         {
+                            $lvl = $DeffensseurMob->getLvl();
+                            $Attaquant->addXP($lvl*rand(80,100)*$DeffensseurMob->getCoefXp());
                             $message .= "Tu as participé à la capture de ce monstre.";
                         }
 
@@ -82,6 +90,9 @@ if($access){
         $reponse[4]=$vieMaxAttaquant;
         $reponse[5]=$Attaquant->getId();
         $reponse[6]=$message;
+        $reponse[7]=$Attaquant->getXp();
+
+
     }
 }
 echo json_encode($reponse); 

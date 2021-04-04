@@ -9,6 +9,7 @@ function attaquer(idPerso,type){
        
             UpdateVie("vieEntiteValeur"+data[0],data[1],data[2],data[3],data[4],"vieEntiteValeur"+data[5],data[6]);
             //si mob mort on doit recharger le server
+            //data[7]c'est xp
             if(data[1]<=0){
                 location.reload();
             }
