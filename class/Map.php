@@ -502,6 +502,14 @@ class map{
                                 $newmap->addItem($item1->createItemAleatoire()); 
                             }
                         }
+                        if(rand(0,4)>1){
+                            $equipement1 = new Equipement($this->_bdd);
+                            $nbItem = rand(0,3);
+            
+                            for($i=0;$i<$nbItem;$i++){
+                                $newmap->addEquipement($equipement1->createEquipementAleatoire()); 
+                            }
+                        }
                     }
                 }
             }
