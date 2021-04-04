@@ -33,15 +33,7 @@ class Personnage extends Entite{
         return $this->_vie;
     }
 
-    public function getAllMyMobIdByMap($map){
-        $listMob=array();
-        $req="SELECT `id` FROM `Mob` WHERE `idPersoProprio` = '".$this->_id."' AND `idMap` = '".$map->getId()."' )";
-        $Result = $this->_bdd->query($req);
-        while($tab=$Result->fetch()){
-            array_push($listMob,$tab);
-        }
-        return $listMob;
-    }
+
 
     public function SubitDegatByMob($Mob){
 
