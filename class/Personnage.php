@@ -124,7 +124,7 @@ class Personnage extends Entite{
        
         ?>
         <div class="perso">
-            <div class="persoXP"><?php echo $this->_xp?>pts xp</div>
+            <div class="persoXP"><?php echo $this->_xp?>(xp)</div>
             <?php
                 Parent::renderHTML();
             ?>

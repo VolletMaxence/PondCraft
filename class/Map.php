@@ -45,7 +45,7 @@ class map{
       $opose = $y * $y;
       $hypotenuse = sqrt ( $adjacent+$opose);
     
-      $lvl = round(sqrt($hypotenuse)/10);
+      $lvl = round(sqrt($hypotenuse)/3);
       if($lvl<1){
         $lvl= 1;
       }
@@ -494,6 +494,14 @@ class map{
                     $Mob1 = $Mob1->CreateMobAleatoire($newmap);
                     if(!is_null($Mob1)){
                         array_push($newmap->listMobs,$Mob1->getId());
+                        //chargement d'un Item aléatoire par monstre present
+                        if(rand(0,4)>1){
+                            $item1 = new Item($this->_bdd);
+                            $nbItem = rand(1,3);
+                            for($i=0;$i<$nbItem;$i++){
+                                $newmap->addItem($item1->createItemAleatoire()); 
+                            }
+                        }
                     }
                 }
             }
