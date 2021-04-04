@@ -92,6 +92,7 @@ if($access){
         $reponse[5]=$Attaquant->getId();
         $reponse[6]=$message;
         $reponse[7]=$Attaquant->getXp();
+        $reponse[8]=$Attaquant->getDefense();
 
 
     }

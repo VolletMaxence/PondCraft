@@ -27,14 +27,22 @@ class Entite {
     }
 
 
-    public function removeEquipementByID($id){
-        unset($this->sacEquipements[array_search($id, $this->sacEquipements)]);
-        $req="DELETE FROM `EntiteEquipement` WHERE idEntite='".$this->getId()."' AND idEquipement='".$id."'";
-        $this->_bdd->query($req);
+    public function removeEquipementByID($EquipementID){
 
-        //todo retirer un equipement ne doit pas etre une suppression
-        $req="DELETE FROM `Equipement` WHERE id='".$id."'";
-        $this->_bdd->query($req);
+
+        $idindex = array_search($EquipementID, $this->sacEquipements);
+        if($idindex  >= 0){
+            unset($this->sacEquipements[ $idindex ]);
+            $req="DELETE FROM `EntiteEquipement` WHERE idEntite='".$this->getId()."' AND idEquipement='".$EquipementID."'";
+            $this->_bdd->query($req);
+
+            //todo retirer un equipement ne doit pas etre une suppression
+            $req="DELETE FROM `Equipement` WHERE id='".$EquipementID."'";
+            $this->_bdd->query($req);
+        }
+
+       
+        
     }
 
    
@@ -57,7 +65,11 @@ class Entite {
       //cette methode doit etre appelé que par Equipemement
     public function removeEquipeBydId($EquipementID){
         //la mise a jout en base et fait dans l'equipement
-        unset($this->sacEquipe[array_search($EquipementID, $this->sacEquipe)]);
+        $id = array_search($EquipementID, $this->sacEquipe);
+        if($id >= 0){
+            unset($this->sacEquipe[ $id ]);
+        }
+        
     }
 
     //retourne uniquement les equipiments non porte
@@ -98,12 +110,13 @@ class Entite {
         return $lists;
     }
 
-    //retour un objet de type arme 
+    //retour un objet de type armure 
     public function getArme(){
         $Arme = null;
         foreach ($this->sacEquipe as $EquipementId) {
             $EntiteEquipe = new Equipement($this->_bdd);
             $EntiteEquipe->setEquipementByID($EquipementId);
+            // le chiffre 1 et id de la categorie Armure à vérifier en base
             if ($EntiteEquipe->getCategorie()['id']==1){
                 $Arme = new Arme($this->_bdd);
                 $Arme->setEquipementByID($EntiteEquipe->getId());
@@ -112,6 +125,40 @@ class Entite {
         }
 
         return $Arme;
+    }
+    //retour un objet de type Armure 
+    public function getArmure(){
+        $Armure = null;
+        foreach ($this->sacEquipe as $EquipementId) {
+            $EntiteEquipe = new Equipement($this->_bdd);
+            $EntiteEquipe->setEquipementByID($EquipementId);
+            // le chiffre 2 et id de la categorie Armure à vérifier en base
+            if ($EntiteEquipe->getCategorie()['id']==2){
+                $Armure = new Armure($this->_bdd);
+                $Armure->setEquipementByID($EntiteEquipe->getId());
+                return $Armure;
+            }
+        }
+
+        return $Armure;
+    }
+
+
+    public function desequipeArme(){
+        $arme = $this->getArme();
+        if(!is_null($arme)){
+            $arme->desequipeEntite($this);
+        }
+        
+
+    }
+    public function desequipeArmure(){
+        $armure = $this->getArmure();
+        if(!is_null($armure)){
+            $armure->desequipeEntite($this);
+        }
+        
+
     }
 
 
@@ -146,6 +193,20 @@ class Entite {
         }
         $val = round(($this->_degat + $forceArme)*$coef);
         return $val;
+    }
+
+    public function getDefense(){
+        //ici on affiche les dégats Maximun Absorbé avec une armure
+        $armure = $this->getArmure();
+        $coef = 1;
+        $forceArmure = 0;
+        if(!is_null($armure)){
+            $coef = $armure->getEfficacite();
+            $forceArmure  = $armure->getForce();
+        }
+        //alors Todo Je sais pas ... evaluer la valeur d'une armure
+        $val = $coef * $forceArmure ;
+        return round($val,1);//arrondi à 1 chiffre aprés la virgul
     }
 
     public function getDegat()
@@ -299,11 +360,26 @@ class Entite {
         }else{
             echo '<div id ="ArmePerso'.$this->_id.'" class="Arme"></div>';
         }
+        $armure  = $this->getArmure();
+        if(!is_null($armure)){
+            echo '<div id ="Armure'.$armure->getId().'" class="ArmureNom" onclick="CallApiRemoveEquipementEntite('.$armure->getId().')">'.$armure->getNom().'</div>';
+        }else{
+            echo '<div id ="ArmurePerso'.$this->_id.'" class="ArmureNom"></div>';
+        }
 
         ?>
         
         <div class="barreDeVie" id="vieEntite<?php echo $this->_id ;?>">
                 <div class="vie" id="vieEntiteValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
+                <?php echo '<div class="armure" id="defenseEntiteValeur'.$this->_id.'"';
+                    if(!is_null($armure)){
+                        echo 'style="width:'.$this->getDefense().'%;">'.$this->getDefense();
+                    }else{
+                        echo '>';
+                    }
+                    echo '</div>';
+                ?>    
+              
         </div>
         
 
@@ -342,8 +418,6 @@ class Entite {
         $sql = "UPDATE `Entite` SET `idMap`='".$NewMap->getId()."' WHERE `id`='".$this->_id."'";
         $this->_bdd->query($sql);
     }
-
-
 
     public function setEntiteById($id){
         $Result = $this->_bdd->query("SELECT * FROM `Entite` WHERE `id`='".$id."' ");

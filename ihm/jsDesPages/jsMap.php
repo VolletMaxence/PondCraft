@@ -59,21 +59,33 @@ function CallApiAddEquipementInSac(idEquipement){
 
 function CallApiRemoveEquipementEntite(idEquipement){
     fetch('api/removeEquipement.php?idEquipement='+idEquipement).then((resp) => resp.json()) .then(function(data) {
-    // data est la réponse http de notre API.
-    console.log(data); 
-    //data 7 == 1 c'est une arme pour les autre types d'item il faudra faire un switch case
-    //data 6 == 1 c'est l'ancien id de equipement
-    if(data[0]!=0 && data[7]==1){
-        var e3 = document.getElementById("Arme"+data[6]);
-        e3.setAttribute('id',"ArmePerso"+<?php echo $Personnage->getId()?>);
-        e3.innerHTML='';
-        //data 5 c'est l'ancien nom de equipement
-        setEquipementInSac(data[6],data[5]);
-        lvlUp(data[0],data[1],data[2],data[3]);
-    } else{
+        // data est la réponse http de notre API.
+        console.log(data); 
+        //data 7 == 1 c'est une arme pour les autre types d'item il faudra faire un switch case
+        //data 6 == 1 c'est l'ancien id de equipement
+        if(data[0]!=0 ){
+            if(data[7]==1){ //cas de l'arme
+                var e3 = document.getElementById("Arme"+data[6]);
+                e3.setAttribute('id',"ArmePerso"+<?php echo $Personnage->getId()?>);
+                e3.innerHTML='';
+                //data 5 c'est l'ancien nom de equipement
+                setEquipementInSac(data[6],data[5]);
+                lvlUp(data[0],data[1],data[2],data[3],data[8]);
+            }
+            if(data[7]==2){ 
+                //cas de l'armure
+                var e3 = document.getElementById("Armure"+data[6]);
+                e3.setAttribute('id',"ArmurePerso"+<?php echo $Personnage->getId()?>);
+                e3.innerHTML='';
+                //data 5 c'est l'ancien nom de equipement
+                setEquipementInSac(data[6],data[5]);
+                lvlUp(data[0],data[1],data[2],data[3],data[8]);
+            }
+        
+        } else{
 
-        alert("Vous n'avez pas réussi à retirer l equipement."+data[2]);
-    }  
+            alert("Vous n'avez pas réussi à retirer l equipement."+data[2]);
+        }  
 
     }) .catch(function(error) {
     // This is where you run code if the server returns any errors
@@ -91,6 +103,17 @@ function UpdateArme(nomArme,idAncienneArme,idNouvelArme){
     e3.setAttribute('id',"Arme"+idNouvelArme);
     e3.setAttribute('onclick',"CallApiRemoveEquipementEntite("+idNouvelArme+")");
 }
+function UpdateArmure(nomArmure,idAncienneArmure,idNouvelArmure){
+    var e3 = document.getElementById("Armure"+idAncienneArmure);
+    if(e3 === null){
+         e3 = document.getElementById("ArmurePerso"+<?php echo $Personnage->getId()?>);
+    }
+    //on remet l'ancien equipement dans le sac
+    setEquipementInSac(idAncienneArmure,e3.innerHTML);
+    e3.innerHTML = nomArmure;
+    e3.setAttribute('id',"Armure"+idNouvelArmure);
+    e3.setAttribute('onclick',"CallApiRemoveEquipementEntite("+idNouvelArmure+")");
+}
 
 function AttaquerPerso(idPerso,type){
     attaquer(idPerso,type)
@@ -102,7 +125,7 @@ function useEquipement(idEquipement){
     .then(function(data) {
         // code for handling the data you get from the API
         console.log(data);
-        lvlUp(data[0],data[1],data[2],data[3]);
+        lvlUp(data[0],data[1],data[2],data[3],data[8]);
        
         if(data[0]!=0){ 
             var li = document.getElementById("equipementSac"+idEquipement)
@@ -115,6 +138,11 @@ function useEquipement(idEquipement){
             //idEquipement c'est le nouvel id de arme
             if(data[7]==1){
                 UpdateArme(data[5],data[6],idEquipement);
+                
+            }
+            //si c'est une armure
+            if(data[7]==2){
+                UpdateArmure(data[5],data[6],idEquipement);
                 
             }
             
@@ -173,7 +201,7 @@ function useItem(idItem){
     .then(function(data) {
         // code for handling the data you get from the API
         console.log(data);
-        lvlUp(data[0],data[1],data[2],data[3],idItem);
+        lvlUp(data[0],data[1],data[2],data[3],data[8]);
         if(data[0]!=0){ 
             var li = document.getElementById("itemSac"+idItem)
             if (li!='undefine'){
@@ -189,7 +217,7 @@ function useItem(idItem){
 
 
 
-function lvlUp(id,attaque,vie,vieMax){
+function lvlUp(id,attaque,vie,vieMax,Armure){
 
     if(id==0){
          alert("La magie à fait chou blanc" );
@@ -205,7 +233,11 @@ function lvlUp(id,attaque,vie,vieMax){
         if(e2!="undefine"){
             e2.innerHTML = attaque;
         }
-        
+        var e3 = document.getElementById("defenseEntiteValeur"+id);
+        if(e3!=null){
+            e3.innerHTML = Armure;
+            e3.setAttribute('style',"width:"+Armure+"%");
+        }
         
     }
 }

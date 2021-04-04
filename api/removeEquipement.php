@@ -44,12 +44,25 @@ if($access){
                             $message.= 'vous n\‘avez pas bien reussi à retirer  '.$equipement->getNom();
                             $reponse[7] =0;
                         }
-                        
-                        
-                        
-   
-                        
-                        break;
+                                           
+                    break;
+                    
+                    case 2: //2 représente les armures dans la table categorie
+                        //il faut changer d'armure
+                        //on retire donc l'armure en cours ( equipe = 0 dans la table entite equipement)
+                        if(!is_null($Perso->getArmure())){
+                            $reponse[6]=$_GET["idEquipement"];
+                            $reponse[5] = $equipement->getNom();
+                            $equipement->desequipeEntite($Perso);
+                            $message.= 'retire de '.$equipement->getNom();
+                            
+                            $reponse[7] =2;//2 est la categorie de l'armure
+                        }else{
+                            $message.= 'vous n\‘avez pas bien reussi à retirer  '.$equipement->getNom();
+                            $reponse[7] =0;
+                        }
+                                            
+                    break;
                     
                     default:
                         //on retire l'equipement du perso pour le transformer un statsuplementaire
@@ -58,7 +71,7 @@ if($access){
                 }
 
                 
-                
+                $reponse[8]= $Perso->getDefense();
                 $reponse[4]=$message;
                 $reponse[3]=$Perso->getVieMax();
                 $reponse[2]=$Perso->getVie();

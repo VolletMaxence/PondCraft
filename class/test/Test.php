@@ -37,13 +37,15 @@ session_start();
         echo '<div class="TestIntegration"> TEST ARME';
             include "testUnitaire/testArme.php"; 
         echo "</div>" ;
+        echo '<div class="TestIntegration"> TEST ARMURE';
+            include "testUnitaire/testArmure.php"; 
+        echo "</div>" ;
         echo '<div class="TestIntegration"> TEST ENTITE';
            include "testUnitaire/testEntite.php"; 
         echo "</div>" ;
         echo '<div class="TestIntegration"> TEST PERSONNAGE';
             include "testUnitaire/testPersonnage.php"; 
         echo "</div>" ;
-
         echo '<div class="TestIntegration"> TEST MOB';
             include "testUnitaire/testMob.php"; 
         echo "</div>" ;

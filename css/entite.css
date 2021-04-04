@@ -1,5 +1,5 @@
 .barreDeVie{
-    width:100px;
+    width:149px;
     height: 26px;
     display:block;
     float:left;
@@ -23,4 +23,32 @@ img.Entite {
     float:left;
     white-space:nowrap;
     background:rgba(34, 159, 190, 0.555);
+    height: 20px;
+    padding: 3px;
 }
+
+
+.ArmureNom{
+    float: left;
+    white-space: nowrap;
+    width:149px;
+    background: rgba(247, 232, 25, 0.555);
+    
+}
+
+.armure{
+    float: right;
+    padding-top: 5px;
+    padding-right: 29px;
+    
+    height: 21px;
+    text-align: right;
+    background-color: rgba(177, 255, 0, 0.53);
+    background-image: url(https://got-wic.ovh/wp-content/uploads/2019/09/game-of-thrones-winter-is-coming-arumure-champion.png);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+
+
