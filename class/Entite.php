@@ -285,7 +285,7 @@ class Entite {
             $map->setMapByID($tab["idMap"]);
             $this->map = $map;
 
-             //select les items déjà présent
+             //select les equipements déjà présent
             $req  = "SELECT idEquipement FROM `EntiteEquipement` WHERE idEntite='".$id."'";
             $Result = $this->_bdd->query($req);
             while($tab=$Result->fetch()){

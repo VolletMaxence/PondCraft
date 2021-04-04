@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-lapro.alwaysdata.net
--- Generation Time: Apr 04, 2021 at 12:04 PM
+-- Generation Time: Apr 04, 2021 at 01:50 PM
 -- Server version: 10.5.8-MariaDB
 -- PHP Version: 7.2.29
 
@@ -339,6 +339,30 @@ INSERT INTO `AttaquePersoMob` (`idMob`, `idPersonnage`, `nbCoup`, `coupFatal`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `Categorie`
+--
+
+CREATE TABLE `Categorie` (
+  `id` int(11) NOT NULL,
+  `Attaque` tinyint(4) NOT NULL,
+  `Defense` tinyint(4) NOT NULL,
+  `Magie` int(11) NOT NULL,
+  `nom` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Categorie`
+--
+
+INSERT INTO `Categorie` (`id`, `Attaque`, `Defense`, `Magie`, `nom`) VALUES
+(1, 1, 0, 0, 'Arme'),
+(2, 1, 0, 0, 'Armure'),
+(3, 1, 0, 1, 'Baguette'),
+(4, 0, 1, 1, 'Bouclier');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `Entite`
 --
 
@@ -361,7 +385,7 @@ CREATE TABLE `Entite` (
 
 INSERT INTO `Entite` (`id`, `idMap`, `idUser`, `vie`, `vieMax`, `lienImage`, `nom`, `type`, `degat`, `lvl`) VALUES
 (1, 1009, 1, 189, 189, 'https://www.raprnb.com/wp-content/uploads/2018/01/vegeta-2.jpg', 'Vegeta', 1, 189, 1),
-(2, 1265, 1, 809, 1138, 'https://i.pinimg.com/originals/07/29/dc/0729dca35aa480c3785a9b0886e5d36e.jpg', 'Goku', 1, 579, 1),
+(2, 1270, 1, 917, 1246, 'https://i.pinimg.com/originals/07/29/dc/0729dca35aa480c3785a9b0886e5d36e.jpg', 'Goku', 1, 635, 1),
 (3, 0, 1, 146, 164, 'https://www.db-z.com/wp-content/uploads/2017/05/Freezer-Mort-Dragon-Ball-Super.jpg', 'Freezer', 1, 121, 1),
 (4, 0, 1, 142, 142, 'https://i.skyrock.net/4039/85814039/pics/3122924737_1_13_dEoe2wqD.jpg', 'C18', 1, 73, 1),
 (5, 236, 1, 1034, 1089, 'https://static.fnac-static.com/multimedia/Images/FR/NR/8e/21/39/3744142/1540-1/tsp20160525110259/Magimix-m110-Nespreo-Pixie-Rouge-metal.jpg', 'Cafetiere', 1, 913, 1),
@@ -381,7 +405,7 @@ INSERT INTO `Entite` (`id`, `idMap`, `idUser`, `vie`, `vieMax`, `lienImage`, `no
 (30, 0, 34, 10, 10, 'http://t0.gstatic.com/images?q=tbn:ANd9GcSQ25Cd6Q446x0ijiBeISrWT08T3TYiRhSIzYsJaRC_C9n354O2Qyb-SWYPAoQ', 'MARCO', 1, 5, 1),
 (33, 0, 27, 10, 10, 'http://t0.gstatic.com/images?q=tbn:ANd9GcTYhje3EC_w_aJHELoEoRrDPvfyzE-hRf5NbSrKjtiNR5dHo31wAbmpFJ4-JqM', 'PieTest', 1, 10, 1),
 (34, 0, 1, 10, 10, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRn8xH4h1sNeJSyR4UorCQdA9r97qJHhfsBXcc_ufqR94qSaIFPH_4qAT_kxw', 'pepite d&#039;or', 1, 10, 1),
-(420, 226, 1, 12, 28, 'http://t0.gstatic.com/images?q=tbn:ANd9GcT3ggpvo55kWZ_QpEppnyZYLylwAnm22GA6Aw7BqpVir-Td9vZ0bwt3J5xqNQ', 'Beaute', 1, 19, 1),
+(420, 227, 1, 12, 28, 'http://t0.gstatic.com/images?q=tbn:ANd9GcT3ggpvo55kWZ_QpEppnyZYLylwAnm22GA6Aw7BqpVir-Td9vZ0bwt3J5xqNQ', 'Beaute', 1, 19, 1),
 (492, 39, 24, 620, 620, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQNr_mWtpmbHeHX8u9TzkWiX4Tn1L0VJ9U_OadmTXX-kUP64KDUv7GmJR-pxZA', 'Menir Pas belle sionzorzor', 2, 1, 1),
 (493, 41, 0, 540, 540, 'http://t0.gstatic.com/images?q=tbn:ANd9GcTftpOzP1WdjJbhrWeUuf65RKSTb-j0xs3CpN0DjFojPPjXmyZbGb4KPnEkIx0', 'Vampire Poisseux siongadra', 2, 102, 1),
 (494, 1, 24, 104, 104, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQLyGWIOZzZf-PmKH0TUTY_qOw6viIcUVEY3UPS2Eq4g5Q2hT9QTxjYZUe6NTw', 'mutant Enchant&eacute;e penzorbel', 2, 44, 1),
@@ -1063,7 +1087,60 @@ INSERT INTO `Entite` (`id`, `idMap`, `idUser`, `vie`, `vieMax`, `lienImage`, `no
 (1168, 0, 0, 580, 580, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRynhdEVAeIvv1f-7Q17dsLrtr3hC0FJYwuqlJQzqunAFk5TN3nZ0ISutGvQHk', 'Menir Du pauvre patfor', 2, 1, 1),
 (1169, 0, 0, 184, 184, 'http://t0.gstatic.com/images?q=tbn:ANd9GcSz1qbh34lKDRH8lqljDvIwvDDNkjEVtwTQuaxCHVMhOOzhtmqDCGfIhfpOwg', 'Mutant Pas belle patpatri', 2, 68, 1),
 (1170, 0, 0, 48, 48, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQRuLXR4T3PE1P_svxufxxHMX6YQr-hMMfB2Yolc4RDY9BQ2UX8ubSu8DXfbA', 'Zombie des loups fabelsion', 2, 34, 1),
-(1171, 0, 0, 540, 540, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQEpVtVv693z3l-_oZ1XMqjvgX4rXhZXMy0RS0WQjls1EMxcJP3mAGJA_zlYg', 'Menir Du pauvre orgasion', 2, 1, 1);
+(1171, 0, 0, 540, 540, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQEpVtVv693z3l-_oZ1XMqjvgX4rXhZXMy0RS0WQjls1EMxcJP3mAGJA_zlYg', 'Menir Du pauvre orgasion', 2, 1, 1),
+(1172, 0, 0, 560, 560, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRwEZQpc2AuV6wogzssUK_UoxJFKIgcBhgXA644_E9gveZWSYzqrbJX6Vxr7w', 'Menir Poisseux zorponsional', 2, 1, 1),
+(1173, 0, 0, 78, 78, 'http://t0.gstatic.com/images?q=tbn:ANd9GcSE9o1NDw8DLvHhSVUZ84LjUdo5a9oOrlb7zLCPvoZtYZr9_OqkzvztaWoEig', 'Vampire Noir gabu', 2, 57, 1),
+(1174, 0, 0, 88, 88, 'http://t0.gstatic.com/images?q=tbn:ANd9GcTnWLRve_JNTqVILGjbF_aynxwJNUSkFCc-vZMIxHA4-NmTKOqtRqcYU7oBygk', 'Vache des nains belfa', 2, 18, 1),
+(1175, 0, 0, 680, 680, 'http://t0.gstatic.com/images?q=tbn:ANd9GcSN0ug6CBrjGQviYJkq_ProAb5pLuPo8Daz8kNexGsB5D3jObiS6zMmEhMZ9Q', 'Menir Luxuriant alcribu', 2, 1, 1),
+(1176, 0, 0, 760, 760, 'http://t0.gstatic.com/images?q=tbn:ANd9GcTcGb84WRFFzNFczcC9Ft0nCnFLVXci1PTThDrmmsenhPb1F0n4rSs8H1gO_Xk', 'Menir Noir zaral', 2, 1, 1),
+(1177, 0, 0, 680, 680, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRn0hjd72xTDSYlcVySTq7HnYAiuk8l-PneoXSy5h8RH7wPKyGaGTzbh70Ygw', 'Menir Poisseux alvivi', 2, 1, 1),
+(1178, 0, 0, 600, 600, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQv7D-QiIdQtGnjnAu-McrQ0vDDErehmoW_CnaO3kbc_RVg_5NSML8V7sNUrZ4', 'Menir Noir teurvi', 2, 1, 1),
+(1179, 0, 0, 460, 460, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRByytwtIkE5vyE_AhOR1vH9cIbJqt6wPCQJPY5zTRol52kfjNP5eaP7-pijg', 'Menir de la mort vizar', 2, 1, 1),
+(1180, 0, 0, 60, 60, 'http://t0.gstatic.com/images?q=tbn:ANd9GcT8Kbo7ZbQGFYfFlFzgTqYNvh3MQHT20JU4FnIyYhvxuGC80_9ezNyMiZHjmYs', 'Vampire Sombre pensionbu', 2, 42, 1),
+(1181, 0, 0, 640, 640, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRnxxo6zP0loQYQb-ZbqBn7Nh_9F4GWPR4rMP3M7TKcPeVIiwuzYDtwUutTtvM', 'Menir Du pauvre poncrizar', 2, 1, 1),
+(1182, 0, 0, 640, 640, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRn0hjd72xTDSYlcVySTq7HnYAiuk8l-PneoXSy5h8RH7wPKyGaGTzbh70Ygw', 'Menir Pas belle alteur', 2, 1, 1),
+(1183, 0, 0, 800, 800, 'http://t0.gstatic.com/images?q=tbn:ANd9GcTZs7zFbgJyzAqF_eU6Ov77XUA4vSyStz5Uidm_Te236Eo4b1DPVInvPMOGmQI', 'Menir Sombre crilonfordra', 2, 1, 1),
+(1184, 0, 0, 96, 96, 'http://t0.gstatic.com/images?q=tbn:ANd9GcTedWB0QPjKiSTfDurABVV5QvqdcSQ4gNb6dcPxM3yeIWg4-RZEbv5pyr89Gw', 'Vache Noir buteur', 2, 30, 1),
+(1185, 0, 0, 50, 50, 'http://t0.gstatic.com/images?q=tbn:ANd9GcSX5rXGM3cUemeALJB-Yg_rL0WzCz-XQ7CJfHjmGEfU9baDPO0Hb0QlZbt4IA', 'Vache Sombre zorbelnar', 2, 40, 1),
+(1186, 0, 0, 96, 96, 'http://t0.gstatic.com/images?q=tbn:ANd9GcR22whtGshoK3qwWjRe29ziiPGiprgtKBaGslsDu7nqpJbb-TDwImgd5b0SnxM', 'Vache des nains galonsion', 2, 32, 1),
+(1187, 0, 0, 80, 80, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQSdpLtAXOzeukA5owgyY9O8VfQ76Dq-d1Cj9ZtiMd9mqbx93px1Zl_oWFRgA', 'Vache Enchant&eacute;e belorpen', 2, 10, 1),
+(1188, 0, 0, 100, 100, 'http://t0.gstatic.com/images?q=tbn:ANd9GcSk7F1PPqxrd94w-9lgzmaYpgmLwBmzjAy_dlGOjIdqfaL0dbCDAoOssXnHZyE', 'Vache Du pauvre zarrizor', 2, 12, 1),
+(1189, 0, 0, 400, 400, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRLErlFQPmMTFHE2aVp4Z5IY9vWSBkEwKj0mR9mXPlgyQxd6ai9OmgZ-8w0zw', 'Menir Poisseux pongari', 2, 1, 1),
+(1190, 0, 0, 70, 70, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQLDlncLOEk7W3GGJ-CASdzAAEQTsM9BMTk5zYirIhVaNiyonOhfpEtBECSCII', 'Vache Noir orviforpen', 2, 20, 1),
+(1191, 0, 0, 1000, 1000, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRi-hB3Ee2BjRzswtWKqlmq565oSAwH9T2JIXUgKCN6jfw_nGg8zBJRr0X_6A', 'Menir Sombre vidraal', 2, 1, 1),
+(1192, 0, 0, 440, 440, 'http://t0.gstatic.com/images?q=tbn:ANd9GcTTy7I-seXLyhtuQtzTKboIJAS_e4pyFSjHb6e_RQSlykkUDqn286iOf1NjOA', 'Menir des loups gapon', 2, 1, 1),
+(1193, 0, 0, 66, 66, 'http://t0.gstatic.com/images?q=tbn:ANd9GcS40UOBv9Fa5XdTRtjGEBAMXKfPg_BQV1VVEY6C6ui10wHDLCmC2o0fFSJpCBE', 'Zombie Enchant&eacute;e zordrapat', 2, 10, 1),
+(1194, 0, 0, 580, 580, 'http://t0.gstatic.com/images?q=tbn:ANd9GcTh9n0fKwK6ABsFkDcxdv7EigpegRUKGomBNMzL1DaJoZz7Iiuu-FNQ1cmEf_k', 'Menir Pas belle teurlon', 2, 1, 1),
+(1195, 0, 0, 66, 66, 'http://t0.gstatic.com/images?q=tbn:ANd9GcREpwxtfI4Aq8ryxr9IPvuChh16NPupdP-AcbZke1wb2MkQgYx0wfhd1SxMMvk', 'Vache Pas belle rinar', 2, 34, 1),
+(1196, 0, 0, 460, 460, 'http://t0.gstatic.com/images?q=tbn:ANd9GcTG8iZOGi_DOoJx-zb-X_vlxgrk1cx8kISb320sDjxrdEwztokqhoPllBM1PVU', 'Menir Sombre rivi', 2, 1, 1),
+(1197, 0, 0, 46, 46, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRuDs9KYP0db_nVAc7nSIKzxS6ulH2ZKfCkhzHCIMpz-Fl4AMvX0vYBJNfdVg', 'Vache Enchant&eacute;e gacripon', 2, 30, 1),
+(1198, 0, 0, 60, 60, 'http://t0.gstatic.com/images?q=tbn:ANd9GcR29_9njsRdp5ZUfziN54IS3n4t29hBOg-p2lTCwK7YD6EAgERR118Hvs5XGAo', 'Vache Enchant&eacute;e orzarlon', 2, 40, 1),
+(1199, 0, 0, 940, 940, 'http://t0.gstatic.com/images?q=tbn:ANd9GcT6jL5MF2shhiaJmfbfB38h5cwP3kaP5em5qxO2zz4j7kNRv5NclyBmNJWPyA', 'Menir Pas belle drafa', 2, 1, 1),
+(1200, 0, 0, 66, 66, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRVjC1lOVEdEFNBYG29JP86c2VtqAlRjkBiWwXHUfCueZ_ZNk7z30aLP33E9A', 'Zombie Enchant&eacute;e sionpon', 2, 8, 1),
+(1201, 0, 0, 78, 78, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRs9ViLUMoIt3Zz8d6CaO-9q9iXyWNFdX5k2uFue0lAXe60iuwDbjjCQlOItA', 'Vache Du pauvre narga', 2, 8, 1),
+(1202, 0, 0, 42, 42, 'http://t0.gstatic.com/images?q=tbn:ANd9GcT294R_lzXBTynN7997hMO-I67F9QQh0dsSWs9UP-CNG68Vp_1Xv20PAE482xk', 'Vache de la mort belsion', 2, 18, 1),
+(1203, 0, 0, 123, 123, 'http://t0.gstatic.com/images?q=tbn:ANd9GcS5BY4n4LSn1EkZrFUQpVlJAEEw7Nijxtj-p6l2L2vdnm7DccZTb_JgtfZSWA', 'Vampire Poisseux buzor', 2, 9, 1),
+(1204, 0, 0, 540, 540, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQv7D-QiIdQtGnjnAu-McrQ0vDDErehmoW_CnaO3kbc_RVg_5NSML8V7sNUrZ4', 'Menir Lumineux faponbufor', 2, 1, 1),
+(1205, 0, 0, 56, 56, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQkXrnzeET60wJ94-SEOoV1B0TsA3RS6-Y4TOKp1F-gF4K-WCvFpXjR1FX8GZc', 'Zombie Sombre orzarzor', 2, 6, 1),
+(1206, 0, 0, 44, 44, 'http://t0.gstatic.com/images?q=tbn:ANd9GcSBLrsVPTJZ2cp4EYeO6-a_K9VmUAESMTHJmSx8v2pUFFsQAXI1DM3ALIMJ87U', 'Vache Luxuriant foral', 2, 28, 1),
+(1207, 0, 0, 980, 980, 'http://t0.gstatic.com/images?q=tbn:ANd9GcTftpOzP1WdjJbhrWeUuf65RKSTb-j0xs3CpN0DjFojPPjXmyZbGb4KPnEkIx0', 'Menir Noir lonponbel', 2, 1, 1),
+(1208, 0, 0, 64, 64, 'http://t0.gstatic.com/images?q=tbn:ANd9GcQnZ6Mx8trZ8WY_9LuB2Kqw7TvdbziuOqgFcjuPEPCckPfkGM0rDCnF90dCIQ', 'Zombie Noir ripen', 2, 32, 1),
+(1209, 0, 0, 920, 920, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRrNRW20dxy-YEpp8pQ36jk6JWIrwaBud6gQK3DMWRr4xtTVctdG6_wUA2MTUE', 'Menir Pas belle forfor', 2, 1, 1),
+(1210, 0, 0, 136, 136, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRYPZ7d0ewL5xvZIsYBi3LRSh2l7CCjUccHkxYT2Zij53rFW3yazIWZIggRlhU', 'Mutant Du pauvre teurcriga', 2, 52, 1),
+(1211, 0, 0, 620, 620, 'http://t0.gstatic.com/images?q=tbn:ANd9GcTTy7I-seXLyhtuQtzTKboIJAS_e4pyFSjHb6e_RQSlykkUDqn286iOf1NjOA', 'Menir des loups alfordra', 2, 1, 1),
+(1212, 0, 0, 420, 420, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRrNRW20dxy-YEpp8pQ36jk6JWIrwaBud6gQK3DMWRr4xtTVctdG6_wUA2MTUE', 'Menir Du pauvre narga', 2, 1, 1),
+(1213, 0, 0, 138, 138, 'http://t0.gstatic.com/images?q=tbn:ANd9GcRFCuZHBiuIADuBwE9Sbf14ngSLTu7xvIMkWBDFiwYFSMGrkiW-6J19GI7Q8w', 'Vampire Noir fapat', 2, 36, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `EntiteEquipement`
+--
+
+CREATE TABLE `EntiteEquipement` (
+  `idEquipement` int(11) NOT NULL,
+  `idEntite` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -1073,12 +1150,99 @@ INSERT INTO `Entite` (`id`, `idMap`, `idUser`, `vie`, `vieMax`, `lienImage`, `no
 
 CREATE TABLE `Equipement` (
   `id` int(11) NOT NULL,
-  `nom` int(11) NOT NULL,
+  `nom` varchar(11) NOT NULL,
   `type` int(11) NOT NULL,
   `efficacite` int(11) NOT NULL,
   `valeur` int(11) NOT NULL,
   `lvl` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Equipement`
+--
+
+INSERT INTO `Equipement` (`id`, `nom`, `type`, `efficacite`, `valeur`, `lvl`) VALUES
+(2, '0', 0, 1, 9, 1),
+(3, '0', 0, 0, 10, 1),
+(4, '0', 0, 1, 7, 1),
+(5, '0', 0, 1, 5, 1),
+(6, '0', 0, 1, 9, 1),
+(7, '0', 0, 1, 8, 1),
+(8, '0', 0, 1, 8, 1),
+(9, '0', 0, 1, 5, 1),
+(10, '0', 0, 1, 10, 1),
+(11, '0', 0, 1, 5, 1),
+(12, '0', 0, 1, 8, 1),
+(13, '0', 0, 0, 10, 1),
+(14, '0', 0, 1, 6, 1),
+(15, '0', 0, 1, 9, 1),
+(16, '0', 0, 1, 10, 1),
+(17, '0', 0, 1, 8, 1),
+(18, '0', 0, 1, 6, 1),
+(19, '0', 0, 1, 6, 1),
+(20, '0', 0, 1, 10, 1),
+(21, '0', 0, 1, 6, 1),
+(22, '0', 0, 1, 10, 1),
+(23, '0', 0, 0, 6, 1),
+(24, '0', 0, 1, 7, 1),
+(25, '0', 0, 1, 5, 1),
+(26, '0', 0, 1, 7, 1),
+(27, '0', 0, 1, 5, 1),
+(28, '0', 0, 1, 8, 1),
+(29, '0', 0, 1, 6, 1),
+(30, '0', 0, 1, 10, 1),
+(31, '0', 0, 1, 7, 1),
+(32, '0', 0, 1, 8, 1),
+(33, '0', 0, 1, 9, 1),
+(34, '0', 0, 1, 9, 1),
+(35, '0', 0, 1, 6, 1),
+(36, '0', 0, 1, 6, 1),
+(37, '0', 0, 1, 8, 1),
+(38, '0', 0, 1, 8, 1),
+(39, '0', 0, 0, 9, 1),
+(40, '0', 0, 0, 10, 1),
+(41, '0', 0, 1, 7, 1),
+(43, '0', 5, 1, 5, 1),
+(44, '0', 1, 1, 10, 1),
+(45, '0', 2, 1, 12, 1),
+(46, '0', 0, 1, 8, 1),
+(47, '0', 4, 1, 7, 1),
+(48, '0', 4, 1, 10, 1),
+(49, '0', 1, 1, 6, 1),
+(50, '0', 1, 1, 10, 1),
+(51, '0', 4, 1, 8, 1),
+(52, '0', 0, 1, 6, 1),
+(53, '0', 0, 1, 6, 1),
+(54, '0', 3, 1, 18, 1),
+(55, '0', 0, 1, 9, 1),
+(56, '0', 5, 1, 7, 1),
+(57, '0', 0, 1, 8, 1),
+(58, '0', 0, 1, 5, 1),
+(59, '0', 0, 1, 7, 1),
+(60, '0', 0, 1, 7, 1),
+(61, '0', 1, 1, 8, 1),
+(62, '0', 1, 1, 7, 1),
+(63, '0', 4, 1, 5, 1),
+(64, '0', 1, 1, 9, 1),
+(65, '0', 1, 1, 5, 1),
+(66, '0', 4, 1, 9, 1),
+(67, '0', 1, 1, 10, 1),
+(68, '0', 1, 1, 9, 1),
+(69, '0', 4, 0, 8, 1),
+(70, '0', 1, 1, 9, 1),
+(71, '0', 0, 1, 6, 1),
+(72, '0', 4, 1, 6, 1),
+(73, '0', 1, 0, 7, 1),
+(74, '0', 1, 1, 7, 1),
+(75, '0', 1, 1, 5, 1),
+(76, '0', 0, 1, 6, 1),
+(77, '0', 1, 1, 9, 1),
+(78, '0', 0, 1, 7, 1),
+(79, '0', 1, 1, 7, 1),
+(80, '0', 4, 0, 10, 1),
+(81, '0', 1, 1, 6, 1),
+(82, 'juppe', 4, 1, 6, 1),
+(83, 'gliave', 1, 1, 7, 1);
 
 -- --------------------------------------------------------
 
@@ -3083,7 +3247,54 @@ INSERT INTO `Item` (`id`, `type`, `nom`, `valeur`, `efficacite`, `lvl`) VALUES
 (2840, 5, 'Morceau de Fer Puissant', 21, 1.4, 1),
 (2842, 8, 'Bois magic', 10, 1.2, 1),
 (2844, 8, 'Bois moisie', 8, 0.5, 1),
-(2846, 5, 'Morceau de Fer magic', 21, 1.2, 1);
+(2846, 5, 'Morceau de Fer magic', 21, 1.2, 1),
+(2847, 7, 'Œuf tordu', 45, 0.6, 1),
+(2848, 2, 'Fruit Puissant', 6, 1.4, 1),
+(2849, 2, 'Fruit neuf', 10, 1, 1),
+(2852, 2, 'Fruit tordu', 8, 0.6, 1),
+(2854, 8, 'Bois magic', 7, 1.2, 1),
+(2856, 8, 'Bois tout mou', 7, 0.4, 1),
+(2858, 2, 'Fruit neuf', 6, 1, 1),
+(2860, 2, 'Fruit moche', 8, 0.8, 1),
+(2862, 1, 'Pierre jolie', 10, 0.9, 1),
+(2864, 2, 'Fruit magic', 9, 1.2, 1),
+(2866, 1, 'Pierre Puissant', 14, 1.4, 1),
+(2868, 2, 'Fruit usagé', 10, 0.7, 1),
+(2870, 8, 'Bois efficasse', 7, 1.1, 1),
+(2872, 2, 'Fruit moche', 9, 0.8, 1),
+(2874, 2, 'Fruit tout mou', 8, 0.4, 1),
+(2876, 8, 'Bois magic', 10, 1.2, 1),
+(2878, 2, 'Fruit magic', 10, 1.2, 1),
+(2880, 5, 'Morceau de Fer tordu', 18, 0.6, 1),
+(2882, 11, 'Piece en toc usagé', 30, 0.7, 1),
+(2884, 1, 'Pierre cassé', 12, 0.3, 1),
+(2886, 8, 'Bois tout mou', 8, 0.4, 1),
+(2888, 2, 'Fruit neuf', 10, 1, 1),
+(2890, 0, 'poussiere efficasse', 5, 1.1, 1),
+(2894, 5, 'Morceau de Fer magic', 21, 1.2, 1),
+(2896, 8, 'Bois cassé', 8, 0.3, 1),
+(2898, 14, 'Pain efficasse', 81, 1.1, 1),
+(2900, 1, 'Pierre moche', 10, 0.8, 1),
+(2902, 8, 'Bois jolie', 6, 0.9, 1),
+(2904, 2, 'Fruit efficasse', 9, 1.1, 1),
+(2906, 1, 'Pierre usagé', 16, 0.7, 1),
+(2908, 2, 'Fruit jolie', 6, 0.9, 1),
+(2910, 1, 'Pierre magic', 20, 1.2, 1),
+(2912, 0, 'poussiere usagé', 9, 0.7, 1),
+(2914, 8, 'Bois tout mou', 9, 0.4, 1),
+(2916, 0, 'poussiere moche', 6, 0.8, 1),
+(2918, 8, 'Bois usagé', 10, 0.7, 1),
+(2920, 8, 'Bois jolie', 6, 0.9, 1),
+(2922, 2, 'Fruit efficasse', 9, 1.1, 1),
+(2924, 8, 'Bois moisie', 5, 0.5, 1),
+(2926, 8, 'Bois moche', 10, 0.8, 1),
+(2928, 8, 'Bois efficasse', 9, 1.1, 1),
+(2930, 2, 'Fruit cassé', 8, 0.3, 1),
+(2932, 1, 'Pierre tordu', 10, 0.6, 1),
+(2934, 10, 'Canard en plastique usagé', 42, 0.7, 1),
+(2935, 2, 'Fruit neuf', 8, 1, 1),
+(2936, 2, 'Fruit efficasse', 7, 1.1, 1),
+(2937, 2, 'Fruit magic', 6, 1.2, 1);
 
 -- --------------------------------------------------------
 
@@ -3133,7 +3344,7 @@ INSERT INTO `map` (`id`, `nom`, `position`, `mapNord`, `mapSud`, `mapEst`, `mapO
 (189, 'mer Lumineux gagabel', 'f7d8cef61713f047ca088c822e38027d82da822b', 188, 190, 176, NULL, 1, -2, -1, 'https://images.unsplash.com/photo-1617274599408-0cb5a81cc574?w=800', 0),
 (190, 'montagne des loups lonri', 'b409f187f7cc51b524845b5920875a81b40bf4f4', 189, NULL, NULL, NULL, 1, -2, -2, 'https://images.unsplash.com/photo-1617289427396-4e96b829a50a?w=800', 0),
 (191, 'montagne Noir dendenmonga', '64105c7691eab68d7db5520b01caea3b2e84132d', 193, NULL, 192, 180, 1, 2, -1, 'https://images.unsplash.com/photo-1617289402146-a2b7fe7e8918?w=600', 0),
-(192, 'coline Luxuriant maforbel', '154477cfae7c4d3c6a27aad41afaa37ddc838cf5', NULL, NULL, NULL, 191, 1, 3, -1, 'https://images.unsplash.com/photo-1583849215500-75387d55ea81?w=600', 0),
+(192, 'coline Luxuriant maforbel', '154477cfae7c4d3c6a27aad41afaa37ddc838cf5', 237, 1269, NULL, 191, 1, 3, -1, 'https://images.unsplash.com/photo-1583849215500-75387d55ea81?w=600', 0),
 (193, 'mer de la mort lamonla', 'af1b4902cfbba6d1eaafb66566df885bdbd55249', 194, 191, 237, 181, 1, 2, 0, 'https://images.unsplash.com/photo-1617340935903-961478114ac2?w=600', 0),
 (194, 'coline Enchantée penbienbel', 'c9b641f2dc2f8aaba3517b4de607b8457aaf1244', NULL, 193, NULL, 182, 1, 2, 1, 'https://images.unsplash.com/photo-1583849215500-75387d55ea81?w=600', 0),
 (195, 'vallée Sombre lonbien', '90ac8c8d09d1d22821efbb07bb07500e22822b59', NULL, 173, 226, 239, 1, -1, 3, 'https://images.unsplash.com/photo-1617177871738-e00a47759749?w=600', 0),
@@ -3178,7 +3389,7 @@ INSERT INTO `map` (`id`, `nom`, `position`, `mapNord`, `mapSud`, `mapEst`, `mapO
 (234, 'chateau Luxuriant conconpen', '70f33ac05a0df5f266fea8cd00cabee72e3973b7', NULL, 235, NULL, 232, 1, 3, 5, 'https://images.unsplash.com/photo-1616397103831-9908af3fc5d4?w=600', 0),
 (235, 'vallée Luxuriant monmarima', 'ef74ea715a1d2dff7c429d41938419c6a398c449', 234, 236, NULL, NULL, 1, 3, 4, 'https://images.unsplash.com/photo-1617066851592-43b9ca27e7db?w=600', 0),
 (236, 'lac Enchantée lennar', 'a2fcc8dee71c9b8576a4708da155f45f2db9072d', 235, NULL, NULL, NULL, 1, 3, 3, 'https://images.unsplash.com/photo-1617120509865-a3cc8fdc0a0f?w=600', 0),
-(237, 'enfer Lumineux feuforgabien', '648f08da28e971378f5d9922456cb7c16cd3f72b', NULL, NULL, 238, 193, 27, 3, 0, 'https://images.unsplash.com/photo-1560730988-73412fde8a97?w=600', 0),
+(237, 'enfer Lumineux feuforgabien', '648f08da28e971378f5d9922456cb7c16cd3f72b', 1270, 192, 238, 193, 27, 3, 0, 'https://images.unsplash.com/photo-1560730988-73412fde8a97?w=600', 0),
 (238, 'vallée Du pauvre feudenfeu', 'c8fd6f7197fcf5ecdc22a50813a17f89bba6f082', 258, NULL, NULL, 237, 27, 4, 0, 'https://images.unsplash.com/photo-1617141636403-f511e2d5dc17?w=600', 0),
 (239, 'donjon Du pauvre conconni', 'f5193f801b7ff60f1ed63c3664df74415b2ba94c', NULL, NULL, 195, 225, 25, -2, 3, 'https://images.unsplash.com/photo-1552010226-2dafdac1f7c1?w=600', 0),
 (240, 'marai des loups drabelma', 'f41cec88bb945039da468d454c08b93fd79fda9b', NULL, NULL, 225, 241, 25, -4, 3, 'https://images.unsplash.com/photo-1615021157208-de92f36a50c3?w=600', 0),
@@ -4210,7 +4421,70 @@ INSERT INTO `map` (`id`, `nom`, `position`, `mapNord`, `mapSud`, `mapEst`, `mapO
 (1262, 'Dune Noir draorcarlen', 'ae367eb2abb3b8b72154c7ac3d934ea57831e7ba', NULL, 1260, 1263, NULL, 1, 0, -6, 'https://images.unsplash.com/photo-1617142020925-0ab8d60eff68?w=600', 0),
 (1263, 'Océan des loups galon', 'e18330b9938c5eac118a35a9947b16a59df38ff3', NULL, NULL, 1264, 1262, 1, 1, -6, 'https://images.unsplash.com/photo-1617321228706-0b1bee4bedd5?w=600', 0),
 (1264, 'Marais  Luxuriant formon', '216213a0268d62c30b7407d28c611b39b5631676', NULL, NULL, 1265, 1263, 1, 2, -6, 'https://images.unsplash.com/photo-1616968012545-2032b7974a0d?w=600', 0),
-(1265, 'Ville Enchantée forpon', '6cc70bf00d7bfa568ee210aaadda90b3a9863ef9', NULL, NULL, NULL, 1264, 1, 3, -6, 'https://images.unsplash.com/photo-1617415646973-2f5f5010fefa?w=600', 0);
+(1265, 'Ville Enchantée forpon', '6cc70bf00d7bfa568ee210aaadda90b3a9863ef9', 1266, NULL, NULL, 1264, 1, 3, -6, 'https://images.unsplash.com/photo-1617415646973-2f5f5010fefa?w=600', 0),
+(1266, 'Savane Enchantée feuconden', '2ac27bd826a4202a19e59604349d0ab81c2bb117', 1267, 1265, NULL, NULL, 1, 3, -5, 'https://images.unsplash.com/photo-1597516952405-3fe598440d1d?w=600', 0),
+(1267, 'Plaine Noir denma', 'aeb6e1314c349d0e521f58fd6eda4038ec21ff20', 1268, 1266, NULL, NULL, 1, 3, -4, 'https://images.unsplash.com/photo-1616208351731-d20690f4c5cc?w=600', 0),
+(1268, 'Désert des nains lalenfor', '1b2e14c29aac729d6bd532cdc39a4bf5bba0f702', 1269, 1267, NULL, NULL, 1, 3, -3, 'https://images.unsplash.com/photo-1617293700852-73793c76202e?w=600', 0),
+(1269, 'Ville Du pauvre niga', 'b5cc4563a787e82d2cb9c5a1cac1d5ef03fc754f', 192, 1268, NULL, NULL, 1, 3, -2, 'https://images.unsplash.com/photo-1617379527982-f0386cd12dd0?w=600', 0),
+(1270, 'Chemin des loups lenpenla', '48e3919e8c118ee54b7b11cecae5c73af55a9716', NULL, 237, NULL, NULL, 1, 3, 1, 'https://images.unsplash.com/photo-1617409122077-2cdc2acc1e27?w=600', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `MapEquipements`
+--
+
+CREATE TABLE `MapEquipements` (
+  `idEquipement` int(11) NOT NULL,
+  `idMap` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `MapEquipements`
+--
+
+INSERT INTO `MapEquipements` (`idEquipement`, `idMap`) VALUES
+(3, 0),
+(5, 0),
+(7, 0),
+(9, 0),
+(11, 0),
+(13, 0),
+(15, 0),
+(17, 0),
+(19, 0),
+(21, 0),
+(23, 0),
+(25, 0),
+(27, 0),
+(29, 0),
+(31, 0),
+(33, 0),
+(35, 0),
+(37, 0),
+(39, 0),
+(41, 0),
+(44, 0),
+(46, 0),
+(48, 0),
+(50, 0),
+(52, 0),
+(54, 0),
+(56, 0),
+(58, 0),
+(60, 0),
+(62, 0),
+(64, 0),
+(66, 0),
+(68, 0),
+(70, 0),
+(72, 0),
+(74, 0),
+(76, 0),
+(78, 0),
+(80, 0),
+(82, 0),
+(83, 1266);
 
 -- --------------------------------------------------------
 
@@ -5470,7 +5744,14 @@ INSERT INTO `MapItems` (`idMap`, `idItem`) VALUES
 (1190, 2714),
 (1190, 2715),
 (1190, 2716),
-(229, 2846);
+(229, 2846),
+(220, 2847),
+(227, 2848),
+(222, 2849),
+(1268, 2934),
+(1266, 2935),
+(1267, 2936),
+(1267, 2937);
 
 -- --------------------------------------------------------
 
@@ -5782,7 +6063,49 @@ INSERT INTO `Mob` (`id`, `type`, `coefXp`) VALUES
 (1168, 0, 1),
 (1169, 4, 4),
 (1170, 3, 2),
-(1171, 0, 1);
+(1171, 0, 1),
+(1172, 0, 1),
+(1173, 7, 3),
+(1174, 2, 2),
+(1175, 0, 1),
+(1176, 0, 1),
+(1177, 0, 1),
+(1178, 0, 1),
+(1179, 0, 1),
+(1180, 7, 3),
+(1181, 0, 1),
+(1182, 0, 1),
+(1183, 0, 1),
+(1184, 2, 2),
+(1185, 2, 2),
+(1186, 2, 2),
+(1187, 2, 2),
+(1188, 2, 2),
+(1189, 0, 1),
+(1190, 2, 2),
+(1191, 0, 1),
+(1192, 0, 1),
+(1193, 3, 2),
+(1194, 0, 1),
+(1195, 2, 2),
+(1196, 0, 1),
+(1197, 2, 2),
+(1198, 2, 2),
+(1199, 0, 1),
+(1200, 3, 2),
+(1201, 2, 2),
+(1202, 2, 2),
+(1203, 7, 3),
+(1204, 0, 1),
+(1205, 3, 2),
+(1206, 2, 2),
+(1207, 0, 1),
+(1208, 3, 2),
+(1209, 0, 1),
+(1210, 4, 4),
+(1211, 0, 1),
+(1212, 0, 1),
+(1213, 7, 3);
 
 -- --------------------------------------------------------
 
@@ -5800,7 +6123,7 @@ CREATE TABLE `Personnage` (
 --
 
 INSERT INTO `Personnage` (`id`, `xp`) VALUES
-(1, 1314),
+(1, 1334),
 (2, 1521),
 (3, 0),
 (4, 0),
@@ -5969,11 +6292,23 @@ INSERT INTO `Tooltip` (`id`, `tooltip`) VALUES
 
 CREATE TABLE `TypeEquipement` (
   `id` int(11) NOT NULL,
-  `information` int(11) NOT NULL,
+  `information` text NOT NULL,
   `lienImage` varchar(500) NOT NULL,
   `nom` varchar(100) NOT NULL,
-  `rarete` int(11) NOT NULL
+  `rarete` int(11) NOT NULL,
+  `idCategorie` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `TypeEquipement`
+--
+
+INSERT INTO `TypeEquipement` (`id`, `information`, `lienImage`, `nom`, `rarete`, `idCategorie`) VALUES
+(1, '', '', 'Glaive', 1, 1),
+(2, '', '', 'Epee', 2, 1),
+(3, '', '', 'Parapluie', 3, 4),
+(4, '', '', 'Baton', 1, 3),
+(5, '', '', 'Cote de maille', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -6100,7 +6435,7 @@ CREATE TABLE `User` (
 --
 
 INSERT INTO `User` (`id`, `login`, `prenom`, `mdp`, `idPersonnage`) VALUES
-(1, 'Rapidecho@gmail.com', 'Julien', 'Julien1234', 420),
+(1, 'Rapidecho@gmail.com', 'Julien', 'Julien1234', 2),
 (3, 'popei@gmail.com', 'popei@gmail.com', 'Julien1234', 32),
 (4, 'Rapidecho2@gmail.com', 'Rapidecho2@gmail.com', 'Julien1234', 26),
 (6, 'rapache@gmail.com', 'rapache@gmail.com', 'rapace', 20),
@@ -9187,10 +9522,17 @@ INSERT INTO `Visites` (`idPersonnage`, `idMap`, `laDate`) VALUES
 (2, 1264, '2021-04-04 10:34:52'),
 (420, 171, '2021-04-04 10:35:52'),
 (420, 172, '2021-04-04 10:36:01'),
-(420, 226, '2021-04-04 10:36:49'),
+(420, 226, '2021-04-04 13:34:09'),
 (420, 195, '2021-04-04 10:36:42'),
-(420, 227, '2021-04-04 10:57:39'),
-(420, 222, '2021-04-04 10:39:32');
+(420, 227, '2021-04-04 13:34:11'),
+(420, 222, '2021-04-04 13:34:13'),
+(2, 1265, '2021-04-04 13:43:47'),
+(2, 1266, '2021-04-04 13:43:55'),
+(2, 1267, '2021-04-04 13:45:50'),
+(2, 1268, '2021-04-04 13:45:56'),
+(2, 1269, '2021-04-04 13:48:38'),
+(2, 192, '2021-04-04 13:48:46'),
+(2, 237, '2021-04-04 13:48:53');
 
 --
 -- Indexes for dumped tables
@@ -9204,6 +9546,12 @@ ALTER TABLE `AttaquePersoMob`
   ADD KEY `idPersonnage` (`idPersonnage`);
 
 --
+-- Indexes for table `Categorie`
+--
+ALTER TABLE `Categorie`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `Entite`
 --
 ALTER TABLE `Entite`
@@ -9211,6 +9559,13 @@ ALTER TABLE `Entite`
   ADD KEY `idMap` (`idMap`),
   ADD KEY `idUser` (`idUser`),
   ADD KEY `type` (`type`);
+
+--
+-- Indexes for table `EntiteEquipement`
+--
+ALTER TABLE `EntiteEquipement`
+  ADD KEY `idEquipement` (`idEquipement`),
+  ADD KEY `idEntite` (`idEntite`);
 
 --
 -- Indexes for table `Equipement`
@@ -9237,6 +9592,13 @@ ALTER TABLE `map`
   ADD KEY `mapEst` (`mapEst`),
   ADD KEY `mapOuest` (`mapOuest`),
   ADD KEY `idUserDecouverte` (`idUserDecouverte`);
+
+--
+-- Indexes for table `MapEquipements`
+--
+ALTER TABLE `MapEquipements`
+  ADD KEY `idEquipement` (`idEquipement`),
+  ADD KEY `idMap` (`idMap`);
 
 --
 -- Indexes for table `MapItems`
@@ -9301,28 +9663,34 @@ ALTER TABLE `Visites`
 --
 
 --
+-- AUTO_INCREMENT for table `Categorie`
+--
+ALTER TABLE `Categorie`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `Entite`
 --
 ALTER TABLE `Entite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1172;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1214;
 
 --
 -- AUTO_INCREMENT for table `Equipement`
 --
 ALTER TABLE `Equipement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `Item`
 --
 ALTER TABLE `Item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2847;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2938;
 
 --
 -- AUTO_INCREMENT for table `map`
 --
 ALTER TABLE `map`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1266;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1271;
 
 --
 -- AUTO_INCREMENT for table `Tooltip`
@@ -9334,7 +9702,7 @@ ALTER TABLE `Tooltip`
 -- AUTO_INCREMENT for table `TypeEquipement`
 --
 ALTER TABLE `TypeEquipement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `TypeItem`
