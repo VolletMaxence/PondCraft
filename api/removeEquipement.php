@@ -34,7 +34,7 @@ if($access){
                         //il faut changer d'arme
                         //on retire donc l'arme en cours ( equipe = 0 dans la table entite equipement)
                         if(!is_null($Perso->getArme())){
-                            $reponse[6]=$Perso->getArme()->getId();
+                            $reponse[6]=$_GET["idEquipement"];
                             $reponse[5] = $equipement->getNom();
                             $equipement->desequipeEntite($Perso);
                             $message.= 'retire de '.$equipement->getNom();

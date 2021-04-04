@@ -48,7 +48,7 @@ class Equipement{
     //retourne un tableau avec id , bool attaque , bool defense , bool magie , nom
     public function getCategorie(){
         if (!is_null($this->_idCategorie)){
-            $req="SELECT * From Categorie ";
+            $req="SELECT * From Categorie where id = '".$this->_idCategorie."'";
             $Result = $this->_bdd->query($req);
             if($tab = $Result->fetch()){ 
                 return $tab;
