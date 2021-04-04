@@ -6,6 +6,10 @@ function CallApiAddItemInSac(idItem){
     if(data[0]!=0 && data[1]==1){
         var li = document.getElementById("item"+idItem)
         var liSac = li;
+        //changement de l'evenement onclic
+        var Aclick = li.getElementsByTagName("a")[0];
+        Aclick.setAttribute('onclick',"useItem("+idItem+")");
+        li.setAttribute('id',"itemSac"+idItem);
         if (li!='undefine'){
             li.remove();
         }

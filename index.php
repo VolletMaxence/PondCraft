@@ -24,31 +24,31 @@ session_start();
         ?>
             <div class="reglement">
                 <p>BIENVENUE <?= $Joueur1->getPrenom() ?> </p>
-        <?php
-        $PersoChoisie = new Personnage($mabase);
-        $PersoCree = new Personnage($mabase);
-        $PersoCree = $PersoCree->CreatNewPersonnage($Joueur1->getId());
-        $PersoChoisie->getChoixPersonnage($Joueur1);
+                    <?php
+                    $PersoChoisie = new Personnage($mabase);
+                    $PersoCree = new Personnage($mabase);
+                    $PersoCree = $PersoCree->CreatNewPersonnage($Joueur1->getId());
+                    $PersoChoisie->getChoixPersonnage($Joueur1);
 
-        if(!is_null($PersoCree)){
-            $PersoChoisie = $PersoCree;
-        }
-        if(!$PersoChoisie->getId()==0){
-            $Joueur1->setPersonnage($PersoChoisie);
-        }
-        ?>
-                <div class="Action">
-        <?php
-        if(!empty($PersoChoisie->getNom())){
-        ?>
-                    <p> <a href="combat.php">Viens combattre avec <?= $PersoChoisie->getNom() ?> </a> </p>
-        <?php
-        }else{
-        ?>
-                    <p> <a href="combat.php">Viens combattre avec <?= $Joueur1->getNomPersonnage() ?> </a> </p>
-        <?php
-        }
-        ?>
+                    if(!is_null($PersoCree)){
+                        $PersoChoisie = $PersoCree;
+                    }
+                    if(!$PersoChoisie->getId()==0){
+                        $Joueur1->setPersonnage($PersoChoisie);
+                    }
+                    ?>
+                            <div class="Action">
+                    <?php
+                    if(!empty($PersoChoisie->getNom())){
+                    ?>
+                                <p> <a href="combat.php">Viens combattre avec <?= $PersoChoisie->getNom() ?> </a> </p>
+                    <?php
+                    }else{
+                    ?>
+                                <p> <a href="combat.php">Viens combattre avec <?= $Joueur1->getNomPersonnage() ?> </a> </p>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div><!-- div reglement-->
         <?php

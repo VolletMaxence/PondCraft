@@ -34,6 +34,19 @@ if(!is_null($newMob)){
 
 echo "</div>";
 
+echo '<div class="testUnitaire"><p>Test 3 création de 20 Mob Aléatoire </p>';
+
+for($i=0;$i<20;$i++){
+    $newMob = new Mob($mabase);
+    $newMob = $newMob->CreateMobAleatoire($map);
+    if(!is_null($newMob)){
+        $newMob->getBardeVie();
+        $newMob->renderHTML();
+    }    
+}
+
+echo "</div>";
+
 
 
 ?>
