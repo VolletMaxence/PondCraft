@@ -515,7 +515,7 @@ class map{
                 $map= $Joueur1->getPersonnage()->getMap();
 
                 //on vérifie si un mob est présent la ou on est car on est bloqué normalement
-                $listMob = $map->getAllMobs();
+                $listMob = $map->getAllMobContre($Joueur1);
                 if( is_null($listMob) || count($listMob) == 0){
                     $map = $map->Create($map,$_GET["cardinalite"],$Joueur1->getId());
                 }
