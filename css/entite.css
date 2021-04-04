@@ -18,3 +18,9 @@ img.Entite {
     height:120px;
     width:135px;
 }
+
+.Arme{
+    float:left;
+    white-space:nowrap;
+    background:rgba(34, 159, 190, 0.555);
+}

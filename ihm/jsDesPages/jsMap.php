@@ -57,7 +57,175 @@ function CallApiAddEquipementInSac(idEquipement){
     console.log(error); });
 }
 
+function CallApiRemoveEquipementEntite(idEquipement){
+    fetch('api/removeEquipement.php?idEquipement='+idEquipement).then((resp) => resp.json()) .then(function(data) {
+    // data est la réponse http de notre API.
+    console.log(data); 
+    //data 7 == 1 c'est une arme pour les autre types d'item il faudra faire un switch case
+    //data 6 == 1 c'est l'ancien id de equipement
+    if(data[0]!=0 && data[7]==1){
+        var e3 = document.getElementById("Arme"+data[6]);
+        e3.setAttribute('id',"ArmePerso"+<?php echo $Personnage->getId()?>);
+        e3.innerHTML='';
+        //data 5 c'est l'ancien nom de equipement
+        setEquipementInSac(data[6],data[5]);
+        lvlUp(data[0],data[1],data[2],data[3]);
+    } else{
+
+        alert("Vous n'avez pas réussi à retirer l equipement."+data[2]);
+    }  
+
+    }) .catch(function(error) {
+    // This is where you run code if the server returns any errors
+    console.log(error); });
+}
+
+function UpdateArme(nomArme,idAncienneArme,idNouvelArme){
+    var e3 = document.getElementById("Arme"+idAncienneArme);
+    if(e3 === null){
+         e3 = document.getElementById("ArmePerso"+<?php echo $Personnage->getId()?>);
+    }
+    //on remet l'ancien equipement dans le sac
+    setEquipementInSac(idAncienneArme,e3.innerHTML);
+    e3.innerHTML = nomArme;
+    e3.setAttribute('id',"Arme"+idNouvelArme);
+    e3.setAttribute('onclick',"CallApiRemoveEquipementEntite("+idNouvelArme+")");
+}
+
 function AttaquerPerso(idPerso,type){
     attaquer(idPerso,type)
+}
+
+function useEquipement(idEquipement){
+    //pour appeler une API on utilise la méthode fetch()
+    fetch('api/useEquipement.php?idEquipement='+idEquipement).then((resp) => resp.json())
+    .then(function(data) {
+        // code for handling the data you get from the API
+        console.log(data);
+        lvlUp(data[0],data[1],data[2],data[3]);
+       
+        if(data[0]!=0){ 
+            var li = document.getElementById("equipementSac"+idEquipement)
+            if (li!='undefine'){
+                li.remove();
+            }
+
+            //5 c'est le nom de la nouvelle et 
+            //6 c'est id de l'ancienne
+            //idEquipement c'est le nouvel id de arme
+            if(data[7]==1){
+                UpdateArme(data[5],data[6],idEquipement);
+                
+            }
+            
+        }
+        
+    })
+    .catch(function(error) {
+        // This is where you run code if the server returns any errors
+        console.log(error);
+    });
+}
+
+
+
+function setEquipementInSac(id,inner){
+    var ul = document.getElementById("Sac")
+    if (ul!='undefine' && inner != ''){
+        var liArme = document.createElement("li");
+        liArme.setAttribute('id',"equipementSac"+id);
+        var a = document.createElement("a");
+        a.setAttribute('onclick',"useEquipement("+id+")");
+        a.innerHTML =inner;
+        liArme.appendChild(a);
+        ul.appendChild(liArme);
+    }
+}
+
+//le type est 0 = person 1 = mob 
+
+function attaquer(idPerso,type){
+    //pour appeler une API on utilise la méthode fetch()
+    fetch('api/attaquer.php?id='+idPerso+'&type='+type).then((resp) => resp.json())
+    .then(function(data) {
+        // code for handling the data you get from the API
+        console.log(data);
+       
+            UpdateVie("vieEntiteValeur"+data[0],data[1],data[2],data[3],data[4],"vieEntiteValeur"+data[5],data[6]);
+            //si mob mort on doit recharger le server
+            //data[7]c'est xp
+            if(data[1]<=0){
+                location.reload();
+            }
+        
+    })
+    .catch(function(error) {
+        // This is where you run code if the server returns any errors
+        console.log(error);
+    });
+}
+
+function useItem(idItem){
+    //pour appeler une API on utilise la méthode fetch()
+    fetch('api/useItem.php?idItem='+idItem).then((resp) => resp.json())
+    .then(function(data) {
+        // code for handling the data you get from the API
+        console.log(data);
+        lvlUp(data[0],data[1],data[2],data[3],idItem);
+        if(data[0]!=0){ 
+            var li = document.getElementById("itemSac"+idItem)
+            if (li!='undefine'){
+                li.remove();
+            }
+        }
+    })
+    .catch(function(error) {
+        // This is where you run code if the server returns any errors
+        console.log(error);
+    });
+}
+
+
+
+function lvlUp(id,attaque,vie,vieMax){
+
+    if(id==0){
+         alert("La magie à fait chou blanc" );
+         
+    }else{
+        var e1 = document.getElementById("vieEntiteValeur"+id);
+        if(e1!="undefine"){
+            let pourcentage = vie/vieMax*100;
+            e1.style.width = pourcentage+"%";
+            e1.innerHTML = '♥️'+vie+'/'+vieMax;
+        }
+        var e2 = document.getElementById("attaqueEntiteValeur"+id);
+        if(e2!="undefine"){
+            e2.innerHTML = attaque;
+        }
+        
+        
+    }
+}
+
+
+
+
+function UpdateVie(id,vie,vieMax,vieEntite2,viMaxEntite2,id2,message){
+    var e1 = document.getElementById(id);
+    if(e1!="undefine"){
+        let pourcentage = vie/vieMax*100;
+        e1.style.width = pourcentage+"%";
+        e1.innerHTML = '♥️'+vie+'/'+vieMax;
+    }
+    var e2 = document.getElementById(id2);
+    if(e2!="undefine"){
+        let pourcentage = vieEntite2/viMaxEntite2*100;
+        e2.style.width = pourcentage+"%";
+        e2.innerHTML = '♥️'+vieEntite2+'/'+viMaxEntite2;
+    }
+    if(vieEntite2==0 || message!=''){
+        alert(message);
+    }
 }
 </script>

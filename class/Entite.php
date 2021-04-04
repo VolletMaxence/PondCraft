@@ -12,6 +12,7 @@ class Entite {
     protected $_imageLien;
     protected $_lvl;
     private $sacEquipements=array();
+    private $sacEquipe=array();
 
     protected $_type; //1 = hero 2= mob
 
@@ -24,7 +25,6 @@ class Entite {
     public function __construct($bdd){
         $this->_bdd = $bdd;
     }
-
 
 
     public function removeEquipementByID($id){
@@ -46,6 +46,40 @@ class Entite {
         $this->_bdd->query($req);
     }
 
+     //Equipe l'item au personnage
+     //cette methode doit etre appelé que par Equipemement
+    public function addEquipeById($EquipementID){
+        //la mise a jout en base et fait 
+        array_push($this->sacEquipe,$EquipementID);
+    }
+
+      //Déséquipe l'item au personnage
+      //cette methode doit etre appelé que par Equipemement
+    public function removeEquipeBydId($EquipementID){
+        //la mise a jout en base et fait dans l'equipement
+        unset($this->sacEquipe[array_search($EquipementID, $this->sacEquipe)]);
+    }
+
+    //retourne uniquement les equipiments non porte
+    public function getEquipementNonPorte(){
+          //compare les 2tableau et retourne ce qui est pas commun
+          $tab1 = $this->sacEquipements;
+          $tab2 = $this->sacEquipe;
+           //attention l'ordre des param est important 
+          $tab3 = array_diff($tab1,$tab2);
+          //compare les 2tableau et retourne ce qui est commun
+
+          $lists=array();
+          foreach ($tab3   as $EquipementId) {
+              $newEquipement = new Equipement($this->_bdd);
+              $newEquipement->setEquipementByID($EquipementId);
+              array_push($lists,$newEquipement);
+          }
+          return $lists;
+    }
+
+
+
     public function getVie(){
         return $this->_vie ;
     }
@@ -63,6 +97,23 @@ class Entite {
         }
         return $lists;
     }
+
+    //retour un objet de type arme 
+    public function getArme(){
+        $Arme = null;
+        foreach ($this->sacEquipe as $EquipementId) {
+            $EntiteEquipe = new Equipement($this->_bdd);
+            $EntiteEquipe->setEquipementByID($EquipementId);
+            if ($EntiteEquipe->getCategorie()['id']==1){
+                $Arme = new Arme($this->_bdd);
+                $Arme->setEquipementByID($EntiteEquipe->getId());
+                return $Arme;
+            }
+        }
+
+        return $Arme;
+    }
+
 
     public function getBardeVie(){
         $pourcentage = round(100*$this->_vie/$this->_vieMax);
@@ -85,9 +136,23 @@ class Entite {
     }
 
     public function getAttaque(){
-        return $this->_degat;
+        //ici on affiche les dégats Maximun du joueur avec Arme
+        $arme = $this->getArme();
+        $coef = 1;
+        $forceArme = 0;
+        if(!is_null($arme)){
+            $coef = $arme->getEfficacite();
+            $forceArme  = $arme->getForce();
+        }
+        $val = round(($this->_degat + $forceArme)*$coef);
+        return $val;
     }
 
+    public function getDegat()
+    {
+        //doit retourner des degat que l'entite donne a l'instant t
+        return $this->_degat;
+    }
     //il n'est possible de booster la vie au dela de vie max
     public function SoinPourcentage($pourcentage){
         $valeur = round(($this->_vieMax*$pourcentage)/100);
@@ -176,13 +241,7 @@ class Entite {
         $this->_type = $type;
         $this->_lvl = $lvl;
 
-        //select les Equipement déjà présent
         
-        $req  = "SELECT idEquipement FROM `EntiteEquipement` WHERE idEntite='".$id."'";
-        $Result = $this->_bdd->query($req);
-        while($tab=$Result->fetch()){
-            array_push($this->sacEquipements,$tab[0]);
-        }
 
     }
 
@@ -232,7 +291,17 @@ class Entite {
         <div>
             <img class="Entite" src="<?php echo $this->_imageLien;?>">
         </div>
-        <div class="attaque" id="attaqueEntiteValeur<?php echo $this->_id ;?>"> <?php echo $this->_degat ;?>  </div> 
+        <div class="attaque" id="attaqueEntiteValeur<?php echo $this->_id ;?>"> <?php echo $this->getAttaque() ;?>  </div> 
+        <?php 
+        $arme  = $this->getArme();
+        if(!is_null($arme)){
+            echo '<div id ="Arme'.$arme->getId().'" class="Arme" onclick="CallApiRemoveEquipementEntite('.$arme->getId().')">'.$arme->getNom().'</div>';
+        }else{
+            echo '<div id ="ArmePerso'.$this->_id.'" class="Arme"></div>';
+        }
+
+        ?>
+        
         <div class="barreDeVie" id="vieEntite<?php echo $this->_id ;?>">
                 <div class="vie" id="vieEntiteValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
         </div>
@@ -290,6 +359,17 @@ class Entite {
             $Result = $this->_bdd->query($req);
             while($tab=$Result->fetch()){
                 array_push($this->sacEquipements,$tab[0]);
+            }
+
+            //select les Equipement déjà présent
+            $req  = "SELECT idEquipement,equipe FROM `EntiteEquipement` WHERE idEntite='".$id."' AND equipe='1'";
+            $Result = $this->_bdd->query($req);
+            while($tab=$Result->fetch()){
+            
+                if($tab['equipe']==1){
+                    array_push($this->sacEquipe,$tab['idEquipement']);
+                }
+                
             }
         }
     }

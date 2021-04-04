@@ -5,10 +5,10 @@ session_start();
 include "../session.php"; 
 $reponse[0]=0;
 $reponse[1]=0;
-$reponse[5]=0; //sera le nom de la nouvel arme
+$reponse[5]=0; //sera le nom de l'equipement retire ou pas
 $reponse[6]=0; //sera l'ancienne Arme id
 $reponse[4]='';
-$reponse[7]=0;// permet de savoir si c'est utilisation d'une arme ou d'un bouclier ect çà retourne la catégorie de Equipement
+$reponse[7]=0;// permet de savoir si c'est utilisation d'une arme ou d'un bouclier ect çà retourne la catégorie de l'equipement
 if($access){
     if(isset($_GET["idEquipement"])){
 
@@ -27,8 +27,6 @@ if($access){
         foreach ($Perso->getEquipements()  as $equipement) {
             if($_GET["idEquipement"]==$equipement->getId()){
 
-                
-
                 //selon l'id du type on fait un truc différent
                 $type = $equipement->getCategorie();
                 switch ($type['id']) {
@@ -37,22 +35,25 @@ if($access){
                         //on retire donc l'arme en cours ( equipe = 0 dans la table entite equipement)
                         if(!is_null($Perso->getArme())){
                             $reponse[6]=$Perso->getArme()->getId();
+                            $reponse[5] = $equipement->getNom();
+                            $equipement->desequipeEntite($Perso);
+                            $message.= 'retire de '.$equipement->getNom();
+                            
+                            $reponse[7] =1;
+                        }else{
+                            $message.= 'vous n\‘avez pas bien reussi à retirer  '.$equipement->getNom();
+                            $reponse[7] =0;
                         }
-                        $equipement->equipeEntite($Perso);
-                        $reponse[5] = $equipement->getNom();
-                        $message.= 's\'équipe de '.$equipement->getNom();
-                        $reponse[7] =1;
+                        
+                        
+                        
+   
+                        
                         break;
                     
                     default:
                         //on retire l'equipement du perso pour le transformer un statsuplementaire
-                         $Perso->removeEquipementById($equipement->getId());
-                        $viemore=$equipement->getValeur();
-                        $attaque=round($viemore/2);
-                        $message = $Perso->getNom()." à utilisé un Equipement pour booster ses stats ";
-                        $Perso->lvlupAttaque($attaque);
-                        $Perso->lvlupVie($viemore);
-                        $Perso->lvlupVieMax($viemore);
+                        
                         break;
                 }
 

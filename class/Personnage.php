@@ -151,6 +151,7 @@ class Personnage extends Entite{
         return $lists;
     }
 
+    
   
 
    //Retourne un formulaire HTML pourcreer un personnage

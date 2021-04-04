@@ -16,7 +16,7 @@ if(count($listItems)>0){
 }
 
 //Equipement
-$listEquipements = $Joueur1->getPersonnage()->getEquipements();
+$listEquipements = $Joueur1->getPersonnage()->getEquipementNonPorte();
 if(count($listEquipements)>0){
     foreach ( $listEquipements as  $Equipement) {
         ?>

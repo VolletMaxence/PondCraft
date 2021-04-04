@@ -7,7 +7,7 @@ $newEquipement = new Equipement($mabase);
 
 
 
-echo '<div class="testUnitaire"><p>Test 2 Creation Equipement aléatoire </p>';
+echo '<div class="testUnitaire"><p>Test 1 Creation Equipement aléatoire </p>';
 $newEquipement= $newEquipement->createEquipementAleatoire();
 echo "<p>le nom est : ".$newEquipement->getNom()." ";
 echo " le id est : ".$newEquipement->getId()." ";
@@ -62,8 +62,8 @@ echo '<div class="testUnitaire"><p>Test 3 création 20 Equipement aléatoire </p
             echo "<p>ajout de l'equipement dans une map</p>";
             $map->addEquipement($Equipement);
             echo "<p>Suppresion de l'equipement dans la map et dans le jeu</p>";
-            //$map->removeEquipementByID($Equipement);
-            //$Equipement->deleteEquipement($Equipement->getId());
+            $map->removeEquipementByID($Equipement->getId());
+            $Equipement->deleteEquipement($Equipement->getId());
             
         }
         echo '</ul></div>';

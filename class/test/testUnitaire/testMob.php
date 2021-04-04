@@ -13,13 +13,7 @@ if(is_null($map)){
 
 
 
-echo '<div class="testUnitaire"><p>Test 1 Lecture d\'un Mob  </p>';
-$newMob->setMobById(994);
-$newMob->getNom();
-$newMob->getBardeVie();
-$newMob->renderHTML();
 
-echo "</div>";
 
 echo '<div class="testUnitaire"><p>Test 2 création d\'un Mob Aléatoire </p>';
 
@@ -31,6 +25,15 @@ if(!is_null($newMob)){
 }
 
 
+
+echo "</div>";
+
+echo '<div class="testUnitaire"><p>Test 1 Lecture d\'un Mob  </p>';
+$newMob2 = new Mob($mabase);
+$newMob2->setMobById($newMob->getId());
+$newMob2->getNom();
+$newMob2->getBardeVie();
+$newMob2->renderHTML();
 
 echo "</div>";
 

@@ -1,18 +1,31 @@
 <?php
 class Equipement{
 
-    private $_id;
-    private $_type;
-    private $_nom;
-    private $_valeur;
-    private $_efficacite;
-    private $_lvl;
+    protected $_id;
+    protected $_type;
+    protected $_nom;
+    protected $_valeur;
+    protected $_efficacite;
+    protected $_lvl;
+    protected $_idCategorie; //1 = Arme / 2 = Armure / 3 = Sort / 4 = Bouclcier 
 
-    private $_bdd;
+    protected $_bdd;
 
     public function setEquipementByID($id){
 
-        $req="SELECT * FROM Equipement WHERE id='".$id."' ";
+        $req="SELECT Equipement.id,
+                     Equipement.type,
+                     Equipement.nom,
+                     Equipement.valeur,
+                     Equipement.efficacite,
+                     Equipement.lvl,
+                     Categorie.id as idCategorie
+        
+            FROM Equipement,TypeEquipement,Categorie WHERE Equipement.id='".$id."' 
+            AND TypeEquipement.id = Equipement.type 
+            AND Categorie.id = TypeEquipement.idCategorie
+        
+        ";
 
         $Result = $this->_bdd->query($req);
         if($tab = $Result->fetch()){ 
@@ -22,12 +35,56 @@ class Equipement{
                           $tab["nom"],
                           $tab["valeur"],
                           $tab["efficacite"],
-                          $tab["lvl"]);
+                          $tab["lvl"]
+                          );
+
+            $this->_idCategorie = $tab["idCategorie"];
 
 
                          
         }
     }
+
+    //retourne un tableau avec id , bool attaque , bool defense , bool magie , nom
+    public function getCategorie(){
+        if (!is_null($this->_idCategorie)){
+            $req="SELECT * From Categorie ";
+            $Result = $this->_bdd->query($req);
+            if($tab = $Result->fetch()){ 
+                return $tab;
+            }
+        }else{
+            return null;
+        }
+    }
+
+       
+    public function desequipeEntite($Entite){
+        $sql = "UPDATE `EntiteEquipement` SET `equipe`='0' WHERE `idEntite`='".$Entite->getId()."' AND `idEquipement`='".$this->_id."' ";
+        $this->_bdd->query($sql);
+        $Entite->removeEquipeBydId($this->_id);
+    }
+
+    public function equipeEntite($Entite){
+        
+       
+        //TODO il faut vérifier qu'il n'y a pas d'autre équipement en cours sinon il faut les retirer
+        $sql = "UPDATE `EntiteEquipement`,`TypeEquipement`,`Equipement` SET `equipe`='0' 
+        WHERE `idEntite`='1' 
+        AND  EntiteEquipement.idEquipement = Equipement.id
+        AND  Equipement.type = TypeEquipement.id
+        AND  TypeEquipement.idCategorie = '".$this->_idCategorie."'";
+        $this->_bdd->query($sql);
+
+      
+
+        $Entite->addEquipeById($this->_id);
+
+        $sql = "UPDATE `EntiteEquipement` SET `equipe`='1' WHERE `idEntite`='".$Entite->getId()."' AND `idEquipement`='".$this->_id."' ";
+        $this->_bdd->query($sql);
+    }
+
+
     public function setEquipement($id,$type,$nom,$valeur,$efficacite,$lvl){
         $this->_id = $id;
         $this->_nom = $nom;
@@ -35,6 +92,7 @@ class Equipement{
         $this->_valeur = $valeur;
         $this->_efficacite = $efficacite;
         $this->_lvl = $lvl;
+        
     }
     public function getLvl(){
         return $this->_lvl;
@@ -43,8 +101,8 @@ class Equipement{
         return $this->_efficacite;
     }
     public function deleteEquipement($id){
+        //TODO AVEC LES CONTRAINTE RELATIONNEL IL DFAUT VERIDIER QU'ELLE EST PAS UTILISER AILLEUR
         $req="DELETE FROM Equipement WHERE id='".$id."' ";
-
         $Result = $this->_bdd->query($req);
     }
     public function getNom(){
@@ -136,7 +194,7 @@ class Equipement{
         $Result = $this->_bdd->query($req);
         $lastID = $this->_bdd->lastInsertId();
         if($lastID){ 
-            $newEquipement->setEquipement($lastID,$newType,$newNom,$newValeur,$efficacite,1);
+            $newEquipement->setEquipementByID($lastID);
             $this->_bdd->commit();
             return $newEquipement;
         }else{
@@ -145,7 +203,10 @@ class Equipement{
             return null;
         }
     }
-    private function getAdjectifEfficace($newTypeNom){
+
+
+
+    protected function getAdjectifEfficace($newTypeNom){
 
         //generate nom
         switch (rand(0,10)) {
