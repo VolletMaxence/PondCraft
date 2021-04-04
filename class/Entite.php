@@ -90,9 +90,13 @@ class Entite {
           return $lists;
     }
 
-
-
     public function getVie(){
+        //on enpeche les boost de perdurer
+        if($this->_vie>$this->_vieMax){
+            $this->_vie =$this->_vieMax;
+            $req  = "UPDATE `Entite` SET `vie`='".$this->_vie ."' WHERE `id` = '".$this->_id ."'";
+            $Result = $this->_bdd->query($req);
+        }
         return $this->_vie ;
     }
 
@@ -371,13 +375,13 @@ class Entite {
         
         <div class="barreDeVie" id="vieEntite<?php echo $this->_id ;?>">
                 <div class="vie" id="vieEntiteValeur<?php echo $this->_id ;?>" style="width: <?php echo $pourcentage?>%;">♥️<?php echo $this->_vie ;?></div>
-                <?php echo '<div class="armure" id="defenseEntiteValeur'.$this->_id.'"';
+                <?php echo '<div class="armureAll"><div class="armure" id="defenseEntiteValeur'.$this->_id.'"';
                     if(!is_null($armure)){
                         echo 'style="width:'.$this->getDefense().'%;">'.$this->getDefense();
                     }else{
                         echo '>';
                     }
-                    echo '</div>';
+                    echo '</div></div>';
                 ?>    
               
         </div>

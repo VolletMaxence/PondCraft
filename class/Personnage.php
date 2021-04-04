@@ -20,7 +20,15 @@ class Personnage extends Entite{
   
 
     public function SubitDegatByPersonnage($Personnage){
-        $this->_vie = $this->_vie - $Personnage->getAttaque();
+        $degat = $Personnage->getAttaque();
+        //on réduit les déga avec armure si possible
+        $degat-=($degat*$this->getDefense())/100;
+        $degat = round($degat);
+        if($degat<0){
+            $degat = 0;
+        }
+
+        $this->_vie = $this->_vie - $degat;
         if($this->_vie<0){
             $this->_vie =0;
             //retour en zone 0,0
@@ -38,6 +46,14 @@ class Personnage extends Entite{
     public function SubitDegatByMob($Mob){
 
         $MobDegatAttaqueEnvoyer=$Mob->getAttaque();
+
+        //on réduit les déga avec armure si possible
+        $MobDegatAttaqueEnvoyer-=($MobDegatAttaqueEnvoyer*$this->getDefense())/100;
+        $MobDegatAttaqueEnvoyer = round($MobDegatAttaqueEnvoyer);
+        if($MobDegatAttaqueEnvoyer<0){
+            $MobDegatAttaqueEnvoyer = 0;
+        }
+
         $vieAvantAttaque = $this->_vie;
 
         //on va rechercher l'historique

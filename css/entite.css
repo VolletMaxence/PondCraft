@@ -35,7 +35,12 @@ img.Entite {
     background: rgba(247, 232, 25, 0.555);
     
 }
+.armureAll{
+    float: right;
+    width:100%;
+    margin-top: -26px;
 
+}
 .armure{
     float: right;
     padding-top: 5px;
