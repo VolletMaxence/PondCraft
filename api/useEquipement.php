@@ -63,8 +63,9 @@ if($access){
                     default:
                         //on retire l'equipement du perso pour le transformer un statsuplementaire
                         $Perso->removeEquipementById($equipement->getId());
-                        $viemore=$equipement->getValeur();
-                        $attaque=round($viemore/2);
+                        $val=$equipement->getValeur();
+                        $attaque=round($val/10);
+                        $viemore=round($val/5);
                         $message = $Perso->getNom()." à utilisé un Equipement pour booster ses stats ";
                         $Perso->lvlupAttaque($attaque);
                         $Perso->lvlupVie($viemore);

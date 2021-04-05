@@ -40,7 +40,7 @@ if($access){
                         }
                         if($vie==0){
                             $lvl = $Deffensseur->getLvl();
-                            $Attaquant->addXP($lvl*rand(80,100));
+                            $Attaquant->addXP($lvl*rand(8,10));
                             $message .= " Tu as tué ".$Deffensseur->getNom();
                         }
                     }else{
@@ -72,7 +72,7 @@ if($access){
                         if($vie<=0)
                         {
                             $lvl = $DeffensseurMob->getLvl();
-                            $Attaquant->addXP($lvl*rand(80,100)*$DeffensseurMob->getCoefXp());
+                            $Attaquant->addXP($lvl*rand(8,10)*$DeffensseurMob->getCoefXp());
                             $message .= "Tu as participé à la capture de ce monstre.";
                         }
 

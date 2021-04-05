@@ -42,7 +42,7 @@ class Personnage extends Entite{
     }
 
 
-
+    //todo peut etre factoriser dans la class mère Entite
     public function SubitDegatByMob($Mob){
 
         $MobDegatAttaqueEnvoyer=$Mob->getAttaque();
