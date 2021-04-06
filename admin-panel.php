@@ -28,18 +28,20 @@ session_start();
     </head>
     <body class="bodyAccueil">
         <?php
-        include "session.php";
+            include "session.php";
 
-        if($access === true){
-            $access = $Joueur1->DeconnectToi();
-        }
-        if($access === true){
-            ?>
+            // Vérifie que la Session est Valide avec le bon Mot de Passe.
+            if($access === true){
+                $access = $Joueur1->DeconnectToi();
+            }
+            // Vérifie qu'il ne s'est pas déconnecté.
+            if($access === true){
+                ?>
 
-            <?php
-        }else{
-            echo $errorMessage;
-        }
+                <?php
+            }else{
+                echo $errorMessage;
+            }
         ?>
     </body>
 </html>

@@ -32,11 +32,13 @@ session_start();
     <body>
         <div class="centragePrincipal">
             <?php
-                include "session.php"; 
+                include "session.php";
 
+                // Vérifie que la Session est Valide avec le bon Mot de Passe.
                 if($access === true){
                     $access = $Joueur1->DeconnectToi();
                 }
+                // Vérifie qu'il ne s'est pas déconnecté.
                 if($access === true){
                     //gestion accès map:
                     $Personnage = $Joueur1->getPersonnage();
