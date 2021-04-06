@@ -21,8 +21,8 @@ document.addEventListener("touchmove", ( e ) => {
         return;
 
     // —— New coordinates
-    let xUp = evt.touches[0].clientX
-      , yUp = evt.touches[0].clientY
+    let xUp = e.touches[0].clientX
+      , yUp = e.touches[0].clientY
     // —— Calculate the difference
       , xDiff = xDown - xUp
       , yDiff = yDown - yUp;
