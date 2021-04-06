@@ -7,6 +7,7 @@ class Personnage extends Entite{
     private $_xp;
 
     private $sacItems=array();
+ 
 
     public function __construct($bdd){
 
@@ -19,7 +20,15 @@ class Personnage extends Entite{
   
 
     public function SubitDegatByPersonnage($Personnage){
-        $this->_vie = $this->_vie - $Personnage->getAttaque();
+        $degat = $Personnage->getAttaque();
+        //on réduit les déga avec armure si possible
+        $degat-=($degat*$this->getDefense())/100;
+        $degat = round($degat);
+        if($degat<0){
+            $degat = 0;
+        }
+
+        $this->_vie = $this->_vie - $degat;
         if($this->_vie<0){
             $this->_vie =0;
             //retour en zone 0,0
@@ -32,19 +41,19 @@ class Personnage extends Entite{
         return $this->_vie;
     }
 
-    public function getAllMyMobIdByMap($map){
-        $listMob=array();
-        $req="SELECT `id` FROM `Mob` WHERE `idPersoProprio` = '".$this->_id."' AND `idMap` = '".$map->getId()."' )";
-        $Result = $this->_bdd->query($req);
-        while($tab=$Result->fetch()){
-            array_push($listMob,$tab);
-        }
-        return $listMob;
-    }
 
+    //todo peut etre factoriser dans la class mère Entite
     public function SubitDegatByMob($Mob){
 
         $MobDegatAttaqueEnvoyer=$Mob->getAttaque();
+
+        //on réduit les déga avec armure si possible
+        $MobDegatAttaqueEnvoyer-=($MobDegatAttaqueEnvoyer*$this->getDefense())/100;
+        $MobDegatAttaqueEnvoyer = round($MobDegatAttaqueEnvoyer);
+        if($MobDegatAttaqueEnvoyer<0){
+            $MobDegatAttaqueEnvoyer = 0;
+        }
+
         $vieAvantAttaque = $this->_vie;
 
         //on va rechercher l'historique
@@ -104,7 +113,7 @@ class Personnage extends Entite{
         $vieMax = intdiv ($this->_vieMax,2);
         $attaque = intdiv ($this->_vieMax,2);
         if($vieMax<10){$vieMax=10;}
-        $req  = "UPDATE `Personnage` SET `degat`='".$attaque."',`vieMax`='".$vieMax."',`vie`='".$vieMax."' WHERE `id` = '".$this->_id ."'";
+        $req  = "UPDATE `Entite` SET `degat`='".$attaque."',`vieMax`='".$vieMax."',`vie`='".$vieMax."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
         $this->_vie=$vieMax;
         $this->_vieMax=$vieMax;
@@ -120,6 +129,9 @@ class Personnage extends Entite{
         foreach ($this->getItems() as $value) {
             $valeur+=$value->getValeur();
         }
+        foreach ($this->getEquipements() as $value) {
+            $valeur+=$value->getValeur();
+        }
         return  $valeur;
     }
 
@@ -128,7 +140,7 @@ class Personnage extends Entite{
        
         ?>
         <div class="perso">
-            <div class="persoXP"><?php echo $this->_xp?>pts xp</div>
+            <div class="persoXP"><?php echo $this->_xp?>(xp)</div>
             <?php
                 Parent::renderHTML();
             ?>
@@ -146,6 +158,9 @@ class Personnage extends Entite{
         }
         return $lists;
     }
+
+
+  
 
    //Retourne un formulaire HTML pourcreer un personnage
     //et permet d'attribuer automatiquement à user

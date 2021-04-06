@@ -2,6 +2,7 @@
 //cette api doit etre lancé pour attaquer un id
 //cette API retourne un tableau avec idDuPersoattaque, sa vie restant et sa vie de base
 // cette api retour un tableau avec 0 si elle n'a pas eccecuter le code attendu
+//une API ne dois sortir qu'un seul Echo celui de la reponse !!!!
 session_start();
 include "../session.php"; 
 $reponse[0]=0;
@@ -39,7 +40,7 @@ if($access){
                         }
                         if($vie==0){
                             $lvl = $Deffensseur->getLvl();
-                            $Attaquant->addXP($lvl*rand(80,100));
+                            $Attaquant->addXP($lvl*rand(8,10));
                             $message .= " Tu as tué ".$Deffensseur->getNom();
                         }
                     }else{
@@ -71,7 +72,7 @@ if($access){
                         if($vie<=0)
                         {
                             $lvl = $DeffensseurMob->getLvl();
-                            $Attaquant->addXP($lvl*rand(80,100)*$DeffensseurMob->getCoefXp());
+                            $Attaquant->addXP($lvl*rand(8,10)*$DeffensseurMob->getCoefXp());
                             $message .= "Tu as participé à la capture de ce monstre.";
                         }
 
@@ -91,6 +92,7 @@ if($access){
         $reponse[5]=$Attaquant->getId();
         $reponse[6]=$message;
         $reponse[7]=$Attaquant->getXp();
+        $reponse[8]=$Attaquant->getDefense();
 
 
     }

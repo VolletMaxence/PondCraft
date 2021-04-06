@@ -14,7 +14,19 @@ if(count($listItems)>0){
         <?php 
     }
 }
-echo '</ul></div>';
+
+//Equipement
+$listEquipements = $Joueur1->getPersonnage()->getEquipementNonPorte();
+if(count($listEquipements)>0){
+    foreach ( $listEquipements as  $Equipement) {
+        ?>
+        <li id="equipementSac<?php echo $Equipement->getId()?>"><a onclick="useEquipement(<?php echo $Equipement->getId()?>)"><?php echo $Equipement->getNom() ?></a></li>
+        <?php 
+    }
+}
+
+echo '</ul>
+</div>';
 echo '</div>';
 
 ?>

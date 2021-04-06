@@ -169,13 +169,25 @@ class Mob extends Entite{
         $req="SELECT * FROM TypeMob ORDER BY rarete ASC";
         $Result = $this->_bdd->query($req);
         $i = $Result->rowCount();
-        $coef = 0;
+        $coef = 1;
         $imax=$i*3;
-        $newType=0;
-        $rarete=0;
+        $newType=0; //Menir par default
+        $rarete=1;
         $newTypeNom='Menir';
         
+
         while($tab=$Result->fetch()){
+            if(rand(0,$tab['chance'])==1){
+             $newType = $tab['id'];
+             $newTypeNom = $tab['nom'];
+             $coef=$tab['rarete'];
+             break;
+            }
+        }
+    
+
+        //Ancien system random
+        /*while($tab=$Result->fetch()){
            if(rand(0,$imax)<$i){
             $newType = $tab['id'];
             $newTypeNom = $tab['nom'];
@@ -183,7 +195,11 @@ class Mob extends Entite{
             break;
            }
            $i--;
-        }
+        }*/
+
+
+
+
         $image = $this->generateImageMob($newTypeNom);
         
         

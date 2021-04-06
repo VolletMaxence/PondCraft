@@ -6,6 +6,10 @@ include "class/Map.php";
 include "class/Item.php";
 include "class/Mob.php";
 include "class/Tooltip.php";
+include "class/Equipement.php";
+include "class/Arme.php";
+include "class/Armure.php";
+
 
 //GESTION DE LA BASE -----------------------
 $mabase = null;

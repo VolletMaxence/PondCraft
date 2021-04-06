@@ -7,7 +7,7 @@ $reponse[0]=0;
 $reponse[1]=0;
 if($access){
     if(isset($_GET["idItem"])){
-
+  
         //on doit toujours vérifier en bdd la posibilité de l'appel de API
         //iici on va utiliser un item pour un personnage.
         $message ='';

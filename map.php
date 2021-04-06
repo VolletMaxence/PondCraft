@@ -36,15 +36,16 @@ session_start();
                             <p><a href="index.php">Retour à l'origine du tout</a></p>
                             <div>
                                 <?php
-                                    if(isset($_GET["position"]) && $_GET["position"]==='Generate'){
-                                        //TODO lol la fleme de faire la negation de ce if
-                                    }else{
+                                    // Quand on ne génère pas de nouvelle position ou que aucune position
+                                    // n'est renseignée, on peut appeler un autre personnage.
+                                    if(!(isset($_GET["position"]) && $_GET["position"]==='Generate')){
                                         ?>
                                             <p>Tu peux appeler un autre personnage.</p>
                                         <?php
                                         $Personnage->getChoixPersonnage($Joueur1);
                                         $Joueur1->setPersonnage($Personnage);
                                     }
+                                    
                                     //AFFICHAGE de l'entete d'un hero
                                     include "ihm/affichagePersoEtSac.php";
                                     //AFFICHAGE d'UN TOOLTIP
@@ -70,6 +71,8 @@ session_start();
                                                     include "ihm/affichageItemsMap.php";
                                                     //AFFICHAGE DES ITEMS DE LA MAP
                                                     include "ihm/affichageTousLesMobs.php";
+                                                    //AFFICHAGE DES EQUIPEMENT DE LA MAP
+                                                    include "ihm/affichageEquipementsMap.php";
                                                 ?>
                                             </div>
                                             <?= $BousoleDeplacement['est'] ?>
