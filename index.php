@@ -37,38 +37,43 @@ session_start();
         if($access){
             ?>
                 <div class="reglement">
-                    <p>BIENVENUE <?= $Joueur1->getPrenom() ?> </p>
-                        <?php
+                    <div class="bienvenue">
+                        <p>Bienvenue
+                            <?php
+                                if(($Joueur1->isadmin()) === true){
+                                    ?> Administrateur <?php
+                                }
+                                else{
+                                    ?> Joueur <?php
+                                }
+                                echo $Joueur1->getPrenom();
+                            ?>
+                        </p>
+                    </div>
+                    <?php
+                        $PersoChoisie = new Personnage($mabase);
+                        $PersoCree = new Personnage($mabase);
+                        $PersoCree = $PersoCree->CreatNewPersonnage($Joueur1->getId());
+                        $PersoChoisie->getChoixPersonnage($Joueur1);
 
-                        if($Joueur1->isadmin()){
-                            echo "je suis admin";
-                        }else{
-                            echo "je suis pas admin";
+                        if(!is_null($PersoCree)){
+                            $PersoChoisie = $PersoCree;
                         }
-
-                            $PersoChoisie = new Personnage($mabase);
-                            $PersoCree = new Personnage($mabase);
-                            $PersoCree = $PersoCree->CreatNewPersonnage($Joueur1->getId());
-                            $PersoChoisie->getChoixPersonnage($Joueur1);
-
-                            if(!is_null($PersoCree)){
-                                $PersoChoisie = $PersoCree;
-                            }
-                            if(!$PersoChoisie->getId()==0){
-                                $Joueur1->setPersonnage($PersoChoisie);
-                            }
-                            ?>
-                                <div class="Action">
-                            <?php
-                            if(!empty($PersoChoisie->getNom())){
-                            ?>
-                                    <p><a href="combat.php">Viens combattre avec <?= $PersoChoisie->getNom() ?></a></p>
-                            <?php
-                            }else{
-                            ?>
-                                    <p><a href="combat.php">Viens combattre avec <?= $Joueur1->getNomPersonnage() ?></a></p>
-                            <?php
-                            }
+                        if(!$PersoChoisie->getId()==0){
+                            $Joueur1->setPersonnage($PersoChoisie);
+                        }
+                    ?>
+                    <div class="Action">
+                        <?php
+                        if(!empty($PersoChoisie->getNom())){
+                        ?>
+                            <p><a href="combat.php">Viens combattre avec <?= $PersoChoisie->getNom() ?></a></p>
+                        <?php
+                        }else{
+                        ?>
+                            <p><a href="combat.php">Viens combattre avec <?= $Joueur1->getNomPersonnage() ?></a></p>
+                        <?php
+                        }
                         ?>
                     </div>
                 </div>
