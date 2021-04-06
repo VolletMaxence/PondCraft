@@ -39,6 +39,33 @@ session_start();
                 ?>
                     <div class="reglement">
                         <p>BIENVENUE <?= $Joueur1->getPrenom() ?> </p>
+
+                        <?php
+
+                        if($Joueur1->isadmin()){
+                            echo "je suis admin";
+                        }else{
+                            echo "je suis pas admin";
+                        }
+
+                            $PersoChoisie = new Personnage($mabase);
+                            $PersoCree = new Personnage($mabase);
+                            $PersoCree = $PersoCree->CreatNewPersonnage($Joueur1->getId());
+                            $PersoChoisie->getChoixPersonnage($Joueur1);
+
+                            if(!is_null($PersoCree)){
+                                $PersoChoisie = $PersoCree;
+                            }
+                            if(!$PersoChoisie->getId()==0){
+                                $Joueur1->setPersonnage($PersoChoisie);
+                            }
+                            ?>
+                                <div class="Action">
+                            <?php
+                            if(!empty($PersoChoisie->getNom())){
+                            ?>
+                                    <p><a href="combat.php">Viens combattre avec <?= $PersoChoisie->getNom() ?></a></p>
+
                             <?php
                                 $PersoChoisie = new Personnage($mabase);
                                 $PersoCree = new Personnage($mabase);
