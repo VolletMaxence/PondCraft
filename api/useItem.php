@@ -36,7 +36,7 @@ if($access){
                         break;
                     
                     default:
-                        $viemore=$item->getValeur();
+                        $viemore=round($item->getValeur()/10);
                         $attaque=round($viemore/2);
                         $message = $Perso->getNom()." à utilisé un objet";
                         $Perso->lvlupAttaque($attaque);
