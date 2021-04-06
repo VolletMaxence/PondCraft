@@ -2,15 +2,29 @@
 session_start();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/index.css">
-        <script src="main.js"></script>
-        <title>Document</title>
+        <!-- Compatible / UTF / Viewport-->
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Style CSS / Script -->
+            <link rel="stylesheet" href="css/style.css">
+            <link rel="stylesheet" href="css/index.css">
+            <script src="main.js"></script>
+        <!-- Informations Généraux-->
+            <title>Projet Full Stack</title>
+            <meta name='description' content='Projet Full Stack'>
+            <meta name='author' content='La Providence - Amiens'>
+            <link rel='shortcut icon' href='favicon.ico'>
+        <!-- Intégration Facebook -->
+            <meta property='og:title' content='Projet Full Stack'>
+            <meta property='og:description' content='Projet Full Stack'>
+            <meta property='og:image' content='favicon.ico'>
+        <!-- Intégration Twitter -->
+            <meta name='twitter:title' content='Projet Full Stack'>
+            <meta name='twitter:description' content='Projet Full Stack'>
+            <meta name='twitter:image' content='favicon.ico'>
     </head>
     <body class="bodyAccueil">
         <?php
