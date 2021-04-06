@@ -43,7 +43,7 @@ session_start();
                     //gestion accès map:
                     $Personnage = $Joueur1->getPersonnage();
                     if(is_null($Personnage->getId())){
-                        ?> 
+                        ?>
                             <p>Il faut créer un personnage d'abord.</p>
                             <p><a href="index.php">Retour à l'origine du tout</a></p>
                         <?php
@@ -107,4 +107,5 @@ session_start();
         </div>
     </body>
     <?php include "ihm/jsDesPages/jsMap.php" ?>
+    <script src="Javascript/map.js"></script>
 </html>
