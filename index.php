@@ -38,17 +38,19 @@ session_start();
             ?>
                 <div class="reglement">
                     <div class="bienvenue">
-                        <p>Bienvenue
-                            <?php
-                                if(($Joueur1->isadmin()) === true){
-                                    ?> Administrateur <?php
-                                }
-                                else{
-                                    ?> Joueur <?php
-                                }
-                                echo $Joueur1->getPrenom();
-                            ?>
-                        </p>
+                        <?php
+                            if($Joueur1->isAdmin() == true){
+                                ?>
+                                    <p>Bienvenue Administrateur <?= $Joueur1->getPrenom() ?>.</p>
+                                    <p><a href='admin-panel.php'>Accéder au Panel Administrateur.</a></p>
+                                <?php
+                            }
+                            else{
+                                ?>
+                                    <p>Bienvenue Joueur <?= $Joueur1->getPrenom() ?>.</p>
+                                <?php
+                            }
+                        ?>
                     </div>
                     <?php
                         $PersoChoisie = new Personnage($mabase);
