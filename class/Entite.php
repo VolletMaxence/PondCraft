@@ -330,7 +330,6 @@ class Entite {
     }
 
     //retourne un entier de toutes ses valeurs
-    
     public function getValeur(){
         $valeur = 0;
         foreach ($this->getEquipements() as $value) {
