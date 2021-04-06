@@ -59,7 +59,6 @@ session_start();
                                         $Personnage->getChoixPersonnage($Joueur1);
                                         $Joueur1->setPersonnage($Personnage);
                                     }
-                                    
                                     //AFFICHAGE de l'entete d'un hero
                                     include "ihm/affichagePersoEtSac.php";
                                     //AFFICHAGE d'UN TOOLTIP
