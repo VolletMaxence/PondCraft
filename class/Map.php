@@ -523,6 +523,10 @@ class map{
     //cardinalite = la d'ou l'on vient 
     //permet de charger un map ou d'en creer une selon d'ou l'on viens
     public function loadMap($position,$Cardinalite,$Joueur1){
+
+        //on va vérifier qu'il n'est pas trop looin par rapport à son niveau
+        $lvlPerso = $Joueur1->getPersonnage()->getLvl();
+
         if(isset($position) && isset($Cardinalite) ){
             //todo voir si le spam générate est controlé 
             if($position==="Generate"){
@@ -535,8 +539,16 @@ class map{
                 if( is_null($listMob) || count($listMob) == 0){
                     $map = $map->Create($map,$_GET["cardinalite"],$Joueur1->getId());
                 }
+
                
-                if(!is_null($map)){
+                $lvlMap = $map->getlvl();
+                
+                if($lvlPerso<$lvlMap){
+                    echo '<p><div class="error">Ton lvl n\'est pas assez élévé pour venir ici </p>';
+                    return $this;
+                }
+               
+                if(!is_null($map)  ){
                     return $map;
                 }else{
                     return $this;
@@ -548,9 +560,18 @@ class map{
                 $ancienY = $this->getY();
                 $ancienPosition=$this->getPosition();
 
-                $this->setMapByPosition($position);
+                $mapVisite = new Map($this->_bdd);
+                $mapVisite->setMapByPosition($position);
+                $lvlMap = $mapVisite->getlvl();
                 
-
+                if($lvlPerso<$lvlMap){
+                    echo '<p><div class="error">Ton lvl n\'est pas assez élévé pour venir ici </p>';
+                    return $this;
+                }else{
+                    $this->setMapByPosition($position);
+                }
+                
+                
                 //chargement des Items en plus
                 $req="SELECT `laDate` from `Visites` WHERE `idMap` = '".$this->getId()."' ORDER BY `laDate` DESC";
                 $Result = $this->_bdd->query($req);
@@ -631,7 +652,7 @@ class map{
     }
 
     public function getInfoMap(){
-        return "<b>". $this->getNom()."</b>".$this->getCoordonne()." découvert par ".$this->getPersonnageDecouvreur()->getPrenom()." et ses Heros.";
+        return "<b>". $this->getNom()."</b>".$this->getCoordonne()."lvl ".$this->getlvl()." découvert par ".$this->getPersonnageDecouvreur()->getPrenom()." et ses Heros.";
     }
 
     //permet d'enregistrer une visite et de vérifier si c'est pas trop rapide

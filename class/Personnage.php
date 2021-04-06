@@ -103,8 +103,19 @@ class Personnage extends Entite{
     //retourne la nouvelle xp 
     public function addXP($value){
         $this->_xp += $value ;
+        
         $req  = "UPDATE `Personnage` SET `xp`='".$this->_xp ."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
+
+        //passage des Lvl suis une loi de racine carre
+        $lvl = ceil(($this->_xp/2000)**(1/0.3));
+
+        if($lvl >$this->_lvl ){
+            $this->_lvl = $lvl;
+            $req  = "UPDATE `Entite` SET `lvl`='".$this->_lvl."' WHERE `id` = '".$this->_id ."'";
+            $Result = $this->_bdd->query($req);
+        }
+
         return $this->_xp;
     }
   
