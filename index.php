@@ -12,7 +12,7 @@ session_start();
             <link rel="stylesheet" href="css/style.css">
             <link rel="stylesheet" href="css/index.css">
             <script src="main.js"></script>
-        <!-- Informations Générales -->
+        <!-- Informations Généraux-->
             <title>Projet Full Stack</title>
             <meta name='description' content='Projet Full Stack'>
             <meta name='author' content='La Providence - Amiens'>
@@ -28,18 +28,16 @@ session_start();
     </head>
     <body class="bodyAccueil">
         <?php
-            include "session.php";
+        //c'est dans fonction que l'on gère les formulaires de Co et les sessions
 
-            // Vérifie que la Session est Valide avec le bon Mot de Passe.
-            if($access === true){
-                $access = $Joueur1->DeconnectToi();
-            }
-            // Vérifie qu'il ne s'est pas déconnecté. Si non Déco, Affiche Page.
-            if($access === true){
-                ?>
-                    <div class="reglement">
-                        <p>BIENVENUE <?= $Joueur1->getPrenom() ?> </p>
-
+        include "session.php";
+        if($access){
+            $access = $Joueur1->DeconnectToi();
+        }
+        if($access){
+            ?>
+                <div class="reglement">
+                    <p>BIENVENUE <?= $Joueur1->getPrenom() ?> </p>
                         <?php
 
                         if($Joueur1->isadmin()){
@@ -65,38 +63,19 @@ session_start();
                             if(!empty($PersoChoisie->getNom())){
                             ?>
                                     <p><a href="combat.php">Viens combattre avec <?= $PersoChoisie->getNom() ?></a></p>
-
                             <?php
-                                $PersoChoisie = new Personnage($mabase);
-                                $PersoCree = new Personnage($mabase);
-                                $PersoCree = $PersoCree->CreatNewPersonnage($Joueur1->getId());
-                                $PersoChoisie->getChoixPersonnage($Joueur1);
-
-                                if(!is_null($PersoCree)){
-                                    $PersoChoisie = $PersoCree;
-                                }
-                                if(!$PersoChoisie->getId()==0){
-                                    $Joueur1->setPersonnage($PersoChoisie);
-                                }
-                                ?>
-                                    <div class="Action">
-                                <?php
-                                if(!empty($PersoChoisie->getNom())){
-                                ?>
-                                        <p><a href="combat.php">Viens combattre avec <?= $PersoChoisie->getNom() ?></a></p>
-                                <?php
-                                }else{
-                                ?>
-                                        <p><a href="combat.php">Viens combattre avec <?= $Joueur1->getNomPersonnage() ?></a></p>
-                                <?php
-                                }
+                            }else{
                             ?>
-                        </div>
+                                    <p><a href="combat.php">Viens combattre avec <?= $Joueur1->getNomPersonnage() ?></a></p>
+                            <?php
+                            }
+                        ?>
                     </div>
-                <?php
-            }else{
-                echo $errorMessage;
-            }
+                </div>
+            <?php
+        }else{
+            echo $errorMessage;
+        }
         ?>
     </body>
 </html>
