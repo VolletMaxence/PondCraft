@@ -39,6 +39,13 @@ session_start();
                 <div class="reglement">
                     <p>BIENVENUE <?= $Joueur1->getPrenom() ?> </p>
                         <?php
+
+                        if($Joueur1->isadmin()){
+                            echo "je suis admin";
+                        }else{
+                            echo "je suis pas admin";
+                        }
+
                             $PersoChoisie = new Personnage($mabase);
                             $PersoCree = new Personnage($mabase);
                             $PersoCree = $PersoCree->CreatNewPersonnage($Joueur1->getId());
