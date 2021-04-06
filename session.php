@@ -1,7 +1,4 @@
 <?php
-
-
-
 include "class/Entite.php";
 include "class/User.php";
 include "class/Personnage.php";
@@ -14,18 +11,16 @@ include "class/Arme.php";
 include "class/Armure.php";
 
 
-
-
 //GESTION DE LA BASE -----------------------
 $mabase = null;
 $access = null;
 $errorMessage="";
 
 try{
-        $user = "lapro_site";
-        $pass = "TDataSource1234";
-        $mabase = new PDO('mysql:host=mysql-lapro.alwaysdata.net;dbname=lapro_virus', $user, $pass);
-        //$mabase = new PDO('mysql:host=127.0.0.1;dbname=lapro_virus', $user, $pass);
+    $user = "lapro_site";
+    $pass = "TDataSource1234";
+    $mabase = new PDO('mysql:host=mysql-lapro.alwaysdata.net;dbname=lapro_virus', $user, $pass);
+    //$mabase = new PDO('mysql:host=127.0.0.1;dbname=lapro_virus', $user, $pass);
 }catch(Exception $e){
     $errorMessage .= $e->getMessage();
 }
