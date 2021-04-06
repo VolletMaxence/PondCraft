@@ -2,18 +2,32 @@
 session_start();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/map.css">
-        <link rel="stylesheet" href="css/perso.css">
-        <link rel="stylesheet" href="css/item.css">
-        <link rel="stylesheet" href="css/entite.css">
-        <script src="main.js"></script>
-        <title>Combat</title>
+        <!-- Compatible / UTF / Viewport-->
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Style CSS / Script -->
+            <link rel="stylesheet" href="css/style.css">
+            <link rel="stylesheet" href="css/map.css">
+            <link rel="stylesheet" href="css/perso.css">
+            <link rel="stylesheet" href="css/item.css">
+            <link rel="stylesheet" href="css/entite.css">
+            <script src="main.js"></script>
+        <!-- Informations Généraux-->
+            <title>Projet Full Stack - Combat</title>
+            <meta name='description' content='Projet Full Stack - Combat'>
+            <link rel='shortcut icon' href='favicon.ico'>
+            <meta name='author' content='La Providence - Amiens'>
+        <!-- Intégration Facebook -->
+            <meta property='og:title' content='Projet Full Stack - Combat'>
+            <meta property='og:description' content='Projet Full Stack - Combat'>
+            <meta property='og:image' content='favicon.ico'>
+        <!-- Intégration Twitter -->
+            <meta name='twitter:title' content='Projet Full Stack - Combat'>
+            <meta name='twitter:description' content='Projet Full Stack - Combat'>
+            <meta name='twitter:image' content='favicon.ico'>
     </head>
     <body>
         <div class="centragePrincipal">
