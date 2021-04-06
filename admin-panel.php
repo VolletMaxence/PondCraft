@@ -30,10 +30,10 @@ session_start();
         <?php
         include "session.php";
 
-        if($access){
+        if($access === true){
             $access = $Joueur1->DeconnectToi();
         }
-        if($access){
+        if($access === true){
             ?>
 
             <?php

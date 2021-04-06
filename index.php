@@ -31,10 +31,10 @@ session_start();
         //c'est dans fonction que l'on gère les formulaires de Co et les sessions
 
         include "session.php";
-        if($access){
+        if($access === true){
             $access = $Joueur1->DeconnectToi();
         }
-        if($access){
+        if($access === true){
             ?>
                 <div class="reglement">
                     <p>BIENVENUE <?= $Joueur1->getPrenom() ?> </p>
