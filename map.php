@@ -15,7 +15,7 @@ session_start();
             <link rel="stylesheet" href="css/item.css">
             <link rel="stylesheet" href="css/entite.css">
             <script src="main.js"></script>
-        <!-- Informations Généraux-->
+        <!-- Informations Générales -->
             <title>Projet Full Stack - Combat</title>
             <meta name='description' content='Projet Full Stack - Combat'>
             <link rel='shortcut icon' href='favicon.ico'>

@@ -12,7 +12,7 @@ session_start();
             <link rel="stylesheet" href="css/style.css">
             <link rel="stylesheet" href="css/index.css">
             <script src="main.js"></script>
-        <!-- Informations Généraux-->
+        <!-- Informations Générales -->
             <title>Projet Full Stack</title>
             <meta name='description' content='Projet Full Stack'>
             <meta name='author' content='La Providence - Amiens'>
