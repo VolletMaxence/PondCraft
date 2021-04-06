@@ -7,6 +7,7 @@ class User{
     private $_mdp;
     private $_prenom;
     private $_MonPersonnage;
+    private $_admin;
 
     private $_bdd;
 
@@ -14,17 +15,18 @@ class User{
         $this->_bdd = $bdd;
     }
 
-    public function setUser($id,$login,$mdp,$prenom){
+    public function setUser($id,$login,$mdp,$prenom,$admin){
         $this->_id = $id;
         $this->_login = $login;
         $this->_mdp = $mdp;
         $this->_prenom = $prenom;
+        $this->_admin = $admin;
     }
 
     public function setUserById($id){
         $Result = $this->_bdd->query("SELECT * FROM `User` WHERE `id`='".$id."' ");
         if($tab = $Result->fetch()){ 
-            $this->setUser($tab["id"],$tab["login"],$tab["mdp"],$tab["prenom"]);
+            $this->setUser($tab["id"],$tab["login"],$tab["mdp"],$tab["prenom"],$tab["admin"]);
             //chercher son personnage
             $personnage = new Personnage($this->_bdd);
             $personnage->setPersonnageById($tab["idPersonnage"]);
@@ -37,6 +39,12 @@ class User{
         //je mémorise en base l'association du personnage dans user
         $req ="UPDATE `User` SET `idPersonnage`='".$Perso->getID()."' WHERE  `id` = '".$this->_id."'";
         $Result = $this->_bdd->query($req);
+    }
+
+
+    //retour true si c'est un admin
+    public function isAdmin(){
+        return $this->_admin;
     }
 
     public function getPrenom(){
