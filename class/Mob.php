@@ -128,12 +128,12 @@ class Mob extends Entite{
             $lvl = $map->getlvl();
             $coefAbuseVie = rand(20,50);
             $coefAbuseArme = rand(2,20);
-            $vie = $coefAbuseVie*$type[2]*$lvl*$lvl;
-            $degat = $coefAbuseArme*$type[2]*$lvl;
+            $vie = $coefAbuseVie*$type[2]*$lvl*$lvl*$lvl;
+            $degat = $coefAbuseArme*$type[2]*$lvl*$lvl;
             //Menir 
             if($type[1]==0){
                 $vie = $coefAbuseVie*20*$lvl*$lvl;
-                $degat = 1;
+                $degat = 1*$lvl*$lvl;
             }
 
             $newMob = $newMob->CreateEntite($this->generateNom($type[0]), $vie, $degat, $map->getId(),$vie,$type[3],null,2,$lvl);
