@@ -108,7 +108,8 @@ class Personnage extends Entite{
         $Result = $this->_bdd->query($req);
 
         //passage des Lvl suis une loi de racine carre
-        $lvl = ceil(($this->_xp/2000)**(1/0.3));
+        //* le double etole ** c'est elevé à la puissance */
+        $lvl = ceil(($this->_xp/2000)**(0.7));
 
         if($lvl >$this->_lvl ){
             $this->_lvl = $lvl;
