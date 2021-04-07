@@ -33,12 +33,42 @@ function CallApiAddEquipementInSac(idEquipement){
     // data est la réponse http de notre API.
     console.log(data); 
     if(data[0]!=0 && data[1]==1){
+
+
+        //permet de mémoriser equipement fusioné
+        idEquipementPop  = idEquipement;
+        //si lvlup et fusion
+        if(Array.isArray(data[5]) && data[4]>0){
+            //l'ancien li est supprimé
+            //5 est le tableau id a supp 4 et l'id a garder
+            for (var i = 0; i < data[5].length; i++) {
+       
+           
+                var li = document.getElementById("equipementSac"+data[5][i]);
+                if (li!=null){
+                    li.remove();
+                }
+                        
+            }
+            
+
+            
+             //l'ancien affichage d'item est supprimé pour etre remplacé par sa fusion
+             idEquipementPop = data[4];
+             var li = document.getElementById("equipementSac"+data[4]);
+                if (li!=null){
+                    li.remove();
+                }
+        }
+
+
         var li = document.getElementById("equipement"+idEquipement)
         var liSac = li;
         //changement de l'evenement onclic
         var Aclick = li.getElementsByTagName("a")[0];
-        Aclick.setAttribute('onclick',"useEquipement("+idEquipement+")");
-        li.setAttribute('id',"equipementSac"+idEquipement);
+        Aclick.setAttribute('onclick',"useEquipement("+idEquipementPop+")");
+        Aclick.innerHTML =  data[3]+ " lvl " + data[2]  ;
+        li.setAttribute('id',"equipementSac"+idEquipementPop);
         if (li!='undefine'){
             li.remove();
         }
@@ -46,6 +76,9 @@ function CallApiAddEquipementInSac(idEquipement){
         if (ul!='undefine'){
             ul.appendChild(liSac);
         }
+
+        
+
     } else{
 
         

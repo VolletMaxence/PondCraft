@@ -27,11 +27,14 @@ class Armure extends Equipement{
             }
         }
 
-        $getAdjectifEfficace = $this->getAdjectifEfficace($newTypeNom);
-        $newNom = $getAdjectifEfficace['newNom'];
-        $efficacite = $getAdjectifEfficace['efficacite'];
+        $getEfficace = $this->getEfficaceAleatoire();
+
+        $newNom = $newTypeNom." ".$getEfficace['adjectif'];
+        $efficacite = $getEfficace['id'];
         
-        $newValeur = rand(5,10)*$rarete;
+        $newValeur = rand(5,10)*$rarete*$getEfficace['coef'];
+        
+
 
         $this->_bdd->beginTransaction();
         $req="INSERT INTO `Equipement`( `type`, `nom`, `valeur`, `efficacite`,`lvl`) VALUES ('".$newType."','".$newNom."','".$newValeur."','".$efficacite."',1)";

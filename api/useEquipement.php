@@ -42,7 +42,7 @@ if($access){
                         //$equipement->desequipeEntite($Perso);
                         $Perso->desequipeArme();
                         $equipement->equipeEntite($Perso);
-                        $reponse[5] = $equipement->getNom();
+                        $reponse[5] = $equipement->getNom()." lvl".$equipement->getLvl();
                         $message.= 's\'équipe de '.$equipement->getNom();
                         $reponse[7] =1;//1 est la categorie l'arme
                         break;
@@ -54,7 +54,7 @@ if($access){
                         }
                         $Perso->desequipeArmure();
                         $equipement->equipeEntite($Perso);
-                        $reponse[5] = $equipement->getNom();
+                        $reponse[5] = $equipement->getNom()." lvl".$equipement->getLvl();
                         $message.= 's\'équipe de '.$equipement->getNom();
                         $reponse[7] =2;//2 est la categorie l'Armure;
                         

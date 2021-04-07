@@ -1,15 +1,8 @@
 <?php
-class Equipement{
+class Equipement extends Objet{
 
-    protected $_id;
-    protected $_type;
-    protected $_nom;
-    protected $_valeur;
-    protected $_efficacite;
-    protected $_lvl;
+
     protected $_idCategorie; //1 = Arme / 2 = Armure / 3 = Sort / 4 = Bouclcier 
-
-    protected $_bdd;
 
     public function setEquipementByID($id){
 
@@ -44,7 +37,6 @@ class Equipement{
                          
         }
     }
-
     //retourne un tableau avec id , bool attaque , bool defense , bool magie , nom
     public function getCategorie(){
         if (!is_null($this->_idCategorie)){
@@ -57,7 +49,6 @@ class Equipement{
             return null;
         }
     }
-
        
     public function desequipeEntite($Entite){
         $sql = "UPDATE `EntiteEquipement` SET `equipe`='0' WHERE `idEntite`='".$Entite->getId()."' AND `idEquipement`='".$this->_id."' ";
@@ -84,7 +75,6 @@ class Equipement{
         $this->_bdd->query($sql);
     }
 
-
     public function setEquipement($id,$type,$nom,$valeur,$efficacite,$lvl){
         $this->_id = $id;
         $this->_nom = $nom;
@@ -94,25 +84,11 @@ class Equipement{
         $this->_lvl = $lvl;
         
     }
-    public function getLvl(){
-        return $this->_lvl;
-    }
-    public function getEfficacite(){
-        return $this->_efficacite;
-    }
+
     public function deleteEquipement($id){
         //TODO AVEC LES CONTRAINTE RELATIONNEL IL DFAUT VERIDIER QU'ELLE EST PAS UTILISER AILLEUR
         $req="DELETE FROM Equipement WHERE id='".$id."' ";
         $Result = $this->_bdd->query($req);
-    }
-    public function getNom(){
-        return $this->_nom;
-    }
-    public function getId(){
-        return $this->_id;
-    }
-    public function getValeur(){
-        return $this->_valeur;
     }
     //retourn un tableau avec id information lienImage nom rarete
     public function getType(){
@@ -159,10 +135,11 @@ class Equipement{
         $Transparence = (($this->_valeur/160)*((1-0.3)))+0.3 ;
         return $colorRarete.','.$Transparence.') !important' ;
     }
+
     public function __construct($bdd){
         $this->_bdd = $bdd;
     }
-   
+
     public function createEquipementAleatoire(){
         $newEquipement = new Equipement($this->_bdd);
 
@@ -170,24 +147,25 @@ class Equipement{
         $Result = $this->_bdd->query($req);
         $i = $Result->rowCount();
         $imax=$i*3;
-        $newType=0;
+        $newType=1;
         $rarete=1;
-        $newTypeNom='poussiere';
+        $newTypeNom='cuillère ';
+        
         while($tab=$Result->fetch()){
-           if(rand(0,$imax)<$i){
-            $newType = $tab['id'];
-            $newTypeNom = $tab['nom'];
-            $rarete=$tab['rarete'];
-            break;
-           }
-           $i--;
+            if(rand(0,$tab['chance'])==1){
+             $newType = $tab['id'];
+             $newTypeNom = $tab['nom'];
+             $coef=$tab['rarete'];
+             break;
+            }
         }
 
-        $getAdjectifEfficace = $this->getAdjectifEfficace($newTypeNom);
-        $newNom = $getAdjectifEfficace['newNom'];
-        $efficacite = $getAdjectifEfficace['efficacite'];
+        $getEfficace = $this->getEfficaceAleatoire();
+
+        $newNom = $newTypeNom." ".$getEfficace['adjectif'];
+        $efficacite = $getEfficace['id'];
         
-        $newValeur = rand(5,10)*$rarete;
+        $newValeur = rand(5,10)*$rarete*$getEfficace['coef'];
 
         $this->_bdd->beginTransaction();
         $req="INSERT INTO `Equipement`( `type`, `nom`, `valeur`, `efficacite`,`lvl`) VALUES ('".$newType."','".$newNom."','".$newValeur."','".$efficacite."',1)";
@@ -204,66 +182,50 @@ class Equipement{
         }
     }
 
+    //retourne la fusion si c'est réussi des 2 items
+    public function fusionEquipement($Entite,&$TabIDRemoved){
 
+        $req="SELECT Equipement.id,Equipement.lvl FROM EntiteEquipement,Equipement 
+            WHERE Equipement.id = EntiteEquipement.idEquipement 
+            AND idEntite = '".$Entite->getId()."' 
+            AND Equipement.nom = '".$this->getNom()."'
+            AND Equipement.lvl = '".$this->getlvl()."'
+            AND Equipement.type = '".$this->getType()['id']."'
+            AND Equipement.id <> '".$this->getId()."'
+         ";
 
-    protected function getAdjectifEfficace($newTypeNom){
+        $result = $this->_bdd->query($req);
+        if($tab=$result->fetch()){
 
-        //generate nom
-        switch (rand(0,10)) {
-            case 0:
-                $newNom = $newTypeNom.' cassé';
-                $efficacite = 0.3;
-            break;
-            case 1:
-                $newNom = $newTypeNom.' tout mou';
-                $efficacite = 0.4;
-            break;
-            case 2:
-                $newNom = $newTypeNom.' moisie';
-                $efficacite = 0.5;
-            break;
-            case 3:
-                $newNom = $newTypeNom.' tordu';
-                $efficacite = 0.6;
-            break;
-            case 4:
-                $newNom = $newTypeNom.' usagé';
-                $efficacite = 0.7;
-            break;
-            case 5:
-                $newNom = $newTypeNom.' moche';
-                $efficacite = 0.8;
-            break;
-            case 6:
-                $newNom = $newTypeNom.' jolie';
-                $efficacite = 0.9;
-            break;
-            case 7:
-                $newNom = $newTypeNom.' neuf';
-                $efficacite = 1;
-            break;
-            case 8:
-                $newNom = $newTypeNom.' Puissant';
-                $efficacite = 1.4;
-            break;
-            case 9:
-                $newNom = $newTypeNom.' efficasse';
-                $efficacite = 1.1;
-            break;
-            case 10:
-                $newNom = $newTypeNom.' magic';
-                $efficacite = 1.2;
-            break;
-            default:
-                $newNom = $newTypeNom.' enchantéeu';
-                $efficacite = 1.3;
-            break;
+            array_push($TabIDRemoved,$this->getId());
+
+            //maj du lvl
+            $this->_lvl ++;
+            
+            $req="UPDATE `Equipement` 
+                SET `lvl`='".$this->_lvl."'
+                WHERE `id` = '".$tab['id']."'
+            ";
+            $this->_bdd->query($req);
+            //et suppresion de l'ancien item 
+            $req="DELETE FROM `Equipement` 
+                WHERE `id` = '".$this->getId()."'
+             ";
+            $this->_bdd->query($req);
+
+            //on met ajout son id fusionné
+            $this->_id = $tab['id'];
+
+            //fonction recursif tant qu'on peut fusionner on fusionne
+            $this->fusionEquipement($Entite,$TabIDRemoved);
+               
+
         }
 
-        $reponse['newNom']=$newNom;
-        $reponse['efficacite']=$efficacite;
 
-        return $reponse;
+
     }
+
+  
 }
 ?>

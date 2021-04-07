@@ -36,7 +36,10 @@ if($access){
                         break;
                     
                     default:
-                        $viemore=round($item->getValeur()/10);
+                        $viemore=round($item->getValeur()/2)*$item->getLvl();
+                        if($viemore<2){
+                            $viemore =2;
+                        }
                         $attaque=round($viemore/2);
                         $message = $Perso->getNom()." à utilisé un objet";
                         $Perso->lvlupAttaque($attaque);
@@ -46,7 +49,7 @@ if($access){
                 }
 
                 
-
+                $reponse[8]= $Perso->getDefense();
                 $reponse[4]=$message;
                 $reponse[3]=$Perso->getVieMax();
                 $reponse[2]=$Perso->getVie();

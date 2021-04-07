@@ -256,7 +256,10 @@ class Personnage extends Entite{
    
     //ajoute un lien entre item et la personnage en bdd 
     //et accroche l'item dans la collection itemID dans le sac du perso
+    //au moment ou le personnage prend une Epee, cette derniere fusionne en lvl supérieur 
+    //et détruit l'autre . Attention il taut le meme lvl , le meme nom , le meme type
     public function addItem($newItem){
+
         array_push($this->sacItems,$newItem->getId());
         $req="INSERT INTO `PersoSacItems`(`idPersonnage`, `idItem`) VALUES ('".$this->getId()."','".$newItem->getId()."')";
         $this->_bdd->query($req);
