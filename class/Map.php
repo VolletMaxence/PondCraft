@@ -837,7 +837,7 @@ class map{
                 $Adjectif ="Luxuriant";
             break;
             case 2:
-                $Adjectif ="Pas belle";
+                $Adjectif ="Verdattre";
             break;
             case 3:
                 $Adjectif ="Enchantée";
