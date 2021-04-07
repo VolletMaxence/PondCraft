@@ -25,6 +25,7 @@ img.Entite {
     background:rgba(34, 159, 190, 0.555);
     height: 20px;
     padding: 3px;
+    font-size: smaller;
 }
 
 
@@ -33,6 +34,7 @@ img.Entite {
     white-space: nowrap;
     width:149px;
     background: rgba(247, 232, 25, 0.555);
+    font-size: smaller;
     
 }
 .armureAll{

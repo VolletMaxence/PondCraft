@@ -182,6 +182,50 @@ class Equipement extends Objet{
         }
     }
 
+    //retourne la fusion si c'est réussi des 2 items
+    public function fusionEquipement($Entite,&$TabIDRemoved){
+
+        $req="SELECT Equipement.id,Equipement.lvl FROM EntiteEquipement,Equipement 
+            WHERE Equipement.id = EntiteEquipement.idEquipement 
+            AND idEntite = '".$Entite->getId()."' 
+            AND Equipement.nom = '".$this->getNom()."'
+            AND Equipement.lvl = '".$this->getlvl()."'
+            AND Equipement.type = '".$this->getType()['id']."'
+            AND Equipement.id <> '".$this->getId()."'
+         ";
+
+        $result = $this->_bdd->query($req);
+        if($tab=$result->fetch()){
+
+            array_push($TabIDRemoved,$this->getId());
+
+            //maj du lvl
+            $this->_lvl ++;
+            
+            $req="UPDATE `Equipement` 
+                SET `lvl`='".$this->_lvl."'
+                WHERE `id` = '".$tab['id']."'
+            ";
+            $this->_bdd->query($req);
+            //et suppresion de l'ancien item 
+            $req="DELETE FROM `Equipement` 
+                WHERE `id` = '".$this->getId()."'
+             ";
+            $this->_bdd->query($req);
+
+            //on met ajout son id fusionné
+            $this->_id = $tab['id'];
+
+            //fonction recursif tant qu'on peut fusionner on fusionne
+            $this->fusionEquipement($Entite,$TabIDRemoved);
+               
+
+        }
+
+
+
+    }
+
   
 }
 ?>

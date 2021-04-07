@@ -3,6 +3,11 @@ session_start();
 //une API ne dois sortir qu'un seul Echo celui de la reponse !!!!
 //cet API permet de vérifier qu'un item est sur une map et que celui qui l'appel peut le mettre dans son sac
 include "../session.php"; 
+
+$reponse[5]=0;//retourne un tableau id a retirer du front
+$reponse[4]=0;// id a supprimer si il y a eu fusion l'ancien item doit etre suprimé
+$reponse[3]='init Api' ;//non de item;
+$reponse[2]=0; //,nouveau lvl si fusion 
 $reponse[0]=0;
 $reponse[1]=0;
 if($access){
@@ -34,7 +39,12 @@ if($access){
                     $map->removeEquipementById($_GET["idEquipement"]);
                     $item = new Equipement($mabase);
                     $item->setEquipementByID($_GET["idEquipement"]);
-                    $Perso->addEquipement($item);
+                   
+                    $reponse[5]=$Perso->addEquipement($item); //retourne un tableau id a retirer du front
+                    $reponse[4]=$item->getId();//retourne l'anvien id si ya eu fusion
+                    $reponse[3]=$item->getNom();
+                    $reponse[2]=$item->getLvl();
+                    
                     $reponse[1]=1;
                     $reponse[0]=1;
                 }else{
