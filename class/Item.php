@@ -40,7 +40,17 @@ class Item{
         return $this->_lvl;
     }
     public function getEfficacite(){
-        return $this->_efficacite;
+
+        $req="SELECT * FROM Efficacite where id = '".$this->_efficacite."'";
+        $Result = $this->_bdd->query($req);
+        
+       
+        if($tab=$Result->fetch()){
+            return $tab['coef'];
+        }
+        
+            return 0;
+        
     }
     public function deleteItem($id){
         $req="DELETE FROM Item WHERE id='".$id."' ";
@@ -112,10 +122,10 @@ class Item{
             $newType = $tab['id'];
             $newTypeNom = $tab['nom'];
             $rarete=$tab['rarete'];
-            $getAdjectifEfficace = $this->getAdjectifEfficace($newTypeNom);
-            $newNom = $getAdjectifEfficace['newNom'];
-            $efficacite = $getAdjectifEfficace['efficacite'];
-            $newValeur = rand(5,10)*$rarete;
+            $getEfficace = $this->getEfficaceAleatoire();
+            $newNom = $newTypeNom." ".$getEfficace['adjectif'];
+            $efficacite = $getEfficace['id'];
+            $newValeur = rand(5,10)*$rarete*$getEfficace['coef'];
             $this->_bdd->beginTransaction();
             $req="INSERT INTO `Item`( `type`, `nom`, `valeur`, `efficacite`,`lvl`) VALUES ('".$newType."','".$newNom."','".$newValeur."','".$efficacite."',1)";
             $Result = $this->_bdd->query($req);
@@ -145,21 +155,22 @@ class Item{
         $newType=0;
         $rarete=1;
         $newTypeNom='poussiere';
+       
         while($tab=$Result->fetch()){
-           if(rand(0,$imax)<$i){
-            $newType = $tab['id'];
-            $newTypeNom = $tab['nom'];
-            $rarete=$tab['rarete'];
-            break;
-           }
-           $i--;
+            if(rand(0,$tab['chance'])==1){
+             $newType = $tab['id'];
+             $newTypeNom = $tab['nom'];
+             $coef=$tab['rarete'];
+             break;
+            }
         }
 
-        $getAdjectifEfficace = $this->getAdjectifEfficace($newTypeNom);
-        $newNom = $getAdjectifEfficace['newNom'];
-        $efficacite = $getAdjectifEfficace['efficacite'];
+
+        $getEfficace = $this->getEfficaceAleatoire();
+        $newNom = $newTypeNom." ".$getEfficace['adjectif'];
+        $efficacite = $getEfficace['id'];
         
-        $newValeur = rand(5,10)*$rarete;
+        $newValeur = rand(5,10)*$rarete*$getEfficace['coef'];
 
         $this->_bdd->beginTransaction();
         $req="INSERT INTO `Item`( `type`, `nom`, `valeur`, `efficacite`,`lvl`) VALUES ('".$newType."','".$newNom."','".$newValeur."','".$efficacite."',1)";
@@ -175,64 +186,30 @@ class Item{
             return null;
         }
     }
-    private function getAdjectifEfficace($newTypeNom){
+    private function getEfficaceAleatoire(){
 
-        //generate nom
-        switch (rand(0,10)) {
-            case 0:
-                $newNom = $newTypeNom.' cassé';
-                $efficacite = 0.3;
-            break;
-            case 1:
-                $newNom = $newTypeNom.' tout mou';
-                $efficacite = 0.4;
-            break;
-            case 2:
-                $newNom = $newTypeNom.' moisie';
-                $efficacite = 0.5;
-            break;
-            case 3:
-                $newNom = $newTypeNom.' tordu';
-                $efficacite = 0.6;
-            break;
-            case 4:
-                $newNom = $newTypeNom.' usagé';
-                $efficacite = 0.7;
-            break;
-            case 5:
-                $newNom = $newTypeNom.' moche';
-                $efficacite = 0.8;
-            break;
-            case 6:
-                $newNom = $newTypeNom.' jolie';
-                $efficacite = 0.9;
-            break;
-            case 7:
-                $newNom = $newTypeNom.' neuf';
-                $efficacite = 1;
-            break;
-            case 8:
-                $newNom = $newTypeNom.' Puissant';
-                $efficacite = 1.4;
-            break;
-            case 9:
-                $newNom = $newTypeNom.' efficasse';
-                $efficacite = 1.1;
-            break;
-            case 10:
-                $newNom = $newTypeNom.' magic';
-                $efficacite = 1.2;
-            break;
-            default:
-                $newNom = $newTypeNom.' enchantéeu';
-                $efficacite = 1.3;
-            break;
+        
+        $req="SELECT * FROM Efficacite ORDER BY ordre ASC";
+        $Result = $this->_bdd->query($req);
+        
+        $found = false;
+        while($tab=$Result->fetch()){
+            if(rand(0,$tab['chance'])==1){
+                $tabretour  = $tab;
+                $found = true;
+            }
+        }
+        if($found){
+            return $tabretour;
         }
 
-        $reponse['newNom']=$newNom;
-        $reponse['efficacite']=$efficacite;
-
-        return $reponse;
+        //si on trouve rien dans la base ( ce qui est pas normal 
+        //on envoi une efficacité bidon)
+        $tab['id'] = 1;
+        $tab['coef'] = 0.1;
+        $tab['ordre'] = 1;
+        $tab['adjectif']="nul";
+        return $tab;
     }
 }
 ?>
