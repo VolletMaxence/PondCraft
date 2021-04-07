@@ -6,16 +6,46 @@
 }
 
 .formlogin{
-    margin-top:100px;
+    margin: 200px auto;
     padding: 20px;
     width:600px;
     background-color: rgba(199, 82, 154, 0.829);
-    border-color: rgb(53, 77, 78);
-    border:1px solid rgb(119, 150, 236);
-    box-shadow:2px 2px 2px rgb(83, 95, 235); 
-    -moz-box-shadow:2px 2px 2px rgb(91, 113, 236);
-    -webkit-box-shadow:2px 2px 2px rgb(66, 53, 185);
-    margin-right:auto;
-    margin-left:auto;
+    border-color: rgb(0, 0, 0);
+    border:2px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    box-shadow:2px 2px 2px rgb(0, 0, 0); 
+    -moz-box-shadow:2px 2px 2px rgb(0, 0, 0);
+    -webkit-box-shadow:2px 2px 2px rgb(0, 0, 0);
+    text-align: center;
 }
 
+.formlogin label[for=login], .formlogin label[for=password]{
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    margin: 20px 0px 5px 0px;
+}
+
+.formlogin label[for=prenom]{
+    text-align: center;
+    font-weight: bold;
+    margin: 20px 0px 5px 0px;
+}
+
+.formlogin input{
+    margin: 0px auto;
+    text-align: center;
+}
+
+#logSubsubmit{
+    margin: 12px auto;
+    padding: 4px 15px;
+    border: solid black 1px;
+    border-radius: 10px;
+    background-color: rgb(35, 149, 255);
+    color: white;
+}
+
+#logSubsubmit:hover{
+    background-color: rgb(18, 116, 207);
+}
