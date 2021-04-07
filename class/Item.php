@@ -1,14 +1,5 @@
 <?php
-class Item{
-
-    private $_id;
-    private $_type;
-    private $_nom;
-    private $_valeur;
-    private $_efficacite;
-    private $_lvl;
-
-    private $_bdd;
+class Item extends Objet{
 
     public function setItemByID($id){
 
@@ -28,6 +19,7 @@ class Item{
                          
         }
     }
+    
     public function setItem($id,$type,$nom,$valeur,$efficacite,$lvl){
         $this->_id = $id;
         $this->_nom = $nom;
@@ -36,36 +28,13 @@ class Item{
         $this->_efficacite = $efficacite;
         $this->_lvl = $lvl;
     }
-    public function getLvl(){
-        return $this->_lvl;
-    }
-    public function getEfficacite(){
 
-        $req="SELECT * FROM Efficacite where id = '".$this->_efficacite."'";
-        $Result = $this->_bdd->query($req);
-        
-       
-        if($tab=$Result->fetch()){
-            return $tab['coef'];
-        }
-        
-            return 0;
-        
-    }
     public function deleteItem($id){
         $req="DELETE FROM Item WHERE id='".$id."' ";
 
         $Result = $this->_bdd->query($req);
     }
-    public function getNom(){
-        return $this->_nom;
-    }
-    public function getId(){
-        return $this->_id;
-    }
-    public function getValeur(){
-        return $this->_valeur;
-    }
+
     //retourn un tableau avec id information lienImage nom rarete
     public function getType(){
 
@@ -111,9 +80,11 @@ class Item{
         $Transparence = (($this->_valeur/160)*((1-0.3)))+0.3 ;
         return $colorRarete.','.$Transparence.') !important' ;
     }
+
     public function __construct($bdd){
         $this->_bdd = $bdd;
     }
+
     public function createItemSoinConsommable(){
         $newItem = new Item($this->_bdd);
         $req="SELECT * FROM TypeItem where id = 2";
@@ -145,6 +116,7 @@ class Item{
         }
 
     }
+
     public function createItemAleatoire(){
         $newItem = new Item($this->_bdd);
 
@@ -186,30 +158,6 @@ class Item{
             return null;
         }
     }
-    private function getEfficaceAleatoire(){
-
-        
-        $req="SELECT * FROM Efficacite ORDER BY ordre ASC";
-        $Result = $this->_bdd->query($req);
-        
-        $found = false;
-        while($tab=$Result->fetch()){
-            if(rand(0,$tab['chance'])==1){
-                $tabretour  = $tab;
-                $found = true;
-            }
-        }
-        if($found){
-            return $tabretour;
-        }
-
-        //si on trouve rien dans la base ( ce qui est pas normal 
-        //on envoi une efficacité bidon)
-        $tab['id'] = 1;
-        $tab['coef'] = 0.1;
-        $tab['ordre'] = 1;
-        $tab['adjectif']="nul";
-        return $tab;
-    }
+   
 }
 ?>

@@ -1,15 +1,8 @@
 <?php
-class Equipement{
+class Equipement extends Objet{
 
-    protected $_id;
-    protected $_type;
-    protected $_nom;
-    protected $_valeur;
-    protected $_efficacite;
-    protected $_lvl;
+
     protected $_idCategorie; //1 = Arme / 2 = Armure / 3 = Sort / 4 = Bouclcier 
-
-    protected $_bdd;
 
     public function setEquipementByID($id){
 
@@ -44,7 +37,6 @@ class Equipement{
                          
         }
     }
-
     //retourne un tableau avec id , bool attaque , bool defense , bool magie , nom
     public function getCategorie(){
         if (!is_null($this->_idCategorie)){
@@ -57,7 +49,6 @@ class Equipement{
             return null;
         }
     }
-
        
     public function desequipeEntite($Entite){
         $sql = "UPDATE `EntiteEquipement` SET `equipe`='0' WHERE `idEntite`='".$Entite->getId()."' AND `idEquipement`='".$this->_id."' ";
@@ -84,7 +75,6 @@ class Equipement{
         $this->_bdd->query($sql);
     }
 
-
     public function setEquipement($id,$type,$nom,$valeur,$efficacite,$lvl){
         $this->_id = $id;
         $this->_nom = $nom;
@@ -94,27 +84,11 @@ class Equipement{
         $this->_lvl = $lvl;
         
     }
-    public function getLvl(){
-        return $this->_lvl;
-    }
-    public function getEfficacite(){
 
-
-        return $this->_efficacite;
-    }
     public function deleteEquipement($id){
         //TODO AVEC LES CONTRAINTE RELATIONNEL IL DFAUT VERIDIER QU'ELLE EST PAS UTILISER AILLEUR
         $req="DELETE FROM Equipement WHERE id='".$id."' ";
         $Result = $this->_bdd->query($req);
-    }
-    public function getNom(){
-        return $this->_nom;
-    }
-    public function getId(){
-        return $this->_id;
-    }
-    public function getValeur(){
-        return $this->_valeur;
     }
     //retourn un tableau avec id information lienImage nom rarete
     public function getType(){
@@ -161,10 +135,11 @@ class Equipement{
         $Transparence = (($this->_valeur/160)*((1-0.3)))+0.3 ;
         return $colorRarete.','.$Transparence.') !important' ;
     }
+
     public function __construct($bdd){
         $this->_bdd = $bdd;
     }
-   
+
     public function createEquipementAleatoire(){
         $newEquipement = new Equipement($this->_bdd);
 
@@ -172,9 +147,9 @@ class Equipement{
         $Result = $this->_bdd->query($req);
         $i = $Result->rowCount();
         $imax=$i*3;
-        $newType=0;
+        $newType=1;
         $rarete=1;
-        $newTypeNom='poussiere';
+        $newTypeNom='cuillère ';
         
         while($tab=$Result->fetch()){
             if(rand(0,$tab['chance'])==1){
@@ -207,37 +182,6 @@ class Equipement{
         }
     }
 
-
-
-    protected function getEfficaceAleatoire(){
-
-
-        $req="SELECT * FROM Efficacite ORDER BY ordre ASC";
-        $Result = $this->_bdd->query($req);
-       
-
-        $found = false;
-        while($tab=$Result->fetch()){
-            if(rand(0,$tab['chance'])==1){
-                $tabretour  = $tab;
-                $found = true;
-            }
-        }
-        if($found){
-            return $tabretour;
-        }
-
-        //si on trouve rien dans la base ( ce qui est pas normal 
-        //on envoi une efficacité bidon)
-        $tab['id'] = 1;
-        $tab['coef'] = 0.1;
-        $tab['ordre'] = 1;
-        $tab['adjectif']="nul";
-        
-        return $tab;
-       
-
-        
-    }
+  
 }
 ?>
