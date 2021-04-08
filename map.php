@@ -62,11 +62,11 @@ session_start();
                                         $Joueur1->setPersonnage($Personnage);
                                     }
                                     //AFFICHAGE de l'entete d'un hero
-                                    include "ihm/affichagePersoEtSac.php";
+                                    include "ihm/map/affichagePersoEtSac.php";
                                     //AFFICHAGE d'UN TOOLTIP
-                                    include "ihm/affichageTooltip.php";
+                                    include "ihm/map/affichageTooltip.php";
                                     //CHARGEMENT  DE LA MAP
-                                    include "ihm/chargementDeLaMap.php";
+                                    include "ihm/map/chargementDeLaMap.php";
                                     //HTML  DE LA MAP
                                 ?>
                                 <div class="lamap">
