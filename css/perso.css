@@ -6,12 +6,15 @@
     margin: 10px auto;
     border:2px solid rgb(109, 107, 107);
     border-radius: 10px;
-    box-shadow:2px 2px 2px rgb(0, 0, 0); 
+    box-shadow:2px 2px 2px rgb(0, 0, 0);
     -moz-box-shadow:2px 2px 2px rgb(0, 0, 0);
     -webkit-box-shadow:2px 2px 2px rgb(0, 0, 0);
 }
 
-ul.perso{
+/* Deneufgermain */
+
+ul .perso{
+
     float:left;
     width:150px;
     background-color:rgb(151,161,137);
