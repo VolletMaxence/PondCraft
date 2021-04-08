@@ -14,17 +14,17 @@ session_start();
             <link rel="stylesheet" href="../css/index.css">
             <script src="main.js"></script>
         <!-- Informations Générales -->
-            <title>Projet Full Stack - Panel Admins</title>
-            <meta name='description' content='Projet Full Stack - Panel Admin'>
+            <title>Panel Admin - Utilisateurs</title>
+            <meta name='description' content='Panel Admin - Utilisateurs'>
             <meta name='author' content='La Providence - Amiens'>
             <link rel='shortcut icon' href='favicon.ico'>
         <!-- Intégration Facebook -->
-            <meta property='og:title' content='Projet Full Stack - Panel Admin'>
-            <meta property='og:description' content='Projet Full Stack - Panel Admin'>
+            <meta property='og:title' content='Panel Admin - Utilisateurs'>
+            <meta property='og:description' content='Panel Admin - Utilisateurs'>
             <meta property='og:image' content='favicon.ico'>
         <!-- Intégration Twitter -->
-            <meta name='twitter:title' content='Projet Full Stack - Panel Admin'>
-            <meta name='twitter:description' content='Projet Full Stack - Panel Admin'>
+            <meta name='twitter:title' content='Panel Admin - Utilisateurs'>
+            <meta name='twitter:description' content='Panel Admin - Utilisateurs'>
             <meta name='twitter:image' content='favicon.ico'>
     </head>
     <body class="admin-panel">
