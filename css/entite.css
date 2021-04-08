@@ -12,22 +12,23 @@
     line-height: 30px;
 }
 
-/* Weapon */
+/* Weapon Item Name*/
 .Arme{
-    white-space:nowrap;
     background:rgba(34, 159, 190, 0.555);
-    height: 20px;
-    padding: 5px;
 }
 
 /* Armor Item Name */
 .ArmureNom{
     display: block;
-    white-space: nowrap;
-    padding: 5px 0px;
     width:149px;
-    height: 20px;
     background: rgba(247, 232, 25, 0.555);
+}
+
+.Arme, .ArmureNom{
+    text-align: center;
+    white-space: nowrap;
+    height: 20px;
+    margin: 3px 0px;
 }
 
 /* Healthbar with armor*/
@@ -70,6 +71,6 @@
 }
 
 img.Entite {
-    height:120px;
+    height:130px;
     width:150px;
 }
