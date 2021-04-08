@@ -44,24 +44,40 @@ body{
 }
 
 .reglement{
-    margin-top:100px;
-    padding:20px;
+    margin:100px auto;
+    padding: 40px;
+    text-align: center;
     width:600px;
-    background-color: rgba(199,82,154,0.829);
-    border-color:rgb(53,77,78);
-    border:1px solid rgb(119,150,236);
-    box-shadow:2px 2px 2px rgb(83,95,235);
-    -moz-box-shadow:2px 2px 2px rgb(91,113,236);
-    -webkit-box-shadow:2px 2px 2px rgb(66,53,185);
-    margin-right:auto;
-    margin-left:auto;
+    min-height: max-content;
+    background-color: rgba(148, 148, 148, 0.829);
+    border-color: rgb(53, 77, 78);
+    border:2px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    box-shadow:2px 2px 2px rgb(0, 0, 0); 
+    -moz-box-shadow:2px 2px 2px rgb(0, 0, 0);
+    -webkit-box-shadow:2px 2px 2px rgb(0, 0, 0);
 }
 
 .bodyAccueil{
-    background-image:url('https://raw.githubusercontent.com/EnseignantLapro/ProjetFullStack/master/IHM/wallpaper_mmo.jpg');
-    background-size:cover;
-    background-repeat:no-repeat;
-    background-attachment:fixed;
+    background-image:  url('https://www.wallpaperuse.com/wallp/48-481854_m.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.bodyAccueil input[value='Deco!']{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 4px 15px;
+    background-color: rgb(170, 39, 39);
+    border: solid black 1px;
+    border-radius: 10px;
+    color: white;
+}
+
+.bodyAccueil input[value='Deco!']:hover{
+    background-color: rgb(212, 40, 40);
 }
 
 .divRarete{
