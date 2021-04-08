@@ -259,6 +259,7 @@ class map{
     public function getPersonnageDecouvreur(){
         $perso = new User($this->_bdd);
         $perso->setUserById($this->idUserDecouverte);
+
         return $perso;
     }
 
@@ -812,7 +813,7 @@ class map{
         array_push($tabMapAdjacent, $this->mapEst);
         array_push($tabMapAdjacent, $this->mapOuest);
     }
-
+    
     //Permet de générer un nom de map
     public function generateMap(){
         $nom ="";

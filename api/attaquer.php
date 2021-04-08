@@ -20,7 +20,6 @@ if($access){
 
                 //attaque sur perso
             if($_GET["type"]==0 ){
-
                 $Deffensseur = new Personnage($mabase);
                 $Deffensseur->setPersonnageByIdWithoutMap($_GET["id"]);
                 $vieMax=$Deffensseur->getVieMax();
