@@ -35,7 +35,7 @@ if($access){
                         //on retire donc l'arme en cours ( equipe = 0 dans la table entite equipement)
                         if(!is_null($Perso->getArme())){
                             $reponse[6]=$_GET["idEquipement"];
-                            $reponse[5] = $equipement->getNom();
+                            $reponse[5] = $equipement->getNom().' lvl '.$equipement->getLvl();
                             $equipement->desequipeEntite($Perso);
                             $message.= 'retire de '.$equipement->getNom();
                             
@@ -52,7 +52,7 @@ if($access){
                         //on retire donc l'armure en cours ( equipe = 0 dans la table entite equipement)
                         if(!is_null($Perso->getArmure())){
                             $reponse[6]=$_GET["idEquipement"];
-                            $reponse[5] = $equipement->getNom();
+                            $reponse[5] = $equipement->getNom().' lvl '.$equipement->getLvl();
                             $equipement->desequipeEntite($Perso);
                             $message.= 'retire de '.$equipement->getNom();
                             

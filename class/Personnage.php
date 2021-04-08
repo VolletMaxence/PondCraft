@@ -103,8 +103,20 @@ class Personnage extends Entite{
     //retourne la nouvelle xp 
     public function addXP($value){
         $this->_xp += $value ;
+        
         $req  = "UPDATE `Personnage` SET `xp`='".$this->_xp ."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
+
+        //passage des Lvl suis une loi de racine carre
+        //* le double etole ** c'est elevé à la puissance */
+        $lvl = ceil(($this->_xp/2000)**(0.7));
+
+        if($lvl >$this->_lvl ){
+            $this->_lvl = $lvl;
+            $req  = "UPDATE `Entite` SET `lvl`='".$this->_lvl."' WHERE `id` = '".$this->_id ."'";
+            $Result = $this->_bdd->query($req);
+        }
+
         return $this->_xp;
     }
   
@@ -244,7 +256,10 @@ class Personnage extends Entite{
    
     //ajoute un lien entre item et la personnage en bdd 
     //et accroche l'item dans la collection itemID dans le sac du perso
+    //au moment ou le personnage prend une Epee, cette derniere fusionne en lvl supérieur 
+    //et détruit l'autre . Attention il taut le meme lvl , le meme nom , le meme type
     public function addItem($newItem){
+
         array_push($this->sacItems,$newItem->getId());
         $req="INSERT INTO `PersoSacItems`(`idPersonnage`, `idItem`) VALUES ('".$this->getId()."','".$newItem->getId()."')";
         $this->_bdd->query($req);

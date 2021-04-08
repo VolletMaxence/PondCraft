@@ -36,7 +36,7 @@ echo '<div class="testUnitaire"><p>Test 3 création 20 Equipement aléatoire </p
         if(is_null($equipement)){
             echo '<div style="color:red">Un equipement  null a été créer c\'est pas normal </div>';
         }else{
-            array_push($listEquipements,$newEquipement->createEquipementAleatoire());
+            array_push($listEquipements,$equipement);
         }
 
         
@@ -53,6 +53,10 @@ echo '<div class="testUnitaire"><p>Test 3 création 20 Equipement aléatoire </p
                 <a onclick="CallApiAddEquipementInSac(<?php echo $Equipement->getId()?>)">
                     <?php echo $Equipement->getNom() ?></a>
             </li>
+            <?php if(empty($Equipement->getId())){
+                 echo '<div style="color:red">il est pas possible d\'avoir un id vide</div>';
+            }
+            ?>
             <?php 
 
             if($equipement->getEfficacite() == 0 || $equipement->getLvl() == 0  || $equipement->getValeur() == 0){

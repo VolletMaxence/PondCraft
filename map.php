@@ -15,7 +15,7 @@ session_start();
             <link rel="stylesheet" href="css/item.css">
             <link rel="stylesheet" href="css/entite.css">
             <script src="main.js"></script>
-        <!-- Informations Généraux-->
+        <!-- Informations Générales -->
             <title>Projet Full Stack - Combat</title>
             <meta name='description' content='Projet Full Stack - Combat'>
             <link rel='shortcut icon' href='favicon.ico'>
@@ -32,16 +32,18 @@ session_start();
     <body>
         <div class="centragePrincipal">
             <?php
-                include "session.php"; 
+                include "session.php";
 
-                if($access){
+                // Vérifie que la Session est Valide avec le bon Mot de Passe.
+                if($access === true){
                     $access = $Joueur1->DeconnectToi();
                 }
-                if($access){
+                // Vérifie qu'il ne s'est pas déconnecté.
+                if($access === true){
                     //gestion accès map:
                     $Personnage = $Joueur1->getPersonnage();
                     if(is_null($Personnage->getId())){
-                        ?> 
+                        ?>
                             <p>Il faut créer un personnage d'abord.</p>
                             <p><a href="index.php">Retour à l'origine du tout</a></p>
                         <?php
@@ -59,7 +61,6 @@ session_start();
                                         $Personnage->getChoixPersonnage($Joueur1);
                                         $Joueur1->setPersonnage($Personnage);
                                     }
-                                    
                                     //AFFICHAGE de l'entete d'un hero
                                     include "ihm/affichagePersoEtSac.php";
                                     //AFFICHAGE d'UN TOOLTIP
@@ -106,4 +107,5 @@ session_start();
         </div>
     </body>
     <?php include "ihm/jsDesPages/jsMap.php" ?>
+    <script src="Javascript/map.js"></script>
 </html>
