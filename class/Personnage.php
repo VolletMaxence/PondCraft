@@ -1,5 +1,5 @@
 <?php
-// Dev by langlace
+// Dev by rapidecho
 
 class Personnage extends Entite{
     
