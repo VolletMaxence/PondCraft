@@ -1,4 +1,4 @@
-<?php
+<?php //Cette Page HTML est modifié par : M. De Almeida
 session_start();
 ?>
 <!DOCTYPE html>
@@ -80,14 +80,19 @@ session_start();
                                                     <?= $map->getInfoMap() ?>
                                                 </div>
                                                 <?php
+                                                    //affichage si c'est une forge
+                                                    if($map->isForge()){
+                                                        include "ihm/map/afficherForge.php.php";
+                                                    }
+                                                    include "ihm/map/affichageAutrePersos.php";
                                                     //affichage des autres joueurs sur la carte
-                                                    include "ihm/affichageAutrePersos.php";
+                                                    include "ihm/map/affichageAutrePersos.php";
                                                     //affiche les mob enemie et capturé;
-                                                    include "ihm/affichageItemsMap.php";
+                                                    include "ihm/map/affichageItemsMap.php";
                                                     //AFFICHAGE DES ITEMS DE LA MAP
-                                                    include "ihm/affichageTousLesMobs.php";
+                                                    include "ihm/map/affichageTousLesMobs.php";
                                                     //AFFICHAGE DES EQUIPEMENT DE LA MAP
-                                                    include "ihm/affichageEquipementsMap.php";
+                                                    include "ihm/map/affichageEquipementsMap.php";
                                                 ?>
                                             </div>
                                             <?= $BousoleDeplacement['est'] ?>
@@ -107,5 +112,7 @@ session_start();
         </div>
     </body>
     <?php include "ihm/jsDesPages/jsMap.php" ?>
+    <?php include "ihm/jsDesPages/jsSac.php" ?>
+    <?php include "ihm/jsDesPages/jsAnimation.php" ?>
     <script src="Javascript/map.js"></script>
 </html>

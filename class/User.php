@@ -1,4 +1,4 @@
-<?php
+<?php // Ghyselen Lucas CRUD du compte
 
 class User{
 

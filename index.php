@@ -42,7 +42,7 @@ session_start();
                             if($Joueur1->isAdmin() == true){
                                 ?>
                                     <p>Bienvenue Administrateur <?= $Joueur1->getPrenom() ?>.</p>
-                                    <p><a href='admin-panel.php'>Accéder au Panel Administrateur.</a></p>
+                                    <p><a href='admin/admin-panel.php'>Accéder au Panel Administrateur.</a></p>
                                 <?php
                             }
                             else{

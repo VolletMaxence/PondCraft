@@ -33,31 +33,10 @@ session_start();
 
         $idMap = 0; //choisissez une map pour faire votre test
         $idEntitePersonnage = 1; //choisissez un pero de test
-        echo '<div class="TestIntegration"> TEST ITEM';
-            include "testUnitaire/testItem.php"; 
+        echo '<div class="TestIntegration"> TEST COMBAT';
+            include "testAPI/testCombat.php"; 
         echo "</div>" ;
-        echo '<div class="TestIntegration"> TEST EQUIPEMENT';
-            include "testUnitaire/testEquipement.php"; 
-        echo "</div>" ;
-        echo '<div class="TestIntegration"> TEST ARME';
-            include "testUnitaire/testArme.php"; 
-        echo "</div>" ;
-        echo '<div class="TestIntegration"> TEST ARMURE';
-            include "testUnitaire/testArmure.php"; 
-        echo "</div>" ;
-        echo '<div class="TestIntegration"> TEST ENTITE';
-           include "testUnitaire/testEntite.php"; 
-        echo "</div>" ;
-        echo '<div class="TestIntegration"> TEST PERSONNAGE';
-            include "testUnitaire/testPersonnage.php"; 
-        echo "</div>" ;
-        echo '<div class="TestIntegration"> TEST MOB';
-            include "testUnitaire/testMob.php"; 
-        echo "</div>" ;
-        echo '<div class="TestIntegration"> TEST MOB';
-            //test de Boucher
-            include "testUnitaire/testUser.php"; 
-        echo "</div>" ;
+        
 
 
 
