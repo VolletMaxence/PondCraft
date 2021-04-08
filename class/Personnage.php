@@ -124,7 +124,7 @@ class Personnage extends Entite{
     public function resurection(){
         $vieMax = round($this->_vieMax - (($this->_vieMax*10)/100));
         $attaque = round($this->_degat - (($this->_degat*15)/100));
-        if($vieMax<10){$vieMax=10;}
+        if($vieMax<10){$vieMax=100;}
         $req  = "UPDATE `Entite` SET `degat`='".$attaque."',`vieMax`='".$vieMax."',`vie`='".$vieMax."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
         $this->_vie=$vieMax;
