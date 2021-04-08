@@ -1,6 +1,5 @@
 <?php
-// TODO MOB ET PERSONNAGE ON TROP DE SIMILITUDE 
-//IL FAUT REFACTORISER AVEC DE LhERITAGE
+// Dev by langlace
 
 class Personnage extends Entite{
     
