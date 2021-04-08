@@ -9,9 +9,9 @@ session_start();
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Style CSS / Script -->
-            <link rel="stylesheet" href="css/admin.css">
-            <link rel="stylesheet" href="css/style.css">
-            <link rel="stylesheet" href="css/index.css">
+            <link rel="stylesheet" href="../css/admin.css">
+            <link rel="stylesheet" href="../css/style.css">
+            <link rel="stylesheet" href="../css/index.css">
             <script src="main.js"></script>
         <!-- Informations Générales -->
             <title>Projet Full Stack - Panel Admins</title>
@@ -29,7 +29,7 @@ session_start();
     </head>
     <body class="admin-panel">
         <?php
-            include "session.php";
+            include "../session.php";
 
             // Vérifie que la Session est Valide avec le bon Mot de Passe.
             if($access === true){
