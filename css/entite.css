@@ -1,59 +1,75 @@
-.barreDeVie{
-    width:149px;
-    height: 26px;
-    display:block;
-    float:left;
-    background-color: darkgray;
-    
+/* Atk stats */
+.attaque{
+    text-align: center;
+    background-color:rgb(55, 0, 255);
+    color:rgb(250, 212, 0);
+    background-image:  url('https://findicons.com/files/icons/286/legendora/256/sword.png');
+    background-size: 23px;
+    background-position-x: 2px;
+    background-position-y: 2px;
+    background-repeat: no-repeat;
+    height:30px;
+    line-height: 30px;
 }
 
-.vie{
-    float:left;
-    white-space:nowrap;
-    background:rgb(34, 190, 34);
-    
-}
-
-img.Entite {
-    height:120px;
-    width:150px;
-}
-
+/* Weapon */
 .Arme{
-    float:left;
     white-space:nowrap;
     background:rgba(34, 159, 190, 0.555);
     height: 20px;
-    padding: 3px;
+    padding: 5px;
 }
 
-
+/* Armor Item Name */
 .ArmureNom{
-    float: left;
+    display: block;
     white-space: nowrap;
+    padding: 5px 0px;
     width:149px;
+    height: 20px;
     background: rgba(247, 232, 25, 0.555);
-    
 }
-.armureAll{
-    float: right;
-    width:100%;
-    margin-top: -26px;
 
+/* Healthbar with armor*/
+.barreDeVie{
+    width:149px;
+    height: 34px;
+    display:block;
+    border: solid black 1px;
+    background-color: darkgray;
+    line-height: 34px;
+    text-align: center;
 }
+
+/* Health */
+.vie{
+    display: block;
+    height: 34px;
+    white-space:nowrap;
+    background:rgb(34, 190, 34);
+}
+
+/* Armor */
+.armureAll{
+    display: block;
+    width: 100%;
+    margin-top: -34px;
+}
+
+/* Armor Value */
 .armure{
     float: right;
-    padding-top: 5px;
-    padding-right: 29px;
-    
-    height: 21px;
+    padding-right: 20px;
+    height: 34px;
     text-align: right;
-    background-color: rgba(177, 255, 0, 0.53);
+    background-color: rgba(179, 255, 0, 0.3);
     background-image: url(https://got-wic.ovh/wp-content/uploads/2019/09/game-of-thrones-winter-is-coming-arumure-champion.png);
     background-size: 20px;
     background-repeat: no-repeat;
     background-position: right;
 }
 
-
-
+img.Entite {
+    height:120px;
+    width:150px;
+}
