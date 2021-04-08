@@ -122,8 +122,8 @@ class Personnage extends Entite{
   
     //met a jour la vie de depart et replace le joueur
     public function resurection(){
-        $vieMax = intdiv ($this->_vieMax,2);
-        $attaque = intdiv ($this->_vieMax,2);
+        $vieMax = round($this->_vieMax - (($this->_vieMax*10)/100));
+        $attaque = round($this->_degat - (($this->_degat*15)/100));
         if($vieMax<10){$vieMax=10;}
         $req  = "UPDATE `Entite` SET `degat`='".$attaque."',`vieMax`='".$vieMax."',`vie`='".$vieMax."' WHERE `id` = '".$this->_id ."'";
         $Result = $this->_bdd->query($req);
