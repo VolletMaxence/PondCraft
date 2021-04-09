@@ -30,16 +30,19 @@ body{
     background-color: #dadce4;
 }
 .BG_Rouge{
-    background-color: #cc2525;
+    background-color: #e93a3a;
 }
 .BG_Bleu{
-    background-color: #445fca;
+    background-color: #536eda;
 }
 .BG_Jaune{
     background-color: #e7e54a;
 }
 .BG_Vert{
-    background-color: #53bb3f;
+    background-color: #61d64a;
+}
+.BG_Cyan{
+    background-color: #40dae6;
 }
 
 /*          CSS TITRES et TEXTES            */
