@@ -22,6 +22,14 @@ class Personnage extends Entite{
         $degat = $Personnage->getAttaque();
         //on réduit les déga avec armure si possible
         $degat-=($degat*$this->getDefense())/100;
+        
+        //Ajout Aléatoire pour coup critique : 
+        $CC = random_int(1; 100):
+        if($CC >=1 && $CC <= 15)
+        {
+            $degat = $degat * 1.5;
+        }
+
         $degat = round($degat);
         if($degat<0){
             $degat = 0;

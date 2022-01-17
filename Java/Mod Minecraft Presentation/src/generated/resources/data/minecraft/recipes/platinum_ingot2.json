@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "tutomod:raw_platinum"
+  },
+  "result": "tutomod:platinum_ingot",
+  "experience": 0.0,
+  "cookingtime": 100
+}
