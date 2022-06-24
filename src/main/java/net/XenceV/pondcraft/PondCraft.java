@@ -1,6 +1,7 @@
 package net.XenceV.pondcraft;
 
 import com.mojang.logging.LogUtils;
+import net.XenceV.pondcraft.item.ModItems;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -24,6 +25,8 @@ public class PondCraft
     public PondCraft()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        ModItems.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
