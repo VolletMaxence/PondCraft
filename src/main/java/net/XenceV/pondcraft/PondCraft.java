@@ -1,6 +1,7 @@
 package net.XenceV.pondcraft;
 
 import com.mojang.logging.LogUtils;
+import net.XenceV.pondcraft.entity.AsianDragonEntityRenderer;
 import net.XenceV.pondcraft.entity.KoiEntity;
 import net.XenceV.pondcraft.entity.KoiEntityRenderer;
 import net.XenceV.pondcraft.entity.ModEntityTypes;
@@ -54,6 +55,7 @@ public class PondCraft
 
     private void clientSetup(final FMLClientSetupEvent event) {
         EntityRenderers.register(ModEntityTypes.KOI.get(), KoiEntityRenderer::new);
+        EntityRenderers.register(ModEntityTypes.ASIAN_DRAGON.get(), AsianDragonEntityRenderer::new);
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent

@@ -1,6 +1,7 @@
 package net.XenceV.pondcraft.event;
 
 import net.XenceV.pondcraft.PondCraft;
+import net.XenceV.pondcraft.entity.AsianDragonEntity;
 import net.XenceV.pondcraft.entity.KoiEntity;
 import net.XenceV.pondcraft.entity.ModEntityTypes;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -12,5 +13,6 @@ public class ModCommonEvents {
     @SubscribeEvent
     public static void entityAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.KOI.get(), KoiEntity.getKoiAttributes().build());
+        event.put(ModEntityTypes.ASIAN_DRAGON.get(), AsianDragonEntity.getAsianDragonAttributes().build());
     }
 }

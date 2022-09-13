@@ -17,8 +17,8 @@ public class ModItems {
     public static final RegistryObject<Item> KOI_PALLET = ITEMS.register("koi_pallet",
             () -> new Item(new Item.Properties().tab(ModCreativeModTab.POND_CRAFT_TAB)));
 
-    public static final RegistryObject<ForgeSpawnEggItem> TANCHO_KOI_SPAWN_EGG = ITEMS.register("tancho_koi_egg",
-            () -> new ForgeSpawnEggItem(ModEntityTypes.KOI, 0xb40a1a, 0xffffff,
+    public static final RegistryObject<ForgeSpawnEggItem> KOI_SPAWN_EGG = ITEMS.register("koi_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.KOI, 0xffffff,  0xb40a1a,
                     new Item.Properties().tab(ModCreativeModTab.POND_CRAFT_TAB)));
 
     public static void register(IEventBus eventBus) {
