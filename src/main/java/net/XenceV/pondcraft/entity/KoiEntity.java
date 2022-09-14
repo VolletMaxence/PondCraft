@@ -1,6 +1,7 @@
 package net.XenceV.pondcraft.entity;
 
 import net.XenceV.pondcraft.entity.variant.KoiVariant;
+import net.XenceV.pondcraft.item.ModItems;
 import net.minecraft.Util;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.animal.horse.Markings;
 import net.minecraft.world.entity.animal.horse.Variant;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -52,7 +54,7 @@ public class KoiEntity extends AbstractSchoolingFish /*implements IAnimatable*/ 
 
     @Override
     public ItemStack getBucketItemStack() {
-        return null;
+        return new ItemStack(ModItems.KOI_FISH_BUCKET.get());
     }
 
     /*
@@ -91,7 +93,6 @@ public class KoiEntity extends AbstractSchoolingFish /*implements IAnimatable*/ 
 
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        //Problème, voir Horse  ->  Porblème de type (Integer, cf renderer)
         this.entityData.set(DATA_ID_TYPE_VARIANT, tag.getInt("Variant"));
     }
 

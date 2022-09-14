@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "pondcraft:raw_koi"
+  },
+  "result": "pondcraft:cooked_koi",
+  "experience": 0.35,
+  "cookingtime": 100
+}
