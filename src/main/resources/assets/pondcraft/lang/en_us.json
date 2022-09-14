@@ -1,7 +1,9 @@
 {
   "item.pondcraft.koi_pallet": "Koi Pallet",
   "item.pondcraft.koi_spawn_egg": "Koi Spawn Egg",
-
+  "item.pondcraft.dragon_pearl_strenght": "Dragon Pearl of Strenght",
+  "item.pondcraft.dragon_pearl_exploration": "Dragon Pearl of Exploration",
+  "item.pondcraft.dragon_pearl_resistance": "Dragon Pearl of Resistance",
 
   "itemGroup.pondcrafttab": "PondCraft Tab"
 }

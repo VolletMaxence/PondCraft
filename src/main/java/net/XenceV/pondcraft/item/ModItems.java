@@ -21,6 +21,15 @@ public class ModItems {
             () -> new ForgeSpawnEggItem(ModEntityTypes.KOI, 0xffffff,  0xb40a1a,
                     new Item.Properties().tab(ModCreativeModTab.POND_CRAFT_TAB)));
 
+    public static final RegistryObject<AdvancedItem> DRAGON_PEARL_STRENGHT = ITEMS.register("dragon_pearl_strenght",
+            () -> new AdvancedItem(new Item.Properties().tab(ModCreativeModTab.POND_CRAFT_TAB)));
+
+    public static final RegistryObject<AdvancedItem> DRAGON_PEARL_RESISTANCE = ITEMS.register("dragon_pearl_resistance",
+            () -> new AdvancedItem(new Item.Properties().tab(ModCreativeModTab.POND_CRAFT_TAB)));
+
+    public static final RegistryObject<AdvancedItem> DRAGON_PEARL_EXPLORATION = ITEMS.register("dragon_pearl_exploration",
+            () -> new AdvancedItem(new Item.Properties().tab(ModCreativeModTab.POND_CRAFT_TAB)));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
