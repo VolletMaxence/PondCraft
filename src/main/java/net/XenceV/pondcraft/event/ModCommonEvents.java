@@ -15,4 +15,6 @@ public class ModCommonEvents {
         event.put(ModEntityTypes.KOI.get(), KoiEntity.getKoiAttributes().build());
         event.put(ModEntityTypes.ASIAN_DRAGON.get(), AsianDragonEntity.getAsianDragonAttributes().build());
     }
+
+
 }
