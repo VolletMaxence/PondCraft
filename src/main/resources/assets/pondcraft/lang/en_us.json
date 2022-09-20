@@ -9,5 +9,8 @@
   "item.pondcraft.cooked_koi": "Cooked Koi",
   "block.pondcraft.dragon_statue": "Dragon Statue",
 
+  "entity.pondcraft.asian_dragon": "Asian Dragon",
+  "entity.pondcraft.koi": "Koi",
+
   "itemGroup.pondcrafttab": "PondCraft"
 }

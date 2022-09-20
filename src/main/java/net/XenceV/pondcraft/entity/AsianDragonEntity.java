@@ -57,6 +57,10 @@ public class AsianDragonEntity extends AbstractVillager {
     }
 
     //Trade section
+    public boolean showProgressBar() {
+        return false;
+    }
+
     public InteractionResult mobInteract(Player p_35856_, InteractionHand p_35857_) {
         ItemStack itemstack = p_35856_.getItemInHand(p_35857_);
         if (!itemstack.is(Items.VILLAGER_SPAWN_EGG) && this.isAlive() && !this.isTrading() && !this.isBaby()) {
@@ -79,11 +83,15 @@ public class AsianDragonEntity extends AbstractVillager {
         }
     }
 
+    //Merci à remykingV2 pour la conv sur League of Legend que j'ai eu lors de la création des trades
     public static final Int2ObjectMap<VillagerTrades.ItemListing[]> ASIAN_DRAGON_TRADES =
             toIntMap(ImmutableMap.of(1, new VillagerTrades.ItemListing[]{
-                    new ItemsAndItemsToStrenghtPearl(Items.ENCHANTED_GOLDEN_APPLE, 1, Items.NETHER_STAR, 1, 1, 5),
-                    new ItemsAndItemsToExplorationPearl(Items.RABBIT_FOOT, 1, Items.NETHER_STAR, 1, 1, 5)},
+                            new ItemsAndItemsToItems(Items.WITHER_SKELETON_SKULL, 1, Items.POPPY, 20, Items.WITHER_ROSE, 20, 1, 5),
+                            //new ItemsAndItemsToItems(Items.WITHER_SKELETON_SKULL, 1, Items.POPPY, 20, Items.WITHER_ROSE, 20, 1, 5)
+                    },
                     2,new VillagerTrades.ItemListing[]{
+                            new ItemsAndItemsToExplorationPearl(Items.RABBIT_FOOT, 1, Items.NETHER_STAR, 1, 1, 5),
+                            new ItemsAndItemsToStrenghtPearl(Items.ENCHANTED_GOLDEN_APPLE, 1, Items.NETHER_STAR, 1, 1, 5),
                             new ItemsAndItemsToResistancePearl(Items.TURTLE_HELMET, 1, Items.NETHER_STAR, 1, 1, 5)
                     }));
                     //new VillagerTrades.ItemsAndEmeraldsToItems(Items.COD, 6, Items.COOKED_COD, 6, 16, 1),
@@ -175,15 +183,47 @@ public class AsianDragonEntity extends AbstractVillager {
             this.priceMultiplier = 0.05f;
         }
 
-
         @Nullable
         public MerchantOffer getOffer(Entity p_219696_, RandomSource p_219697_) {
             return new MerchantOffer(new ItemStack(this.fromItem1.getItem(), this.fromCount1), new ItemStack(this.fromItem2.getItem(), this.fromCount2), new ItemStack(ModItems.DRAGON_PEARL_RESISTANCE.get(), 1), this.maxUses, this.villagerXp, this.priceMultiplier);
         }
     }
 
-    protected void updateTrades() {
+    static class ItemsAndItemsToItems implements VillagerTrades.ItemListing {
+        private final ItemStack fromItem1;
+        private final int fromCount1;
+        private final ItemStack fromItem2;
+        private final int fromCount2;
+        private final ItemStack fromResultItem;
+        private final int fromCountResult;
+        private final int maxUses;
+        private final int villagerXp;
+        private final float priceMultiplier;
 
+        public ItemsAndItemsToItems(ItemLike item1, int count1, ItemLike item2, int count2, ItemLike fromResultItem, int fromCountResult, int maxUses, int villagerXp, ItemStack fromItem1) {
+            this(item1, count1, item2, count2, fromResultItem, fromCountResult, maxUses, villagerXp);
+        }
+
+        ItemsAndItemsToItems(ItemLike fromItem1, int fromCount1, ItemLike fromItem2, int fromCount2, ItemLike fromResultItem, int fromCountResult, int maxUses, int villagerXp) {
+            this.fromItem1 = new ItemStack(fromItem1);
+            this.fromCount1 = fromCount1;
+            this.fromItem2 = new ItemStack(fromItem2);
+            this.fromCount2 = fromCount2;
+            this.fromResultItem = new ItemStack(fromResultItem);
+            this.fromCountResult = fromCountResult;
+            this.maxUses = maxUses;
+            this.villagerXp = villagerXp;
+            this.priceMultiplier = 0.05f;
+        }
+
+
+        @Nullable
+        public MerchantOffer getOffer(Entity p_219696_, RandomSource p_219697_) {
+            return new MerchantOffer(new ItemStack(this.fromItem1.getItem(), this.fromCount1), new ItemStack(this.fromItem2.getItem(), this.fromCount2), new ItemStack(this.fromResultItem.getItem(), this.fromCountResult), this.maxUses, this.villagerXp, this.priceMultiplier);
+        }
+    }
+
+    protected void updateTrades() {
         VillagerTrades.ItemListing[] avillagertrades$itemlisting = ASIAN_DRAGON_TRADES.get(1);
         VillagerTrades.ItemListing[] avillagertrades$itemlisting1 = ASIAN_DRAGON_TRADES.get(2);
         if (avillagertrades$itemlisting != null && avillagertrades$itemlisting1 != null) {

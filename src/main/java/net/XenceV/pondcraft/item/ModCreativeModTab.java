@@ -7,7 +7,7 @@ public class ModCreativeModTab {
     public static final CreativeModeTab POND_CRAFT_TAB = new CreativeModeTab("pondcrafttab") {
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(ModItems.KOI_PALLET.get());
+            return new ItemStack(ModItems.RAW_KOI.get());
         }
     };
 }

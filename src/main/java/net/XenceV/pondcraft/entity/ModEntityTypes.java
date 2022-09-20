@@ -14,9 +14,9 @@ public class ModEntityTypes {
             = DeferredRegister.create(ForgeRegistries.ENTITIES, PondCraft.MOD_ID);
 
     public static final RegistryObject<EntityType<KoiEntity>> KOI = ENTITIES.register("koi",
-            () -> EntityType.Builder.of(KoiEntity::new, MobCategory.WATER_AMBIENT).sized(0.5f, 0.7f).build(new ResourceLocation(PondCraft.MOD_ID, "koi").toString()));
+            () -> EntityType.Builder.of(KoiEntity::new, MobCategory.WATER_AMBIENT).sized(0.7f, 0.5f).build(new ResourceLocation(PondCraft.MOD_ID, "koi").toString()));
 
 
     public static final RegistryObject<EntityType<AsianDragonEntity>> ASIAN_DRAGON = ENTITIES.register("asian_dragon",
-            () -> EntityType.Builder.of(AsianDragonEntity::new, MobCategory.CREATURE).sized(1f, 1f).build(new ResourceLocation(PondCraft.MOD_ID, "asian_dragon").toString()));
+            () -> EntityType.Builder.of(AsianDragonEntity::new, MobCategory.CREATURE).sized(3f, 1.5f).build(new ResourceLocation(PondCraft.MOD_ID, "asian_dragon").toString()));
 }

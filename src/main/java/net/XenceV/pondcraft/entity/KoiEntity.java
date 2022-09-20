@@ -3,26 +3,28 @@ package net.XenceV.pondcraft.entity;
 import net.XenceV.pondcraft.entity.variant.KoiVariant;
 import net.XenceV.pondcraft.item.ModItems;
 import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.animal.horse.Markings;
 import net.minecraft.world.entity.animal.horse.Variant;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraftforge.fluids.FluidType;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -104,7 +106,7 @@ public class KoiEntity extends AbstractSchoolingFish /*implements IAnimatable*/ 
         setVariant(variant);
         return super.finalizeSpawn(world, difficulty, spawnReason, entityData, entityNbt);
     }
-    
+
     private void setVariant(KoiVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
@@ -117,4 +119,22 @@ public class KoiEntity extends AbstractSchoolingFish /*implements IAnimatable*/ 
         return KoiVariant.byId(this.getTypeVariant() & 255);
     }
 
+    @Override
+    public boolean alwaysAccepts() {
+        return super.alwaysAccepts();
+    }
+
+    @Override
+    public LivingEntity self() {
+        return super.self();
+    }
+
+    @Override
+    public boolean canSwimInFluidType(FluidType type) {
+        return super.canSwimInFluidType(type);
+    }
+
+    public static boolean canSpawn(EntityType<KoiEntity> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource) {
+        return checkSurfaceWaterAnimalSpawnRules(entityType, levelAccessor, mobSpawnType, blockPos, randomSource);
+    }
 }
