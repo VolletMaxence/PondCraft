@@ -64,7 +64,6 @@ public class ModItems {
     public static class Foods {
         public static final FoodProperties RAW_KOI = new FoodProperties.Builder().nutrition(2).saturationMod(2.4f).build();
         public static final FoodProperties COOKED_KOI = new FoodProperties.Builder().nutrition(5).saturationMod(11f).build();
-
     }
 
     public static void register(IEventBus eventBus) {

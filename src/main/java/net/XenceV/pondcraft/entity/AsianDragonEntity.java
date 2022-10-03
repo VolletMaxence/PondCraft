@@ -97,13 +97,19 @@ public class AsianDragonEntity extends AbstractVillager {
     public static final Int2ObjectMap<VillagerTrades.ItemListing[]> ASIAN_DRAGON_TRADES =
             toIntMap(ImmutableMap.of(1, new VillagerTrades.ItemListing[]{
                             new ItemsAndItemsToItems(Items.WITHER_SKELETON_SKULL, 1, Items.POPPY, 20, Items.WITHER_ROSE, 20, 100, 5),
-                            new ItemsAndItemsToEnchantedSword(Items.DIAMOND_SWORD, 1, Items.ENCHANTED_GOLDEN_APPLE, 1, Items.DIAMOND_SWORD, 1, 1, 5)
                     },
                     2,new VillagerTrades.ItemListing[]{
                             new ItemsAndItemsToExplorationPearl(Items.RABBIT_FOOT, 1, Items.NETHER_STAR, 1, 1, 5),
                             new ItemsAndItemsToStrenghtPearl(Items.ENCHANTED_GOLDEN_APPLE, 1, Items.NETHER_STAR, 1, 1, 5),
                             new ItemsAndItemsToResistancePearl(Items.TURTLE_HELMET, 1, Items.NETHER_STAR, 1, 1, 5)
-                    }));
+                    },
+                    3,new VillagerTrades.ItemListing[]{
+                            new ItemsAndItemsToEnchantedSword(Items.DIAMOND_SWORD, 1, Items.ENCHANTED_GOLDEN_APPLE, 1, Items.DIAMOND_SWORD, 1, 1, 5),
+                            new ItemsAndItemsToEnchantedArmor(Items.DIAMOND_HELMET, 1, Items.ENCHANTED_GOLDEN_APPLE, 1, Items.DIAMOND_HELMET, 1, 1, 5),
+                            new ItemsAndItemsToEnchantedArmor(Items.DIAMOND_CHESTPLATE, 1, Items.ENCHANTED_GOLDEN_APPLE, 1, Items.DIAMOND_CHESTPLATE, 1, 1, 5),
+                            new ItemsAndItemsToEnchantedArmor(Items.DIAMOND_LEGGINGS, 1, Items.ENCHANTED_GOLDEN_APPLE, 1, Items.DIAMOND_LEGGINGS, 1, 1, 5),
+                            new ItemsAndItemsToEnchantedArmor(Items.DIAMOND_BOOTS, 1, Items.ENCHANTED_GOLDEN_APPLE, 1, Items.DIAMOND_BOOTS, 1, 1, 5)
+            }));
 
     private static Int2ObjectMap<VillagerTrades.ItemListing[]> toIntMap(ImmutableMap<Integer, VillagerTrades.ItemListing[]> p_35631_) {
         return new Int2ObjectOpenHashMap<>(p_35631_);
@@ -111,17 +117,18 @@ public class AsianDragonEntity extends AbstractVillager {
 
     protected void updateTrades() {
         VillagerTrades.ItemListing[] avillagertrades$itemlisting = ASIAN_DRAGON_TRADES.get(1);
-        VillagerTrades.ItemListing[] avillagertrades$itemlisting1 = ASIAN_DRAGON_TRADES.get(2);
-        if (avillagertrades$itemlisting != null && avillagertrades$itemlisting1 != null) {
+        VillagerTrades.ItemListing[] avillagertrades$itemlisting1 = ASIAN_DRAGON_TRADES.get(3);
+        VillagerTrades.ItemListing[] avillagertrades$itemlisting2 = ASIAN_DRAGON_TRADES.get(2);
+        if (avillagertrades$itemlisting != null && avillagertrades$itemlisting1 != null && avillagertrades$itemlisting2 != null) {
             MerchantOffers merchantoffers = this.getOffers();
             this.addOffersFromItemListings(merchantoffers, avillagertrades$itemlisting, 5);
             int i = this.random.nextInt(avillagertrades$itemlisting1.length);
-            VillagerTrades.ItemListing villagertrades$itemlisting = avillagertrades$itemlisting1[i];
+            VillagerTrades.ItemListing villagertrades$itemlisting = avillagertrades$itemlisting2[i];
             MerchantOffer merchantoffer = villagertrades$itemlisting.getOffer(this, this.random);
+            this.addOffersFromItemListings(merchantoffers, avillagertrades$itemlisting1, 2);
             if (merchantoffer != null) {
                 merchantoffers.add(merchantoffer);
             }
-
         }
     }
 
@@ -161,15 +168,50 @@ public class AsianDragonEntity extends AbstractVillager {
 
         @Nullable
         public MerchantOffer getOffer(Entity p_219696_, RandomSource p_219697_) {
-            ItemStack itemstack = new ItemStack(this.fromResultItem.getItem(), 1);
-            // Sharpness / Smite / Bane of Arthropode / Knockback / Fire Aspect / Looting / Umbreaking / Mending
+            ItemStack itemstack = new ItemStack(this.fromResultItem.getItem(), this.fromCountResult);
+            // Sharpness / Smite / Bane of Arthropode
             itemstack.enchant(Objects.requireNonNull(Enchantment.byId(13)), 5);
             itemstack.enchant(Objects.requireNonNull(Enchantment.byId(14)), 5);
             itemstack.enchant(Objects.requireNonNull(Enchantment.byId(15)), 5);
-            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(16)), 2);
-            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(17)), 2);
-            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(18)), 3);
 
+            return new MerchantOffer(new ItemStack(this.fromItem1.getItem(), this.fromCount1), new ItemStack(this.fromItem2.getItem(), this.fromCount2), itemstack, this.maxUses, this.villagerXp, this.priceMultiplier);
+        }
+    }
+
+    static class ItemsAndItemsToEnchantedArmor implements VillagerTrades.ItemListing {
+        private final ItemStack fromItem1;
+        private final int fromCount1;
+        private final ItemStack fromItem2;
+        private final int fromCount2;
+        private final ItemStack fromResultItem;
+        private final int fromCountResult;
+        private final int maxUses;
+        private final int villagerXp;
+        private final float priceMultiplier;
+
+
+        ItemsAndItemsToEnchantedArmor(ItemLike fromItem1, int fromCount1, ItemLike fromItem2, int fromCount2, ItemLike fromResultItem, int fromCountResult, int maxUses, int villagerXp) {
+            this.fromItem1 = new ItemStack(fromItem1);
+            this.fromCount1 = fromCount1;
+            this.fromItem2 = new ItemStack(fromItem2);
+            this.fromCount2 = fromCount2;
+            this.fromResultItem = new ItemStack(fromResultItem);
+            this.fromCountResult = fromCountResult;
+            this.maxUses = maxUses;
+            this.villagerXp = villagerXp;
+            this.priceMultiplier = 0.05f;
+        }
+
+
+        @Nullable
+        public MerchantOffer getOffer(Entity p_219696_, RandomSource p_219697_) {
+            ItemStack itemstack = new ItemStack(this.fromResultItem.getItem(), this.fromCountResult);
+            //Sharpness / Impaling / Umbreaking / Mending / Channeling | Riptide
+            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(0)), 4);
+            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(1)), 4);
+            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(3)), 4);
+            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(4)), 4);
+            //itemstack, this.fromCountResult
             return new MerchantOffer(new ItemStack(this.fromItem1.getItem(), this.fromCount1), new ItemStack(this.fromItem2.getItem(), this.fromCount2), itemstack, this.maxUses, this.villagerXp, this.priceMultiplier);
         }
     }
@@ -201,13 +243,81 @@ public class AsianDragonEntity extends AbstractVillager {
 
         @Nullable
         public MerchantOffer getOffer(Entity p_219696_, RandomSource p_219697_) {
-            ItemStack itemstack = new ItemStack(this.fromResultItem.getItem());
-            //Sharpness / Impaling / Umbreaking / Mending / Channeling | Riptide
-            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(13)), 5);
-            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(25)), 5);
-            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(26)), 5);
+            ItemStack itemstack = new ItemStack(this.fromResultItem.getItem(), this.fromCountResult);
+            //Sharpness / Impaling
+            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(13)), 4);
             //itemstack, this.fromCountResult
-            return new MerchantOffer(new ItemStack(this.fromItem1.getItem(), this.fromCount1), new ItemStack(this.fromItem2.getItem(), this.fromCount2), new ItemStack(itemstack.getItem(), this.fromCountResult) , this.maxUses, this.villagerXp, this.priceMultiplier);
+            return new MerchantOffer(new ItemStack(this.fromItem1.getItem(), this.fromCount1), new ItemStack(this.fromItem2.getItem(), this.fromCount2), itemstack, this.maxUses, this.villagerXp, this.priceMultiplier);
+        }
+    }
+
+    static class ItemsAndItemsToEnchantedBow implements VillagerTrades.ItemListing {
+        private final ItemStack fromItem1;
+        private final int fromCount1;
+        private final ItemStack fromItem2;
+        private final int fromCount2;
+        private final ItemStack fromResultItem;
+        private final int fromCountResult;
+        private final int maxUses;
+        private final int villagerXp;
+        private final float priceMultiplier;
+
+
+        ItemsAndItemsToEnchantedBow(ItemLike fromItem1, int fromCount1, ItemLike fromItem2, int fromCount2, ItemLike fromResultItem, int fromCountResult, int maxUses, int villagerXp) {
+            this.fromItem1 = new ItemStack(fromItem1);
+            this.fromCount1 = fromCount1;
+            this.fromItem2 = new ItemStack(fromItem2);
+            this.fromCount2 = fromCount2;
+            this.fromResultItem = new ItemStack(fromResultItem);
+            this.fromCountResult = fromCountResult;
+            this.maxUses = maxUses;
+            this.villagerXp = villagerXp;
+            this.priceMultiplier = 0.05f;
+        }
+
+
+        @Nullable
+        public MerchantOffer getOffer(Entity p_219696_, RandomSource p_219697_) {
+            ItemStack itemstack = new ItemStack(this.fromResultItem.getItem(), this.fromCountResult);
+            //Mending / Infinity
+            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(0)), 4);
+            //itemstack, this.fromCountResult
+            return new MerchantOffer(new ItemStack(this.fromItem1.getItem(), this.fromCount1), new ItemStack(this.fromItem2.getItem(), this.fromCount2), itemstack, this.maxUses, this.villagerXp, this.priceMultiplier);
+        }
+    }
+
+    static class ItemsAndItemsToEnchantedCrossbow implements VillagerTrades.ItemListing {
+        private final ItemStack fromItem1;
+        private final int fromCount1;
+        private final ItemStack fromItem2;
+        private final int fromCount2;
+        private final ItemStack fromResultItem;
+        private final int fromCountResult;
+        private final int maxUses;
+        private final int villagerXp;
+        private final float priceMultiplier;
+
+
+        ItemsAndItemsToEnchantedCrossbow(ItemLike fromItem1, int fromCount1, ItemLike fromItem2, int fromCount2, ItemLike fromResultItem, int fromCountResult, int maxUses, int villagerXp) {
+            this.fromItem1 = new ItemStack(fromItem1);
+            this.fromCount1 = fromCount1;
+            this.fromItem2 = new ItemStack(fromItem2);
+            this.fromCount2 = fromCount2;
+            this.fromResultItem = new ItemStack(fromResultItem);
+            this.fromCountResult = fromCountResult;
+            this.maxUses = maxUses;
+            this.villagerXp = villagerXp;
+            this.priceMultiplier = 0.05f;
+        }
+
+
+        @Nullable
+        public MerchantOffer getOffer(Entity p_219696_, RandomSource p_219697_) {
+            ItemStack itemstack = new ItemStack(this.fromResultItem.getItem(), this.fromCountResult);
+            //Multishot / Piercing
+            itemstack.enchant(Objects.requireNonNull(Enchantment.byId(0)), 4);
+            //itemstack, this.fromCountResult
+            return new MerchantOffer(new ItemStack(this.fromItem1.getItem(), this.fromCount1), new ItemStack(this.fromItem2.getItem(), this.fromCount2), itemstack, this.maxUses, this.villagerXp, this.priceMultiplier);
         }
     }
 
