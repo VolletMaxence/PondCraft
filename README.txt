@@ -2,11 +2,11 @@ TODO
 
 Asian Dragon
 -> Texture
--> more Trade
 -> Permanent
 
 Koi
 -> Rare Species (Magicarp / Shiny Magicarp)
+-> More texture
 
 Structure
 -> Dragon's gate
