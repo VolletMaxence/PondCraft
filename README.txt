@@ -10,5 +10,4 @@ Koi
 
 Structure
 -> Dragon's gate
-   -> Where Dragon Spawn
-   -> Boss Fight ?
+   -> Change trade of dragon from one structure to another
