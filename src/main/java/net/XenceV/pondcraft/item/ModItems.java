@@ -40,6 +40,10 @@ public class ModItems {
             () -> new ForgeSpawnEggItem(ModEntityTypes.KOI, 0xffffff,  0xb40a1a,
                     new Item.Properties().tab(POND_CRAFT_TAB)));
 
+    public static final RegistryObject<ForgeSpawnEggItem> ASIAN_DRAGON_SPAWN_EGG = ITEMS.register("asian_dragon_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.ASIAN_DRAGON, 0x6f11b7,  0xc4d154,
+                    new Item.Properties().tab(POND_CRAFT_TAB)));
+
     public static final RegistryObject<AdvancedItem> DRAGON_PEARL_STRENGHT = ITEMS.register("dragon_pearl_strenght",
             () -> new AdvancedItem(new Item.Properties().stacksTo(1).tab(POND_CRAFT_TAB)));
 

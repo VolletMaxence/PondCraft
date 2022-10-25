@@ -60,6 +60,10 @@ public class AsianDragonEntity extends AbstractVillager {
         this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Player.class, 6.0F));
     }
 
+    public boolean removeWhenFarAway(double p_35886_) {
+        return false;
+    }
+
     @org.jetbrains.annotations.Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
