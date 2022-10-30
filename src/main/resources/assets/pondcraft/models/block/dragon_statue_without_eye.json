@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "pondcraft:block/dragon_statue_without_eye"
+  }
+}

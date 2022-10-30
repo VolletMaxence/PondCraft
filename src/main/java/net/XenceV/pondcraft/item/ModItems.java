@@ -1,6 +1,7 @@
 package net.XenceV.pondcraft.item;
 
 import net.XenceV.pondcraft.PondCraft;
+import net.XenceV.pondcraft.block.DragonStatueBlock;
 import net.XenceV.pondcraft.entity.ModEntityTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
@@ -11,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -20,6 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 
 import static net.XenceV.pondcraft.item.ModCreativeModTab.POND_CRAFT_TAB;
 
@@ -60,10 +63,16 @@ public class ModItems {
             () -> new Item(new Item.Properties().tab(POND_CRAFT_TAB).food(Foods.COOKED_KOI)));
 
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PondCraft.MOD_ID);
-    public static final BlockBehaviour.Properties ORE_PROPERTIES = BlockBehaviour.Properties.of(Material.STONE).strength(2f);
+    public static final BlockBehaviour.Properties BEDROCK_PROPERTIES = BlockBehaviour.Properties.of(Material.BARRIER).strength(2f);
 
-    public static final RegistryObject<Block> DRAGON_STATUE_BLOCK = BLOCKS.register("dragon_statue", () -> new Block(ORE_PROPERTIES));
+    public static final RegistryObject<Block> DRAGON_STATUE_BLOCK = BLOCKS.register("dragon_statue",
+            () -> new DragonStatueBlock(BlockBehaviour.Properties.of(Material.BARRIER)
+                    .lightLevel(state -> state.getValue(DragonStatueBlock.ACTIVATED) ? 0 : 15)));
+
     public static final RegistryObject<Item> DRAGON_STATUE_ITEM = fromBlock(DRAGON_STATUE_BLOCK);
+
+    public static final RegistryObject<Item> EMERALD_DRAGON_EYE = ITEMS.register("emerald_dragon_eye",
+            () -> new Item(new Item.Properties().tab(POND_CRAFT_TAB)));
 
     public static class Foods {
         public static final FoodProperties RAW_KOI = new FoodProperties.Builder().nutrition(2).saturationMod(2.4f).build();

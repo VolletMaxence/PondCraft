@@ -41,7 +41,7 @@ public class AsianDragonEntity extends AbstractVillager {
 
     //public AnimationFactory factory = new AnimationFactory(this);
 
-    public AsianDragonEntity(EntityType/*<? extends AbstractSchoolingFish>*/ type, Level level) {
+    public AsianDragonEntity(EntityType type, Level level) {
         super(type, level);
     }
 

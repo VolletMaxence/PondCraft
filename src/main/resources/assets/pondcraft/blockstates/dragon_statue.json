@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "activated=true": { "model": "pondcraft:block/dragon_statue_without_eye" },
+    "activated=false": { "model": "pondcraft:block/dragon_statue_with_eye" }
+  }
+}
