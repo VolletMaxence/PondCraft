@@ -30,6 +30,14 @@ public class KoiEntityRenderer extends MobRenderer<KoiEntity, KoiEntityModel> {
                         new ResourceLocation(PondCraft.MOD_ID, "textures/entity/koi/silver_matsuba_koi.png"));
                 map.put(KoiVariant.PATCH,
                         new ResourceLocation(PondCraft.MOD_ID, "textures/entity/koi/silver_matsuba_koi.png"));
+                map.put(KoiVariant.HIHITSURI,
+                        new ResourceLocation(PondCraft.MOD_ID, "textures/entity/koi/hi_hitsuri_koi.png"));
+                map.put(KoiVariant.BLUE,
+                        new ResourceLocation(PondCraft.MOD_ID, "textures/entity/koi/blue_koi.png"));
+                map.put(KoiVariant.AYAWAKABA,
+                        new ResourceLocation(PondCraft.MOD_ID, "textures/entity/koi/aya_wakaba_koi.png"));
+                map.put(KoiVariant.GOSHIKI,
+                        new ResourceLocation(PondCraft.MOD_ID, "textures/entity/koi/goshiki_koi.png"));
             });
 
     public KoiEntityRenderer(Context context) {

@@ -10,7 +10,11 @@ public enum KoiVariant {
     REDMATSUBA(3),
     YELLOWMATSUBA(4),
     SILVERMATSUBA(5),
-    PATCH(6);
+    PATCH(6),
+    HIHITSURI(7),
+    BLUE(8),
+    AYAWAKABA(9),
+    GOSHIKI(10);
 
     private static final KoiVariant[] BY_ID = Arrays.stream(values()).sorted(Comparator.
             comparingInt(KoiVariant::getId)).toArray(KoiVariant[]::new);

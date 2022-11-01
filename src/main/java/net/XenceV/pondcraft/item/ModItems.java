@@ -63,16 +63,16 @@ public class ModItems {
             () -> new Item(new Item.Properties().tab(POND_CRAFT_TAB).food(Foods.COOKED_KOI)));
 
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PondCraft.MOD_ID);
-    public static final BlockBehaviour.Properties BEDROCK_PROPERTIES = BlockBehaviour.Properties.of(Material.BARRIER).strength(2f);
 
     public static final RegistryObject<Block> DRAGON_STATUE_BLOCK = BLOCKS.register("dragon_statue",
-            () -> new DragonStatueBlock(BlockBehaviour.Properties.of(Material.BARRIER)
-                    .lightLevel(state -> state.getValue(DragonStatueBlock.ACTIVATED) ? 0 : 15)));
+            () -> new DragonStatueBlock(BlockBehaviour.Properties.of(Material.STONE).strength(999f)
+                    .noOcclusion()
+                    .lightLevel(state -> state.getValue(DragonStatueBlock.ACTIVATED) ? 1 : 15)));
 
     public static final RegistryObject<Item> DRAGON_STATUE_ITEM = fromBlock(DRAGON_STATUE_BLOCK);
 
-    public static final RegistryObject<Item> EMERALD_DRAGON_EYE = ITEMS.register("emerald_dragon_eye",
-            () -> new Item(new Item.Properties().tab(POND_CRAFT_TAB)));
+    public static final RegistryObject<Emerald_Dragon_Eye> EMERALD_DRAGON_EYE = ITEMS.register("emerald_dragon_eye",
+            () -> new Emerald_Dragon_Eye(new Emerald_Dragon_Eye.Properties().tab(POND_CRAFT_TAB)));
 
     public static class Foods {
         public static final FoodProperties RAW_KOI = new FoodProperties.Builder().nutrition(2).saturationMod(2.4f).build();

@@ -10,8 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModEntityTypes {
-    public static final DeferredRegister<EntityType<?>> ENTITIES
-            = DeferredRegister.create(ForgeRegistries.ENTITIES, PondCraft.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, PondCraft.MOD_ID);
 
     public static final RegistryObject<EntityType<KoiEntity>> KOI = ENTITIES.register("koi",
             () -> EntityType.Builder.of(KoiEntity::new, MobCategory.WATER_AMBIENT).sized(0.7f, 0.5f).build(new ResourceLocation(PondCraft.MOD_ID, "koi").toString()));
