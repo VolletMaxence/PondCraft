@@ -4,14 +4,17 @@ import com.google.common.collect.Maps;
 import net.XenceV.pondcraft.PondCraft;
 import net.XenceV.pondcraft.entity.variant.KoiVariant;
 import net.minecraft.Util;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
-import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 import java.util.Map;
 
-public class KoiEntityRenderer extends MobRenderer<KoiEntity, KoiEntityModel> {
+public class KoiEntityRenderer extends GeoEntityRenderer<KoiEntity> {
 
+    public KoiEntityRenderer(EntityRendererProvider.Context renderManager) {
+        super(renderManager, new KoiEntityModel());
+    }
     //private static final ResourceLocation TEXTURE = new ResourceLocation(PondCraft.MOD_ID, "textures/entity/tancho_koi/tancho_koi.png");
 
     public static final Map<KoiVariant, ResourceLocation> TEXTURE =
@@ -40,9 +43,8 @@ public class KoiEntityRenderer extends MobRenderer<KoiEntity, KoiEntityModel> {
                         new ResourceLocation(PondCraft.MOD_ID, "textures/entity/koi/goshiki_koi.png"));
             });
 
-    public KoiEntityRenderer(Context context) {
-        super(context, new KoiEntityModel(context.bakeLayer(KoiEntityModel.LAYER_LOCATION)), 0.5f);
-    }
+    private static final ResourceLocation TEXTUREMAGICARP = new ResourceLocation(PondCraft.MOD_ID, "textures/entity/koi/magicarp_koi.png");
+    private static final ResourceLocation TEXTUREMAGICARPSHINY = new ResourceLocation(PondCraft.MOD_ID, "textures/entity/koi/magicarp_koi.png");
 
     @Override
     public ResourceLocation getTextureLocation(KoiEntity entity) {

@@ -33,7 +33,6 @@ public class DragonStatueBlock extends HorizontalDirectionalBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public DragonStatueBlock(Properties p_49795_) {
-
         super(p_49795_);
     }
 
@@ -73,7 +72,6 @@ public class DragonStatueBlock extends HorizontalDirectionalBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(ACTIVATED);
-        builder.add(FACING);
+        builder.add(ACTIVATED, FACING);
     }
 }

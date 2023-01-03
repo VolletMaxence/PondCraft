@@ -18,4 +18,8 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<AsianDragonEntity>> ASIAN_DRAGON = ENTITIES.register("asian_dragon",
             () -> EntityType.Builder.of(AsianDragonEntity::new, MobCategory.CREATURE).sized(3f, 1.5f).build(new ResourceLocation(PondCraft.MOD_ID, "asian_dragon").toString()));
+
+    public static void register(IEventBus eventBus) {
+        ENTITIES.register(eventBus);
+    }
 }
