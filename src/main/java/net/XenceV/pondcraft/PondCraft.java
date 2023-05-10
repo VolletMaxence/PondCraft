@@ -1,8 +1,9 @@
 package net.XenceV.pondcraft;
 
 import com.mojang.logging.LogUtils;
-import net.XenceV.pondcraft.entity.AsianDragonEntityRenderer;
-import net.XenceV.pondcraft.entity.KoiEntityRenderer;
+import net.XenceV.pondcraft.entity.asiandragon.AsianDragonEntityRenderer;
+import net.XenceV.pondcraft.entity.fry.FryEntityRenderer;
+import net.XenceV.pondcraft.entity.koi.KoiEntityRenderer;
 import net.XenceV.pondcraft.entity.ModEntityTypes;
 import net.XenceV.pondcraft.item.ModItems;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -53,6 +54,7 @@ public class PondCraft
 
     private void clientSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(ModEntityTypes.KOI.get(), KoiEntityRenderer::new);
+        EntityRenderers.register(ModEntityTypes.FRY.get(), FryEntityRenderer::new);
         EntityRenderers.register(ModEntityTypes.ASIAN_DRAGON.get(), AsianDragonEntityRenderer::new);
     }
 

@@ -1,11 +1,13 @@
 {
   "item.pondcraft.koi_pallet": "Koi Pallet",
   "item.pondcraft.koi_spawn_egg": "Koi Spawn Egg",
+  "item.pondcraft.fry_spawn_egg": "Fry Spawn Egg",
   "item.pondcraft.asian_dragon_spawn_egg": "Asian Dragon Spawn Egg",
   "item.pondcraft.dragon_pearl_strenght": "Dragon Pearl of Strenght",
   "item.pondcraft.dragon_pearl_exploration": "Dragon Pearl of Exploration",
   "item.pondcraft.dragon_pearl_resistance": "Dragon Pearl of Resistance",
   "item.pondcraft.koi_fish_bucket": "Bucket of Koi",
+  "item.pondcraft.fry_bucket": "Bucket of Fry",
   "item.pondcraft.raw_koi": "Raw Koi",
   "item.pondcraft.cooked_koi": "Cooked Koi",
   "item.pondcraft.emerald_dragon_eye": "Emerald Dragon Eye",
@@ -13,6 +15,7 @@
 
   "entity.pondcraft.asian_dragon": "Asian Dragon",
   "entity.pondcraft.koi": "Koi",
+  "entity.pondcraft.fry": "Fry",
 
   "itemGroup.pondcrafttab": "PondCraft"
 }

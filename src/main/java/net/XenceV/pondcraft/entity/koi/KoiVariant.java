@@ -1,9 +1,10 @@
-package net.XenceV.pondcraft.entity.variant;
+package net.XenceV.pondcraft.entity.koi;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
 public enum KoiVariant {
+    //Classic Variant
     TANCHO(0),
     KUMONRYU(1),
     KOHAKU(2),
@@ -15,6 +16,10 @@ public enum KoiVariant {
     BLUE(8),
     AYAWAKABA(9),
     GOSHIKI(10);
+
+    //Custom Biome Variant
+
+    //Magicarp Variant
 
     private static final KoiVariant[] BY_ID = Arrays.stream(values()).sorted(Comparator.
             comparingInt(KoiVariant::getId)).toArray(KoiVariant[]::new);

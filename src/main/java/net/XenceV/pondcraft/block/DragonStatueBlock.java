@@ -1,17 +1,13 @@
 package net.XenceV.pondcraft.block;
 
-import net.XenceV.pondcraft.PondCraft;
-import net.XenceV.pondcraft.entity.AsianDragonEntity;
-import net.XenceV.pondcraft.entity.AsianDragonEntityModel;
+import net.XenceV.pondcraft.entity.asiandragon.AsianDragonEntity;
 import net.XenceV.pondcraft.entity.ModEntityTypes;
 import net.XenceV.pondcraft.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;

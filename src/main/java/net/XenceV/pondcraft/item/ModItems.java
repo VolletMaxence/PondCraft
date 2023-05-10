@@ -33,8 +33,16 @@ public class ModItems {
             () -> new MobBucketItem(ModEntityTypes.KOI, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH,
                     new Item.Properties().stacksTo(1).tab(POND_CRAFT_TAB)));
 
+    public static final RegistryObject<MobBucketItem> FRY_BUCKET = ITEMS.register("fry_bucket",
+            () -> new MobBucketItem(ModEntityTypes.FRY, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_TADPOLE,
+                    new Item.Properties().stacksTo(1).tab(POND_CRAFT_TAB)));
+
     public static final RegistryObject<ForgeSpawnEggItem> KOI_SPAWN_EGG = ITEMS.register("koi_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.KOI, 0xffffff,  0xb40a1a,
+                    new Item.Properties().tab(POND_CRAFT_TAB)));
+
+    public static final RegistryObject<ForgeSpawnEggItem> FRY_SPAWN_EGG = ITEMS.register("fry_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.FRY, 0x3c3834,  0x59534d,
                     new Item.Properties().tab(POND_CRAFT_TAB)));
 
     public static final RegistryObject<ForgeSpawnEggItem> ASIAN_DRAGON_SPAWN_EGG = ITEMS.register("asian_dragon_spawn_egg",

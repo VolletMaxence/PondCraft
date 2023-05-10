@@ -1,12 +1,9 @@
-package net.XenceV.pondcraft.entity;
+package net.XenceV.pondcraft.entity.asiandragon;
 
 import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.XenceV.pondcraft.item.ModItems;
-import net.minecraft.commands.arguments.NbtTagArgument;
-import net.minecraft.core.Registry;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
@@ -15,17 +12,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.FollowParentGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.animal.PolarBear;
 import net.minecraft.world.entity.npc.AbstractVillager;
-import net.minecraft.world.entity.npc.VillagerData;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.EnchantedBookItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.*;
@@ -33,27 +23,20 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public class AsianDragonEntity extends AbstractVillager {
+public class AsianDragonEntity extends AbstractVillager implements IAnimatable {
 
-    //public AnimationFactory factory = new AnimationFactory(this);
+    private AnimationFactory factory = new AnimationFactory(this);
 
     public AsianDragonEntity(EntityType type, Level level) {
         super(type, level);
     }
-
-    /*
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
-                                        MobSpawnType spawnReason, @Nullable SpawnGroupData entityData,
-                                        @Nullable CompoundTag entityNbt) {
-        KoiVariant variant = Util.getRandom(KoiVariant.values(), this.random);
-        setVariant(variant);
-        return super.finalizeSpawn(world, difficulty, spawnReason, entityData, entityNbt);
-    }
-    */
 
     protected void registerGoals() {
         super.registerGoals();
@@ -168,6 +151,16 @@ public class AsianDragonEntity extends AbstractVillager {
             this.level.addFreshEntity(new ExperienceOrb(this.level, this.getX(), this.getY() + 0.5D, this.getZ(), i));
         }
 
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return factory;
     }
 
     //Trade method

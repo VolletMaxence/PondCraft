@@ -1,4 +1,4 @@
-package net.XenceV.pondcraft.entity;
+package net.XenceV.pondcraft.entity.koi;
 
 import net.XenceV.pondcraft.PondCraft;
 import net.minecraft.resources.ResourceLocation;
